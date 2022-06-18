@@ -10,7 +10,7 @@ set :branch,            "main"
 set :deploy_user,       "rails"
 append :linked_dirs,    "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
 set :passenger_restart_with_touch, true
-set :assets_prefix,     "mylan/assets"
+#set :assets_prefix,     "mylan/assets"
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
