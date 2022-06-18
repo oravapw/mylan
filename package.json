@@ -2,6 +2,7 @@
   "name": "app",
   "private": "true",
   "dependencies": {
+    "@creativebulma/bulma-tooltip": "^1.2.0",
     "@hotwired/stimulus": "^3.0.1",
     "@hotwired/turbo-rails": "^7.1.3",
     "bulma": "^0.9.4",

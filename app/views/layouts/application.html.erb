@@ -1,16 +1,43 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Mylan</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
-  </head>
-
-  <body>
-    <%= yield %>
-  </body>
+<head>
+  <title>Mylan: EC2022 Tournament Helper</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+</head>
+<body>
+<section class="section px-3 py-2">
+  <section class="hero is-small has-background-success-dark" style="border-radius: 10px">
+    <div class="hero-body px-2 py-2">
+      <figure class="image is-64x64 has-tooltip-arrow has-tooltip-left"
+              data-tooltip="It looks like you are trying to organize a tournament, would you like some help with that?"
+              style="float: right">
+        <%= image_tag 'mylan.png', class: 'is-rounded' %>
+      </figure>
+      <p class="title has-text-black is-family-monospace is-size-4">
+        Mylan
+      </p>
+      <p class="subtitle has-text-warning is-size-6">
+        EC2022 Tournament Helper
+      </p>
+    </div>
+  </section>
+  <div class="container is-fullhd">
+    <div class="tabs">
+      <ul>
+        <li class="is-active"><a>Overview</a></li>
+        <li><a>Pre-registered</a></li>
+      </ul>
+    </div>
+    <div>
+      <%= yield %>
+    </div>
+  </div>
+</section>
+</div>
+</body>
 </html>
