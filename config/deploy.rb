@@ -89,3 +89,6 @@ end
 
 before "deploy:assets:precompile", "deploy:setup_master_key"
 before "deploy:publishing", "deploy:link_ruby"
+
+Rake::Task["deploy:assets:backup_manifest"].clear_actions
+Rake::Task["deploy:assets:restore_manifest"].clear_actions
