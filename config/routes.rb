@@ -1,7 +1,7 @@
+# Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 Rails.application.routes.draw do
-  get 'main/index'
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  get 'overview/index'
 
   # Defines the root path route ("/")
-  root "main#index"
+  root "overview#index"
 end

@@ -1,6 +1,7 @@
 # README
 
-This is a quick and dirty app to help with VTES EC2022 tournament management.
+This is a quick and dirty app to help with VTES EC2022 tournament management. This is currently a specialized one-off app,
+but may grow into a more general tool later.
 
 Rails 7, with support for local develoment with Docker Compose and
 production deploy with Capistrano. Database data is stored in named
