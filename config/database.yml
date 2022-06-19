@@ -13,7 +13,7 @@ default: &default
   adapter: mysql2
   encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  host: localhost
+  host: <%= ENV.fetch("RAILS_DB_HOST") { "localhost" } %>
   username: <%= Rails.application.credentials.dig(:db, :development, :primary, :username) %>
   password: <%= Rails.application.credentials.dig(:db, :development, :primary, :password) %>
 
