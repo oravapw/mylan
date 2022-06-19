@@ -1,5 +1,6 @@
 # development setup
 
+# Note: most credentials are in Rails credentials store, protected by master.key
 version: "3.8"
 
 services:

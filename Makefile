@@ -1,6 +1,6 @@
 # Helpers for Docker
 
-.PHONY: all build clean imageclean console websh dbsh db dbec dbroot
+.PHONY: all build clean imageclean migrate console websh dbsh db dbec dbroot
 
 all: build
 
@@ -15,6 +15,10 @@ clean:
 # remove non-referenced images
 imageclean:
 	docker image prune -f
+
+# Run Rails migrations
+migrate:
+	docker compose exec web bundle exec rake db:migrate
 
 # Rails console in web container
 console:
