@@ -36,5 +36,7 @@
 // @import "bulma/sass/layout/hero.sass";
 // @import "bulma/sass/layout/section.sass";
 
+$body-size: 15px !default;
+
 @import 'bulma/bulma';
 @import '@creativebulma/bulma-tooltip/src/sass/index';
