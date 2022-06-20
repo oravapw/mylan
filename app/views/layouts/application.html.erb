@@ -29,8 +29,11 @@
   <div class="container is-fullhd">
     <div class="tabs">
       <ul>
-        <li class="is-active"><a>Overview</a></li>
-        <li><a>Pre-registered</a></li>
+        <% navtabs.each do |nav| %>
+        <li<%= request.path == nav[:path] ? ' class="is-active"'.html_safe : '' %>>
+          <%= link_to nav[:label], nav[:path] %>
+        </li>
+        <% end %>
       </ul>
     </div>
     <div>

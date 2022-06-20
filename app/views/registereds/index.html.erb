@@ -1,0 +1,30 @@
+<p>These are the current pre-registered players for EC2022.
+  You can edit or remove entries here, in order to add a new registration just use the
+  <%= link_to "EC2022 registration page", "https://vtes.orava.org/ec2022/european-championships/pre-registration/" %>
+  .</p>
+
+<p>Total players registered: <%= @prereg_count %>.</p>
+
+<table class="table is-striped is-hoverable mt-5">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>VEKN#</th>
+    <th>Country</th>
+    <th>Registered</th>
+    <th>Updated</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @preregs.each do |r| %>
+    <tr>
+      <td><%= r.name %></td>
+      <td><%= r.vekn %></td>
+      <td><%= r.country %></td>
+      <td><%= r.created_at&.localtime&.strftime("%d.%m.%Y %H:%M:%S") %></td>
+      <td><%= r.updated_at != r.created_at ? r.updated_at&.localtime : '' %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<%= paginate @preregs %>

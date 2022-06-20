@@ -64,9 +64,10 @@ group :development do
   # gem "spring"
 
   gem "capistrano", "~> 3.17", require: false
-  gem 'capistrano-rails'
-  gem 'capistrano-rvm'
-  gem 'capistrano-passenger'
-  gem 'capistrano-bundler'
+  gem "capistrano-rails"
+  gem "capistrano-rvm"
+  gem "capistrano-passenger"
+  gem "capistrano-bundler"
 end
 
+gem "kaminari"
