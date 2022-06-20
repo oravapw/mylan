@@ -4,9 +4,8 @@ This is a quick and dirty app to help with VTES EC2022 tournament
 player management.
 
 This is currently a specialized one-off app, but may grow into a more
-general tool later. There is no user management at this point, access
-control in production will be done with a simple Basic Auth check. All
-tournament judges will use the same access credentials.
+general tool later. Access control is a single username + password
+pair, all tournament judges will use the same access credentials.
 
 I don't expect other people to find much use for this at the moment,
 but in case you want to try it out for whatever reason, read on.

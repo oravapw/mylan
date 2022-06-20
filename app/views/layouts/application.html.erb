@@ -10,14 +10,21 @@
   <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
 </head>
 <body>
+
 <section class="section px-3 py-2">
   <section class="hero is-small has-background-success-dark" style="border-radius: 10px">
     <div class="hero-body px-2 py-2">
-      <figure class="image is-64x64 has-tooltip-arrow has-tooltip-left"
-              data-tooltip="It looks like you are trying to organize a tournament, would you like some help with that?"
-              style="float: right">
+
+      <figure class="image is-64x64 has-tooltip-arrow has-tooltip-left is-pulled-right"
+              data-tooltip="It looks like you are trying to organize a tournament, would you like some help with that?">
         <%= image_tag 'mylan.png', class: 'is-rounded' %>
       </figure>
+
+      <% if logged_in? %>
+        <%= button_to "Logout", logout_path, method: :post,
+                      class: "button is-small is-dark is-rounded is-pulled-right mr-4" %>
+      <% end %>
+
       <p class="title has-text-black is-family-monospace is-size-4">
         Mylan
       </p>
@@ -26,19 +33,44 @@
       </p>
     </div>
   </section>
+
   <div class="container is-fullhd">
-    <div class="tabs">
-      <ul>
-        <% navtabs.each do |nav| %>
-        <li<%= request.path == nav[:path] ? ' class="is-active"'.html_safe : '' %>>
-          <%= link_to nav[:label], nav[:path] %>
-        </li>
-        <% end %>
-      </ul>
-    </div>
+
+    <% if logged_in? %>
+      <div class="tabs">
+        <ul>
+          <% navtabs.each do |nav| %>
+            <li<%= request.path == nav[:path] ? ' class="is-active"'.html_safe : '' %>>
+              <%= link_to nav[:label], nav[:path] %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <% if flash.any? %>
+      <% flash.each do |type, msg| %>
+        <%
+          flashclass = case type
+                       when "notice"
+                         "is-info"
+                       when "alert"
+                         "is-warning"
+                       else
+                         "is-success"
+                       end
+        %>
+        <div class="notification mt-2 <%= flashclass %>">
+          <button class="delete" data-controller="remove-alert" data-action="remove-alert#do"></button>
+          <%= msg %>
+        </div>
+      <% end %>
+    <% end %>
+
     <div>
       <%= yield %>
     </div>
+
   </div>
 </section>
 </div>

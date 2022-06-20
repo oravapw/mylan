@@ -4,5 +4,5 @@
 
 import { application } from "./application"
 
-import HelloController from "./hello_controller"
-application.register("hello", HelloController)
+import RemoveAlertController from "./remove_alert_controller.js"
+application.register("remove-alert", RemoveAlertController)
