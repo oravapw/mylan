@@ -31,12 +31,14 @@ key and adding the database details with whatever passwords you want
 to use. For development, just using the default user and password of
 "mylan" should be fine.
 
-3. Run "make build", this will build & load the Docker images.
+3. "bundle install; yarn install"
 
-4. Run "docker compose up", this should start up the web and db
+4. Run "make build", this will build & load the Docker images.
+
+5. Run "docker compose up", this should start up the web and db
 containers. Mariadb will create a new empty database on first run.
 
-5. Once Docker Compose has started up everything, run "make dbroot"
+6. Once Docker Compose has started up everything, run "make dbroot"
 and then run the following SQL:
 
 ```
@@ -47,9 +49,11 @@ CREATE USER mylan@'%' IDENTIFIED BY 'mylan';
 GRANT ALL ON *.* TO mylan@'%';
 ```
 
-6. Run "make migrate". If everything is set up correctly, this should
+7. Run "make migrate". If everything is set up correctly, this should
 connect to the web container and run "rake db:migrate" there,
 connecting to the database in the "db" container.
 
-7. Connect to localhost:3000, where you should see the app main page.
-8. Run "./bin/dev" on another terminal to get on-the-fly compilation of CSS and Javascript when those change.
+8. Connect to localhost:3000, where you should see the app main page.
+
+9. Run "./bin/dev" on another terminal to get on-the-fly compilation
+of CSS and Javascript when those change.
