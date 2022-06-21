@@ -14,8 +14,8 @@ default: &default
   encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   host: <%= ENV.fetch("RAILS_DB_HOST") { "localhost" } %>
-  username: <%= Rails.application.credentials.dig(:db, :development, :primary, :username) %>
-  password: <%= Rails.application.credentials.dig(:db, :development, :primary, :password) %>
+  username: <%= Rails.application.credentials.dig(:db, :primary, :username) %>
+  password: <%= Rails.application.credentials.dig(:db, :primary, :password) %>
 
 development:
   primary:
@@ -36,6 +36,8 @@ test:
   ecdata:
     <<: *default
     database: ecdata_test
+    username: <%= Rails.application.credentials.dig(:db, :ecdata, :username) %>
+    password: <%= Rails.application.credentials.dig(:db, :ecdata, :password) %>
     database_tasks: false
 
 # As with config/credentials.yml, you never want to store sensitive information,
@@ -62,11 +64,9 @@ production:
   primary:
     <<: *default
     database: mylan
-    username: <%= Rails.application.credentials.dig(:db, :production, :primary, :username) %>
-    password: <%= Rails.application.credentials.dig(:db, :production, :primary, :password) %>
   ecdata:
     <<: *default
     database: ec2020
-    username: <%= Rails.application.credentials.dig(:db, :production, :ecdata, :username) %>
-    password: <%= Rails.application.credentials.dig(:db, :production, :ecdata, :password) %>
+    username: <%= Rails.application.credentials.dig(:db, :ecdata, :username) %>
+    password: <%= Rails.application.credentials.dig(:db, :ecdata, :password) %>
     database_tasks: false

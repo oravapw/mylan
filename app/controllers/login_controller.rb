@@ -5,8 +5,8 @@ class LoginController < ApplicationController
 
   def authenticate
     # this is *really* simple, but all we need for now
-    want_username = Rails.application.credentials.dig(:login, Rails.env.to_sym, :username)
-    want_password = Rails.application.credentials.dig(:login, Rails.env.to_sym, :password)
+    want_username = Rails.application.credentials.dig(:login, :username)
+    want_password = Rails.application.credentials.dig(:login, :password)
     if params[:username] == want_username &&  params[:password] == want_password
       session[:logged_in] = true
       redirect_to root_path
