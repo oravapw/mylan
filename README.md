@@ -15,20 +15,23 @@ Compose and production deploy with Capistrano. Developent database
 data is stored in a named Docker data volume, app code is mounted from
 current dir for easy development.
 
-Most credentials are in Rails encrypted credentials store, the copy
-included here (config/credentials.yml.enc) is my own setup (without
-config/master.key of course), you will need to remove it and provide
-your own (see below).
-
 ## Quick setup for development
 
-1. Remove config/credentials.yml.enc, run "rails credentials:edit"
+1. Run "rails credentials:edit --environment development". This will
+display the development credentials settings, because here we actually
+include the secret key (config/credentials/development.key) in source
+control. All those credentials are for private sandboxed Docker
+development environment, so it is more convenient this way. Keep this
+editor window open for reference.
 
-2. Update the credentials to conform with
-config/credentials.yml.example, keeping your own Rails-generated secret
-key and adding the database details with whatever passwords you want
-to use. For development, just using the default user and password of
-"mylan" should be fine.
+2. If you want to deploy to production, you'll need to set up
+production credentials. Remove config/credentials/production.yml.enc
+and run "rails credentials:edit --environment production". This will
+produce a new credentials file, with newly generated secret key
+base. Copy over the configuration from the development configuration
+(except secret_key_base), and change credentials to something suitable
+for production. You can skip this step if only running in development
+mode.
 
 3. "bundle install; yarn install"
 
@@ -38,7 +41,8 @@ to use. For development, just using the default user and password of
 containers. Mariadb will create a new empty database on first run.
 
 6. Once Docker Compose has started up everything, run "make dbroot"
-and then run the following SQL:
+and then run the following SQL (this sets up according to development
+credentials as shown in step 1).
 
 ```
 CREATE DATABASE ecdata_dev;
@@ -52,7 +56,9 @@ GRANT ALL ON *.* TO mylan@'%';
 connect to the web container and run "rake db:migrate" there,
 connecting to the database in the "db" container.
 
-8. Connect to localhost:3000, where you should see the app main page.
-
-9. Run "./bin/dev" on another terminal to get on-the-fly compilation
+8. Run "./bin/dev" on another terminal to get on-the-fly compilation
 of CSS and Javascript when those change.
+
+9. Connect to localhost:3000, where you should see the app login
+screen. Type in login credentials as shown in step 1, and you should
+see the main overview tab.

@@ -48,11 +48,11 @@ set :passenger_restart_with_touch, true
 
 namespace :deploy do
 
-  desc "Setup master key"
+  desc "Setup production master key"
   task :setup_master_key do
     on roles(:app) do
-      master_key_dir =  File.join(shared_path, "config")
-      master_key_file = File.join(master_key_dir, "master.key")
+      master_key_dir =  File.join(shared_path, "config", "credentials")
+      master_key_file = File.join(master_key_dir, "production.key")
       if test("[ -r #{master_key_file} ]")
         puts "Master key file exists at #{master_key_file}"
       else
@@ -65,7 +65,7 @@ namespace :deploy do
         execute "echo -n '#{key}' > #{master_key_file}"
       end
 
-      execute "ln -sf #{master_key_file} #{release_path}/config/master.key"
+      execute "ln -sf #{master_key_file} #{release_path}/config/credentials/production.key"
 
       within release_path do
         if test :bundle, :exec, :rails, "credentials:show"

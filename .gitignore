@@ -36,3 +36,8 @@
 /node_modules
 
 /.idea
+
+# in this case we *do* commit dev key (see README)
+#/config/credentials/development.key
+
+/config/credentials/production.key
