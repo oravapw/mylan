@@ -33,5 +33,10 @@ module Mylan
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    # time zone from credentials
+    tz = Rails.application.credentials.dig(:time_zone)
+    config.time_zone = tz if tz.present?
+
   end
 end

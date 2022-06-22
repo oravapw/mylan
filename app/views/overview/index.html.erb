@@ -1,3 +1,7 @@
+<h1 class="title is-4 is-spaced">Overview</h1>
+
+<h2 class="subtitle">Pre-registrations</h2>
+
 <p>
   We currently have <b><%= @prereg_count %></b> pre-registered players.
   <% if @prereg_dupes.empty? %>
@@ -7,3 +11,19 @@
   <% end %>
 </p>
 
+<table class="table is-striped is-hoverable mt-4">
+  <thead>
+  <tr>
+    <th>Country</th>
+    <th># of players</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @preregs_by_country.keys.sort.each do |country| %>
+    <tr>
+      <td><%= country %></td>
+      <td class="has-text-right"><%= @preregs_by_country[country] %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

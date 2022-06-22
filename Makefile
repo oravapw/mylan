@@ -43,3 +43,11 @@ dbec:
 # Mysql client connected to root
 dbroot:
 	docker compose exec db mysql -uroot -proot
+
+# Edit/view development secrets
+creddev:
+	./bin/rails credentials:edit --environment development
+
+# Edit/view production secrets
+credprod:
+	./bin/rails credentials:edit --environment production

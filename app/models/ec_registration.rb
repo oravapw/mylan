@@ -47,11 +47,19 @@ class EcRegistration < EcdataRecord
     self.country_meta.meta_value = value.nil? ? nil : value.strip
   end
 
+  def identifier
+    "#{name} / #{vekn} / #{country}"
+  end
+
+  def any_changed?
+    self.changed? || self.vekn_meta&.changed? || self.country_meta&.changed?
+  end
+
   private
 
   before_save do |reg|
     # update updated_at on associated data changes too
-    self.touch if self.vekn_meta&.changed? || self.country_meta&.changed?
+    self.touch if any_changed?
   end
 
   def meta_validations

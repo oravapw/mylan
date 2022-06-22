@@ -74,3 +74,4 @@ group :development do
 end
 
 gem "kaminari"
+gem 'country_select', '~> 6.0'

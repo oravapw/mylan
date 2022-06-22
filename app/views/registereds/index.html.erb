@@ -18,11 +18,11 @@
   <tbody>
   <% @preregs.each do |r| %>
     <tr>
-      <td><%= r.name %></td>
+      <td><%= link_to r.name, edit_registered_path(r, page: params[:page]) %></td>
       <td><%= r.vekn %></td>
       <td><%= r.country %></td>
-      <td><%= r.created_at&.localtime&.strftime("%d.%m.%Y %H:%M:%S") %></td>
-      <td><%= r.updated_at != r.created_at ? r.updated_at&.localtime : '' %></td>
+      <td><%= r.created_at&.strftime("%d.%m.%Y %H:%M:%S") %></td>
+      <td><%= r.updated_at != r.created_at ? r.updated_at&.strftime("%d.%m.%Y %H:%M:%S") : '' %></td>
     </tr>
   <% end %>
   </tbody>
