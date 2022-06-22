@@ -19,7 +19,7 @@ class RegisteredsController < ApplicationController
       @prereg.assign_attributes(prereg_params)
       changed = @prereg.any_changed?
       if @prereg.save
-        Changelog.create(change_type: :edit, player_type: :prereg,
+        Changelog.create(change_type: :edit, player_type: :prereg, row_id: @prereg.id,
                          oldvalues: oldvalues, newvalues: @prereg.changelog_text) if changed
         format.html do
           flash.notice = "Updated #{@prereg.identifier}" if changed
@@ -32,10 +32,11 @@ class RegisteredsController < ApplicationController
   end
 
   def destroy
+    row_id = @prereg.id
     ident = @prereg.identifier
     oldvalues = @prereg.changelog_text
     @prereg.destroy
-    Changelog.create(change_type: :remove, player_type: :prereg, oldvalues: oldvalues)
+    Changelog.create(change_type: :remove, player_type: :prereg, row_id: row_id, oldvalues: oldvalues)
     respond_to do |format|
       format.html { redirect_to registereds_path(page: params[:page]), notice: "Deleted #{ident}" }
     end
