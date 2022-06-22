@@ -51,6 +51,10 @@ class EcRegistration < EcdataRecord
     "#{name} / #{vekn} / #{country}"
   end
 
+  def changelog_text
+    "#{name},#{vekn},#{country}"
+  end
+
   def any_changed?
     self.changed? || self.vekn_meta&.changed? || self.country_meta&.changed?
   end

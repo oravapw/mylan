@@ -1,6 +1,6 @@
 # Helpers for Docker
 
-.PHONY: all build clean imageclean migrate console websh dbsh db dbec dbroot
+.PHONY: all build clean imageclean migrate rollback console websh dbsh db dbec dbroot creddev credprod
 
 all: build
 
@@ -19,6 +19,10 @@ imageclean:
 # Run Rails migrations
 migrate:
 	docker compose exec web bundle exec rake db:migrate
+
+# Run Rails migration rollback
+rollback:
+	docker compose exec web bundle exec rake db:rollback
 
 # Rails console in web container
 console:

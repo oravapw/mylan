@@ -4,6 +4,7 @@ module ApplicationHelper
     [
       { label: "Overview", path: root_path },
       { label: "Pre-registered", path: registereds_path },
+      { label: "Changelog", path: changelogs_path }
     ]
   end
 

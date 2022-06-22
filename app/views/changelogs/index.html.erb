@@ -1,0 +1,28 @@
+<h1 class="title is-4 is-spaced">Changelog</h1>
+
+<p>Manual edits done to player list, in reverse time order. Does not include pre-registered player additions via
+Wordpress EC2022 public pages.</p>
+
+<table class="table is-striped is-hoverable mt-5">
+  <thead>
+  <tr>
+    <th>Timestamp</th>
+    <th>Player type</th>
+    <th>Operation</th>
+    <th>Old values</th>
+    <th>New values</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @logs.each do |log| %>
+    <tr>
+      <td><%= log.created_at&.strftime("%d.%m.%Y %H:%M:%S") %></td>
+      <td><%= log.player_type.capitalize %></td>
+      <td><%= log.change_type.capitalize %></td>
+      <td><%= log.oldvalues %></td>
+      <td><%= log.newvalues %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<%= paginate @logs %>

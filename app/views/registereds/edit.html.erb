@@ -2,8 +2,11 @@
 
 <div class="container">
   <div class="columns">
+
     <div class="column is-narrow">
       <%= form_with model: @prereg, url: registered_path do |f| %>
+
+        <%= hidden_field_tag 'page', @page %>
 
         <% @prereg.errors.each do |error| %>
           <div class="notification is-danger">
@@ -41,8 +44,22 @@
           </div>
         </div>
 
-        <%= hidden_field_tag 'page', @page %>
       <% end %>
+
     </div>
+
+    <div class="column is-narrow mt-auto">
+      <div class="field">
+        <div class="control">
+          <%= button_to "Delete", registered_path(@prereg, page: @page), method: :delete,
+                        class: "button is-danger",
+                        "data-controller": "delete-confirm",
+                        "data-action": "click->delete-confirm#do",
+                        "data-delete-confirm-target": "entry for #{@prereg.name}"
+          %>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
