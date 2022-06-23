@@ -1,32 +1,30 @@
-<h1 class="title is-4 is-spaced">Pre-registered players</h1>
+<div class="container">
+  <div class="columns">
+    <div class="column is-one-third">
 
-<p>These are the current pre-registered players for EC2022.
-  You can edit or remove entries here, in order to add a new registration just use the
-  <%= link_to "EC2022 registration page", "https://vtes.orava.org/ec2022/european-championships/pre-registration/" %>
-  .</p>
+      <h1 class="title is-4">Pre-registered players</h1>
 
-<p>Total players registered: <%= @prereg_count %>.</p>
+      <p>These are the current pre-registered players for EC2022.
+        You can edit or remove entries here, in order to add a new registration just use the
+        <%= link_to "EC2022 registration page", "https://vtes.orava.org/ec2022/european-championships/pre-registration/" %>
+        .</p>
 
-<table class="table is-striped is-hoverable mt-5">
-  <thead>
-  <tr>
-    <th>Name</th>
-    <th>VEKN#</th>
-    <th>Country</th>
-    <th>Registered</th>
-    <th>Updated</th>
-  </tr>
-  </thead>
-  <tbody>
-  <% @preregs.each do |r| %>
-    <tr>
-      <td><%= link_to r.name, edit_registered_path(r, page: params[:page]) %></td>
-      <td><%= r.vekn %></td>
-      <td><%= r.country %></td>
-      <td><%= r.created_at&.strftime("%d.%m.%Y %H:%M:%S") %></td>
-      <td><%= r.updated_at != r.created_at ? r.updated_at&.strftime("%d.%m.%Y %H:%M:%S") : '' %></td>
-    </tr>
-  <% end %>
-  </tbody>
-</table>
-<%= paginate @preregs %>
+      <p class="mt-2">Total players registered: <%= @prereg_count %>.</p>
+
+      <%= form_with(url: registereds_path, method: :get,
+        data: { controller: "search-form", turbo_frame: "ec_registrations" }) do |f| %>
+        <div class="control has-icons-left mt-4">
+          <%= f.text_field :query, placeholder: "Search", autocomplete: "off",
+            class: "input is-link is-rounded", "data-action": "input->search-form#search" %>
+          <span class="icon is-left">
+            <i class="fas fa-search"></i>
+          </span>
+        </div>
+      <% end %>
+
+    </div>
+    <div class="column">
+      <%= render "ec_registrations", preregs: @preregs, query: @query %>
+    </div>
+  </div>
+</div>

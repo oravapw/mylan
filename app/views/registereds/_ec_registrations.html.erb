@@ -1,0 +1,34 @@
+<%= turbo_frame_tag "ec_registrations" do %>
+  <table class="table is-striped is-hoverable">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>VEKN#</th>
+      <th>Country</th>
+      <th>Registered</th>
+      <th>Updated</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% if preregs.empty? %>
+      <tr>
+        <td colspan="5"><em>No results found
+          <% if query.present? %>
+          matching "<%= query %>"
+          <% end %>
+        </em></td>
+      </tr>
+    <% end %>
+    <% preregs.each do |r| %>
+      <tr>
+        <td><%= link_to r.name, edit_registered_path(r, page: params[:page]) %></td>
+        <td><%= r.vekn %></td>
+        <td><%= r.country %></td>
+        <td><%= r.created_at&.strftime("%d.%m.%Y %H:%M:%S") %></td>
+        <td><%= r.updated_at != r.created_at ? r.updated_at&.strftime("%d.%m.%Y %H:%M:%S") : '' %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+  <%= paginate preregs %>
+<% end %>

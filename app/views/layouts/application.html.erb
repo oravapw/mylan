@@ -11,9 +11,9 @@
 </head>
 <body>
 
-<section class="section px-3 py-2">
+<section class="section px-3 py-1">
   <section class="hero is-small has-background-success-dark" style="border-radius: 10px">
-    <div class="hero-body px-2 py-2">
+    <div class="hero-body px-2 pt-2 pb-0">
 
       <figure class="image is-64x64 has-tooltip-arrow has-tooltip-left is-pulled-right"
               data-tooltip="It looks like you are trying to organize a tournament, would you like some help with that?">
@@ -22,7 +22,7 @@
 
       <% if logged_in? %>
         <%= button_to "Logout", logout_path, method: :post,
-                      class: "button is-small is-dark is-rounded is-pulled-right mr-4" %>
+          class: "button is-small is-dark is-rounded is-pulled-right mr-4" %>
       <% end %>
 
       <p class="title has-text-black is-family-monospace is-size-4">
@@ -52,13 +52,13 @@
       <% flash.each do |type, msg| %>
         <%
           flashclass = case type
-                       when "notice"
-                         "is-info"
-                       when "alert"
-                         "is-warning"
-                       else
-                         "is-success"
-                       end
+            when "notice"
+              "is-info"
+            when "alert"
+              "is-warning"
+            else
+              "is-success"
+          end
         %>
         <div class="notification mt-2 <%= flashclass %>">
           <button class="delete" data-controller="remove-alert" data-action="remove-alert#do"></button>
@@ -67,12 +67,15 @@
       <% end %>
     <% end %>
 
-    <div>
+    <div class="container">
       <%= yield %>
     </div>
 
   </div>
 </section>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js"
+        integrity="sha512-6PM0qYu5KExuNcKt5bURAoT6KCThUmHRewN3zUFNaoI6Di7XJPTMoT6K0nsagZKk2OB4L7E3q1uQKHNHd4stIQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
 </html>

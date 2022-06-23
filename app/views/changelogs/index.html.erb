@@ -1,28 +1,41 @@
-<h1 class="title is-4 is-spaced">Changelog</h1>
+<div class="container">
+  <div class="columns">
+    <div class="column is-one-quarter">
 
-<p>Manual edits done to player list, in reverse time order. Does not include pre-registered player additions via
-Wordpress EC2022 public pages.</p>
+      <h1 class="title is-4">Changelog</h1>
 
-<table class="table is-striped is-hoverable mt-5">
-  <thead>
-  <tr>
-    <th>Timestamp</th>
-    <th>Player type</th>
-    <th>Operation</th>
-    <th>Old values</th>
-    <th>New values</th>
-  </tr>
-  </thead>
-  <tbody>
-  <% @logs.each do |log| %>
-    <tr>
-      <td><%= log.created_at&.strftime("%d.%m.%Y %H:%M:%S") %></td>
-      <td><%= log.player_type.capitalize %></td>
-      <td><%= log.change_type.capitalize %></td>
-      <td><%= log.oldvalues %></td>
-      <td><%= log.newvalues %></td>
-    </tr>
-  <% end %>
-  </tbody>
-</table>
-<%= paginate @logs %>
+      <p>Manual edits done to player list, in reverse time order. Does not include pre-registered player additions via
+        Wordpress EC2022 public pages.</p>
+    </div>
+    <div class="column">
+      <table class="table is-striped is-hoverable">
+        <thead>
+        <tr>
+          <th>Timestamp</th>
+          <th>Player type</th>
+          <th>Change</th>
+          <th>Old values</th>
+          <th>New values</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @logs.each do |log| %>
+          <tr>
+            <td style="white-space: nowrap"><%= log.created_at&.strftime("%d.%m.%Y %H:%M:%S") %></td>
+            <td><%= log.player_type.capitalize %></td>
+            <td>
+              <%= log.change_type.capitalize %>
+              <span class="icon">
+                <i class="fas fa-<%= log.change_type_icon %>"></i>
+              </span>
+            </td>
+            <td><%= log.oldvalues %></td>
+            <td><%= log.newvalues %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+      <%= paginate @logs %>
+    </div>
+  </div>
+</div>

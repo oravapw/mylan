@@ -9,3 +9,6 @@ application.register("delete-confirm", DeleteConfirmController)
 
 import RemoveAlertController from "./remove_alert_controller.js"
 application.register("remove-alert", RemoveAlertController)
+
+import SearchFormController from "./search_form_controller.js"
+application.register("search-form", SearchFormController)

@@ -5,8 +5,19 @@ class RegisteredsController < ApplicationController
   before_action :redirect_cancel, only: [:update]
 
   def index
-    @preregs = EcRegistration.includes(:name_meta, :vekn_meta, :country_meta).order(:name).page params[:page]
-    @prereg_count = EcRegistration.count
+    q = EcRegistration.includes(:name_meta, :vekn_meta, :country_meta)
+    @query = params[:query]
+    if @query.present?
+      q = q.where("name LIKE ?", "%#{@query}%")
+    end
+    @preregs = q.order(:name).page params[:page]
+
+    if turbo_frame_request?
+      render partial: "ec_registrations", locals: { preregs: @preregs, query: @query }
+    else
+      @prereg_count = EcRegistration.count
+      render :index
+    end
   end
 
   def edit
