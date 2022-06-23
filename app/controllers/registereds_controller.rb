@@ -5,10 +5,11 @@ class RegisteredsController < ApplicationController
   before_action :redirect_cancel, only: [:update]
 
   def index
-    q = EcRegistration.includes(:name_meta, :vekn_meta, :country_meta)
     @query = params[:query]
+    q = EcRegistration.includes(:name_meta, :vekn_meta, :country_meta)
     if @query.present?
-      q = q.where("name LIKE ?", "%#{@query}%")
+      q = q.joins(:vekn_meta).where("wp_frm_item_metas.meta_value LIKE ?","%#{@query}%")
+           .or(EcRegistration.where("name LIKE ?", "%#{@query}%"))
     end
     @preregs = q.order(:name).page params[:page]
 
