@@ -70,8 +70,8 @@ class EcRegistration < EcdataRecord
     if name.present? && name_meta.meta_value != name
       errors.add :base, "meta name must match name"
     end
-    if vekn.present? && vekn.length != 7
-      errors.add :base, "VEKN number must have 7 numbers"
+    if vekn.present? && vekn !~ /^\d{7}$/
+      errors.add :base, "VEKN number must have exactly 7 numbers"
     end
   end
 
