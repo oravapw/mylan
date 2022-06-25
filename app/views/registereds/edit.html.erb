@@ -1,65 +1,68 @@
-<h1 class="subtitle is-3">Editing pre-registered player <%= @prereg.name %></h1>
+<%= turbo_frame_tag "ec_registrations" do %>
+  <h1 class="subtitle is-3">Editing pre-registered player <%= @prereg.name %></h1>
 
-<div class="container">
-  <div class="columns">
+  <div class="container">
+    <div class="columns">
 
-    <div class="column is-narrow">
-      <%= form_with model: @prereg, url: registered_path do |f| %>
+      <div class="column is-narrow">
+        <%= form_with model: @prereg, url: registered_path do |f| %>
 
-        <%= hidden_field_tag 'page', @page %>
+          <%= hidden_field_tag 'page', @page %>
+          <%= hidden_field_tag 'query', @query %>
 
-        <% @prereg.errors.each do |error| %>
-          <div class="notification is-danger">
-            <%= error.full_message %>
+          <% @prereg.errors.each do |error| %>
+            <div class="notification is-danger">
+              <%= error.full_message %>
+            </div>
+          <% end %>
+
+          <div class="field">
+            <%= f.label :name, class: "label" %>
+            <div class="control">
+              <%= f.text_field :name, class: "input is-primary", placeholder: "Player name (required)" %>
+            </div>
           </div>
+
+          <div class="field">
+            <%= f.label :vekn, class: "label" %>
+            <div class="control">
+              <%= f.text_field :vekn, class: "input is-info", placeholder: "VEKN # (optional)" %>
+            </div>
+          </div>
+
+          <div class="field">
+            <%= f.label :country, class: "label" %>
+            <div class="select">
+              <%= f.select :country, prereg_countries, { include_blank: true }, class: "input is-info" %>
+            </div>
+          </div>
+
+          <div class="field is-grouped">
+            <div class="control">
+              <%= f.button "Save", type: "submit", class: "button is-link" %>
+            </div>
+            <div class="control">
+              <%= f.button "Cancel", type: "submit", name: "cancel", value: true, class: "button is-link is-light" %>
+            </div>
+          </div>
+
         <% end %>
 
+      </div>
+
+      <div class="column is-narrow mt-auto">
         <div class="field">
-          <%= f.label :name, class: "label" %>
           <div class="control">
-            <%= f.text_field :name, class: "input is-primary", placeholder: "Player name (required)" %>
+            <%= button_to "Delete", registered_path(@prereg, page: @page, query: @query), method: :delete,
+              class: "button is-danger",
+              "data-controller": "delete-confirm",
+              "data-action": "click->delete-confirm#do",
+              "data-delete-confirm-target": "entry for #{@prereg.name}"
+            %>
           </div>
-        </div>
-
-        <div class="field">
-          <%= f.label :vekn, class: "label" %>
-          <div class="control">
-            <%= f.text_field :vekn, class: "input is-info", placeholder: "VEKN # (optional)" %>
-          </div>
-        </div>
-
-        <div class="field">
-          <%= f.label :country, class: "label" %>
-          <div class="select">
-            <%= f.select :country, prereg_countries, { include_blank: true }, class: "input is-info" %>
-          </div>
-        </div>
-
-        <div class="field is-grouped">
-          <div class="control">
-            <%= f.button "Save", type: "submit", class: "button is-link" %>
-          </div>
-          <div class="control">
-            <%= f.button "Cancel", type: "submit", name: "cancel", value: true, class: "button is-link is-light" %>
-          </div>
-        </div>
-
-      <% end %>
-
-    </div>
-
-    <div class="column is-narrow mt-auto">
-      <div class="field">
-        <div class="control">
-          <%= button_to "Delete", registered_path(@prereg, page: @page), method: :delete,
-                        class: "button is-danger",
-                        "data-controller": "delete-confirm",
-                        "data-action": "click->delete-confirm#do",
-                        "data-delete-confirm-target": "entry for #{@prereg.name}"
-          %>
         </div>
       </div>
-    </div>
 
+    </div>
   </div>
-</div>
+<% end %>

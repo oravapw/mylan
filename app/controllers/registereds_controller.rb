@@ -8,7 +8,7 @@ class RegisteredsController < ApplicationController
     @query = params[:query]
     q = EcRegistration.includes(:name_meta, :vekn_meta, :country_meta)
     if @query.present?
-      q = q.joins(:vekn_meta).where("wp_frm_item_metas.meta_value LIKE ?","%#{@query}%")
+      q = q.joins(:vekn_meta).where("wp_frm_item_metas.meta_value LIKE ?", "%#{@query}%")
            .or(EcRegistration.where("name LIKE ?", "%#{@query}%"))
     end
     @preregs = q.order(:name).page params[:page]
@@ -22,7 +22,8 @@ class RegisteredsController < ApplicationController
   end
 
   def edit
-    @page = params[:page] # remember page we came from, if any, store in hidden field
+    @page = params[:page]
+    @query = params[:query]
   end
 
   def update
@@ -32,10 +33,9 @@ class RegisteredsController < ApplicationController
       changed = @prereg.any_changed?
       if @prereg.save
         Changelog.create(change_type: :edit, player_type: :prereg, row_id: @prereg.id,
-                         oldvalues: oldvalues, newvalues: @prereg.changelog_text) if changed
+          oldvalues: oldvalues, newvalues: @prereg.changelog_text) if changed
         format.html do
-          flash.notice = "Updated #{@prereg.identifier}" if changed
-          redirect_to registereds_path(page: params[:page])
+          redirect_to registereds_path(page: params[:page], query: params[:query])
         end
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -50,7 +50,7 @@ class RegisteredsController < ApplicationController
     @prereg.destroy
     Changelog.create(change_type: :remove, player_type: :prereg, row_id: row_id, oldvalues: oldvalues)
     respond_to do |format|
-      format.html { redirect_to registereds_path(page: params[:page]), notice: "Deleted #{ident}" }
+      format.html { redirect_to registereds_path(page: params[:page], query: params[:query]) }
     end
   end
 
@@ -65,7 +65,7 @@ class RegisteredsController < ApplicationController
   end
 
   def redirect_cancel
-    redirect_to registereds_path if params[:cancel]
+    redirect_to registereds_path(page: params[:page], query: params[:query]) if params[:cancel]
   end
 
 end

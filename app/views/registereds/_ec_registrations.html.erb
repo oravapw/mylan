@@ -20,7 +20,7 @@
       <tbody>
       <% preregs.each do |r| %>
         <tr>
-          <td><%= link_to r.name, edit_registered_path(r, page: params[:page]) %></td>
+          <td><%= link_to r.name, edit_registered_path(r, page: params[:page], query: params[:query]) %></td>
           <td><%= r.vekn %></td>
           <td><%= r.country %></td>
           <td><%= r.created_at&.strftime("%d.%m.%Y %H:%M:%S") %></td>

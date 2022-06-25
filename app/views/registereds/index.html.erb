@@ -14,8 +14,9 @@
       <%= form_with(url: registereds_path, method: :get,
         data: { controller: "search-form", turbo_frame: "ec_registrations" }) do |f| %>
         <div class="control has-icons-left mt-4">
-          <%= f.text_field :query, placeholder: "Search names and VEKN numbers", autocomplete: "off",
-            class: "input is-link is-rounded", "data-action": "input->search-form#search" %>
+          <%= f.search_field :query, placeholder: "Search names and VEKN numbers", autocomplete: "off",
+            class: "input is-link is-rounded",
+            "data-action": "click->search-form#clear input->search-form#search" %>
           <span class="icon is-left">
             <i class="fas fa-search"></i>
           </span>

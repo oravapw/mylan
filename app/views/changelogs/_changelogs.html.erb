@@ -1,0 +1,30 @@
+<%= turbo_frame_tag "changelogs" do %>
+  <table class="table is-striped is-hoverable">
+    <thead>
+    <tr>
+      <th>Timestamp</th>
+      <th>Player type</th>
+      <th>Change</th>
+      <th>Old values</th>
+      <th>New values</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @logs.each do |log| %>
+      <tr>
+        <td style="white-space: nowrap"><%= log.created_at&.strftime("%d.%m.%Y %H:%M:%S") %></td>
+        <td><%= log.player_type.capitalize %></td>
+        <td>
+          <%= log.change_type.capitalize %>
+          <span class="icon">
+                <i class="fas fa-<%= log.change_type_icon %>"></i>
+              </span>
+        </td>
+        <td><%= log.oldvalues %></td>
+        <td><%= log.newvalues %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+  <%= paginate @logs %>
+<% end %>
