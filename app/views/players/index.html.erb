@@ -19,11 +19,11 @@
         </div>
       <% end %>
 
-      <%= form_with(url: new_player_path, method: :get, data: { turbo_frame: "players" }) do |f| %>
-        <div class="control mt-4">
-          <%= f.button "Add new player", type: "submit", class: "button is-primary" %>
-        </div>
-      <% end %>
+      <div class="control mt-4">
+        <%= button_to "Add new player", new_player_path, method: :get,
+          form: { data: { turbo_frame: "players" } },
+          class: "button is-primary" %>
+      </div>
 
     </div>
     <div class="column">

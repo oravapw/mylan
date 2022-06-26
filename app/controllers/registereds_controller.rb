@@ -1,3 +1,5 @@
+require "csv"
+
 class RegisteredsController < ApplicationController
 
   before_action :check_authorized
@@ -7,16 +9,34 @@ class RegisteredsController < ApplicationController
   def index
     @query = params[:query]
     q = EcRegistration.includes(:name_meta, :vekn_meta, :country_meta)
-    if @query.present?
-      q = q.joins(:vekn_meta).where("wp_frm_item_metas.meta_value LIKE ?", "%#{@query}%")
-           .or(EcRegistration.where("name LIKE ?", "%#{@query}%"))
-    end
-    @preregs = q.order(:name).page params[:page]
 
-    if turbo_frame_request?
-      render partial: "ec_registrations", locals: { preregs: @preregs, query: @query }
-    else
-      @prereg_count = EcRegistration.count
+    respond_to do |format|
+
+      format.html do
+        if @query.present?
+          q = q.joins(:vekn_meta).where("wp_frm_item_metas.meta_value LIKE ?", "%#{@query}%")
+               .or(EcRegistration.where("name LIKE ?", "%#{@query}%"))
+        end
+        @preregs = q.order(:name).page params[:page]
+
+        if turbo_frame_request?
+          render partial: "ec_registrations", locals: { preregs: @preregs, query: @query }
+        else
+          @prereg_count = EcRegistration.count
+        end
+      end
+
+      format.csv do
+        csv_string = CSV.generate do |csv|
+          csv << %w[Name VEKN Country]
+          q.order(:name).each do |r|
+            csv << [r.name, r.vekn, r.country]
+          end
+        end
+        filename = Time.now.strftime("preregistered-%Y-%m-%d.csv")
+        send_data csv_string, filename: filename, type: "text/csv"
+      end
+
     end
   end
 

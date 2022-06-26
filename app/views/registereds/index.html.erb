@@ -25,6 +25,11 @@
         </div>
       <% end %>
 
+      <div class="control mt-4">
+        <%= button_to "Save as CSV", registereds_path + ".csv", method: :get,
+          class: "button is-info", "data-turbo": false %>
+      </div>
+
     </div>
     <div class="column">
       <%= render "ec_registrations", preregs: @preregs, query: @query %>
