@@ -1,0 +1,34 @@
+<%= turbo_frame_tag "players" do %>
+  <% if players.empty? %>
+    <p class="subtitle is-5">
+      No players found
+      <% if query.present? %>
+        matching "<%= query %>"
+      <% end %>
+    </p>
+  <% else %>
+    <table class="table is-striped is-hoverable">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>VEKN#</th>
+        <th>Country</th>
+        <th>Registered</th>
+        <th>Updated</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% players.each do |p| %>
+        <tr>
+          <td><%= link_to p.name, edit_player_path(p, page: params[:page], query: params[:query]) %></td>
+          <td><%= p.vekn %></td>
+          <td><%= p.country_name %></td>
+          <td><%= p.created_at&.strftime("%d.%m.%Y %H:%M:%S") %></td>
+          <td><%= p.updated_at != p.created_at ? p.updated_at&.strftime("%d.%m.%Y %H:%M:%S") : '' %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <%= paginate players %>
+  <% end %>
+<% end %>

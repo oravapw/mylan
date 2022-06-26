@@ -17,7 +17,6 @@ class RegisteredsController < ApplicationController
       render partial: "ec_registrations", locals: { preregs: @preregs, query: @query }
     else
       @prereg_count = EcRegistration.count
-      render :index
     end
   end
 
@@ -28,18 +27,14 @@ class RegisteredsController < ApplicationController
 
   def update
     oldvalues = @prereg.changelog_text
-    respond_to do |format|
-      @prereg.assign_attributes(prereg_params)
-      changed = @prereg.any_changed?
-      if @prereg.save
-        Changelog.create(change_type: :edit, player_type: :prereg, row_id: @prereg.id,
-          oldvalues: oldvalues, newvalues: @prereg.changelog_text) if changed
-        format.html do
-          redirect_to registereds_path(page: params[:page], query: params[:query])
-        end
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-      end
+    @prereg.assign_attributes(prereg_params)
+    changed = @prereg.changelog_text != oldvalues
+    if @prereg.save
+      Changelog.create(change_type: :edit, player_type: :prereg, row_id: @prereg.id,
+        oldvalues: oldvalues, newvalues: @prereg.changelog_text) if changed
+      redirect_to registereds_path(page: params[:page], query: params[:query])
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -49,9 +44,7 @@ class RegisteredsController < ApplicationController
     oldvalues = @prereg.changelog_text
     @prereg.destroy
     Changelog.create(change_type: :remove, player_type: :prereg, row_id: row_id, oldvalues: oldvalues)
-    respond_to do |format|
-      format.html { redirect_to registereds_path(page: params[:page], query: params[:query]) }
-    end
+    redirect_to registereds_path, alert: "Deleted #{ident}"
   end
 
   private

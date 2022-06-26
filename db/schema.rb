@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_22_162230) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_26_074226) do
   create_table "changelogs", charset: "utf8mb4", force: :cascade do |t|
     t.integer "change_type", null: false
     t.integer "player_type", null: false
@@ -19,6 +19,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_22_162230) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "row_id"
+  end
+
+  create_table "players", charset: "utf8mb4", force: :cascade do |t|
+    t.string "name", limit: 40, null: false
+    t.string "vekn", limit: 7
+    t.string "country", limit: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["vekn"], name: "index_players_on_vekn", unique: true
   end
 
 end

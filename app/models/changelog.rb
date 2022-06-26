@@ -16,4 +16,11 @@ class Changelog < ApplicationRecord
     end
   end
 
+  def player_type_display
+    normal? ? "Other" : "Prereg"
+  end
+
+  def player_type_class
+    normal? ? "has-text-success" : "has-text-link"
+  end
 end

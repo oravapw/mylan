@@ -5,8 +5,8 @@ Rails.application.routes.draw do
   post "logout", to: "login#logout"
 
   resources :registereds, only: [:index, :edit, :update, :destroy]
+  resources :players, except: [:show]
   resources :changelogs, only: [:index]
 
-  # Defines the root path route ("/")
   root "overview#index"
 end

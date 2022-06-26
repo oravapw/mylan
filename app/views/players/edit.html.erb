@@ -1,0 +1,27 @@
+<%= turbo_frame_tag "players" do %>
+  <h1 class="subtitle is-3">Editing player <%= @player.name %></h1>
+
+  <div class="container">
+    <div class="columns">
+
+      <div class="column is-narrow">
+        <%= render "form", player: @player, page: @page, query: @query %>
+      </div>
+
+      <div class="column is-narrow mt-auto">
+        <div class="field">
+          <div class="control">
+            <%= button_to "Delete", @player, method: :delete,
+              class: "button is-danger",
+              "data-turbo": false,
+              "data-controller": "delete-confirm",
+              "data-action": "click->delete-confirm#do",
+              "data-delete-confirm-target": "entry for #{@player.name}"
+            %>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+<% end %>

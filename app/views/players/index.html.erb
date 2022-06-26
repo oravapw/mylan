@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="columns">
+    <div class="column is-one-third">
+
+      <h1 class="title is-4">Other Players</h1>
+
+      <p>These are players for EC2022 who have not pre-registered. This list is not visible publicly.
+        Note that a player should be registered either here or in the pre-registered list, not both!</p>
+
+      <%= form_with(url: players_path, method: :get,
+        data: { controller: "search-form", turbo_frame: "players" }) do |f| %>
+        <div class="control has-icons-left mt-4">
+          <%= f.search_field :query, placeholder: "Search names and VEKN numbers", autocomplete: "off",
+            class: "input is-link is-rounded",
+            "data-action": "click->search-form#clear input->search-form#search" %>
+          <span class="icon is-left">
+            <i class="fas fa-search"></i>
+          </span>
+        </div>
+      <% end %>
+
+      <%= form_with(url: new_player_path, method: :get, data: { turbo_frame: "players" }) do |f| %>
+        <div class="control mt-4">
+          <%= f.button "Add new player", type: "submit", class: "button is-primary" %>
+        </div>
+      <% end %>
+
+    </div>
+    <div class="column">
+      <%= render "players", players: @players, query: @query %>
+    </div>
+  </div>
+</div>

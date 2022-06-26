@@ -53,8 +53,9 @@
       <div class="column is-narrow mt-auto">
         <div class="field">
           <div class="control">
-            <%= button_to "Delete", registered_path(@prereg, page: @page, query: @query), method: :delete,
+            <%= button_to "Delete", registered_path(@prereg), method: :delete,
               class: "button is-danger",
+              "data-turbo": false,
               "data-controller": "delete-confirm",
               "data-action": "click->delete-confirm#do",
               "data-delete-confirm-target": "entry for #{@prereg.name}"
