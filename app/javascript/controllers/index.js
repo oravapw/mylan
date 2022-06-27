@@ -12,3 +12,6 @@ application.register("remove-alert", RemoveAlertController)
 
 import SearchFormController from "./search_form_controller.js"
 application.register("search-form", SearchFormController)
+
+import TimedRemoveController from "./timed_remove_controller.js"
+application.register("timed-remove", TimedRemoveController)
