@@ -1,0 +1,14 @@
+<%= turbo_stream.update "clear_trigger" do %>
+  <template data-search-form-target="trigger"></template>
+<% end %>
+
+<%= turbo_stream.update "crud_notify" do %>
+  <div class="notification my-1 px-2 py-2 is-success" data-controller="remove-alert" data-remove-alert-target="removal">
+    <button class="delete" data-action="remove-alert#remove"></button>
+    Added <%= @player.identifier %>
+  </div>
+<% end %>
+
+<%= turbo_stream.update "players" do %>
+  <%= render partial: "players", locals: { players: @players, page: @page, query: @query } %>
+<% end %>

@@ -1,6 +1,6 @@
 <div class="container">
   <div class="columns">
-    <div class="column is-one-third">
+    <div class="column is-one-third" data-controller="search-form">
 
       <h1 class="title is-4">Other Players</h1>
 
@@ -8,11 +8,12 @@
         Note that a player should be registered either here or in the pre-registered list, not both!</p>
 
       <%= form_with(url: players_path, method: :get,
-        data: { controller: "search-form", turbo_frame: "players" }) do |f| %>
+                    data: { turbo_frame: "players", search_form_target: "form" }) do |f| %>
         <div class="control has-icons-left mt-4">
           <%= f.search_field :query, placeholder: "Search names and VEKN numbers", autocomplete: "off",
-            class: "input is-link is-rounded",
-            "data-action": "click->search-form#clear input->search-form#search" %>
+                             class: "input is-link is-rounded",
+                             "data-action": "click->search-form#clear input->search-form#search"
+          %>
           <span class="icon is-left">
             <i class="fas fa-search"></i>
           </span>
@@ -21,13 +22,18 @@
 
       <div class="control mt-4">
         <%= button_to "Add new player", new_player_path, method: :get,
-          form: { data: { turbo_frame: "players" } },
-          class: "button is-primary" %>
+                      form: { data: { turbo_frame: "players" } },
+                      class: "button is-primary"
+            #"data-action": "click->search-form#clearinput"
+        %>
       </div>
+
+      <template id="clear_trigger"></template>
+      <div id="crud_notify" class="mt-4"></div>
 
     </div>
     <div class="column">
-      <%= render "players", players: @players, query: @query %>
+      <%= render "players", players: @players, query: @query, page: @page %>
     </div>
   </div>
 </div>

@@ -22,7 +22,7 @@
 
       <% if logged_in? %>
         <%= button_to "Logout", logout_path, method: :post,
-          class: "button is-small is-dark is-rounded is-pulled-right mr-4" %>
+                      class: "button is-small is-dark is-rounded is-pulled-right mr-4" %>
       <% end %>
 
       <p class="title has-text-black is-family-monospace is-size-4">
@@ -49,22 +49,25 @@
     <% end %>
 
     <% if flash.any? %>
-      <% flash.each do |type, msg| %>
-        <%
-          flashclass = case type
-            when "notice"
-              "is-info"
-            when "alert"
-              "is-warning"
-            else
-              "is-success"
-          end
-        %>
-        <div class="notification mt-2 <%= flashclass %>">
-          <button class="delete" data-controller="remove-alert" data-action="remove-alert#do"></button>
-          <%= msg %>
-        </div>
-      <% end %>
+      <div class="container">
+        <% flash.each do |type, msg| %>
+          <%
+            flashclass = case type
+                         when "notice"
+                           "is-info"
+                         when "alert"
+                           "is-warning"
+                         else
+                           "is-success"
+                         end
+          %>
+          <div class="notification my-1 <%= flashclass %>"
+               data-controller="remove-alert" data-remove-alert-target="removal">
+            <button class="delete" data-action="remove-alert#remove"></button>
+            <%= msg %>
+          </div>
+        <% end %>
+      </div>
     <% end %>
 
     <div class="container">

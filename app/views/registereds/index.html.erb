@@ -1,6 +1,6 @@
 <div class="container">
   <div class="columns">
-    <div class="column is-one-third">
+    <div class="column is-one-third" data-controller="search-form">
 
       <h1 class="title is-4">Pre-registered players</h1>
 
@@ -14,11 +14,11 @@
       <p class="mt-2">Total players registered: <%= @prereg_count %>.</p>
 
       <%= form_with(url: registereds_path, method: :get,
-        data: { controller: "search-form", turbo_frame: "ec_registrations" }) do |f| %>
+                    data: { turbo_frame: "ec_registrations", search_form_target: "form" }) do |f| %>
         <div class="control has-icons-left mt-4">
           <%= f.search_field :query, placeholder: "Search names and VEKN numbers", autocomplete: "off",
-            class: "input is-link is-rounded",
-            "data-action": "click->search-form#clear input->search-form#search" %>
+                             class: "input is-link is-rounded",
+                             "data-action": "click->search-form#clear input->search-form#search" %>
           <span class="icon is-left">
             <i class="fas fa-search"></i>
           </span>
@@ -27,7 +27,7 @@
 
       <div class="control mt-4">
         <%= button_to "Save as CSV", registereds_path + ".csv", method: :get,
-          class: "button is-info", "data-turbo": false %>
+                      class: "button is-info", "data-turbo": false %>
       </div>
 
     </div>

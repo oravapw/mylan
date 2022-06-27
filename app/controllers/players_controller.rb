@@ -1,18 +1,12 @@
 class PlayersController < ApplicationController
+  before_action :store_page_and_query
   before_action :load_player, only: [:edit, :update, :destroy]
   before_action :redirect_cancel, only: [:create, :update]
 
   def index
-    @query = params[:query]
-    if @query.present?
-      @players = Player.where("name LIKE ?", "%#{@query}%").or(Player.where("vekn LIKE ?", "%#{@query}%"))
-                       .order(:name).page params[:page]
-    else
-      @players = Player.order(:name).page params[:page]
-    end
-
+    load_paged_players
     if turbo_frame_request?
-      render partial: "players", locals: { players: @players, query: @query }
+      render partial: "players", locals: { players: @players, query: @query, page: @page }
     end
   end
 
@@ -21,8 +15,6 @@ class PlayersController < ApplicationController
   end
 
   def edit
-    @page = params[:page]
-    @query = params[:query]
   end
 
   def create
@@ -30,8 +22,11 @@ class PlayersController < ApplicationController
     check_vekn_vs_registred(@player)
     if @player.save
       Changelog.create(change_type: :add, player_type: :normal, row_id: @player.id,
-        oldvalues: nil, newvalues: @player.changelog_text)
-      redirect_to players_path
+                       oldvalues: nil, newvalues: @player.changelog_text)
+      respond_to do |format|
+        format.html { redirect_to players_path }
+        format.turbo_stream { load_paged_players }
+      end
     else
       render :new, status: :unprocessable_entity
     end
@@ -44,7 +39,7 @@ class PlayersController < ApplicationController
     changed = @player.changelog_text != oldvalues
     if @player.save
       Changelog.create(change_type: :edit, player_type: :normal, row_id: @player.id,
-        oldvalues: oldvalues, newvalues: @player.changelog_text) if changed
+                       oldvalues: oldvalues, newvalues: @player.changelog_text) if changed
       redirect_to players_path(page: params[:page], query: params[:query])
     else
       render :edit, status: :unprocessable_entity
@@ -53,11 +48,14 @@ class PlayersController < ApplicationController
 
   def destroy
     row_id = @player.id
-    ident = @player.identifier
+    @ident = @player.identifier
     oldvalues = @player.changelog_text
     @player.destroy
     Changelog.create(change_type: :remove, player_type: :normal, row_id: row_id, oldvalues: oldvalues)
-    redirect_to players_path, alert: "Deleted #{ident}"
+    respond_to do |format|
+      format.html { redirect_to players_path }
+      format.turbo_stream { load_paged_players }
+    end
   end
 
   private
@@ -72,6 +70,22 @@ class PlayersController < ApplicationController
 
   def redirect_cancel
     redirect_to players_path(page: params[:page], query: params[:query]) if params[:cancel]
+  end
+
+  def store_page_and_query
+    @query = params[:query]
+    @page = params[:page]
+    logger.debug "setting page=#{@page}, query=#{@query}"
+  end
+
+  def load_paged_players
+    pg = params[:page] || @page
+    if @query.present?
+      @players = Player.where("name LIKE ?", "%#{@query}%").or(Player.where("vekn LIKE ?", "%#{@query}%"))
+                       .order(:name).page pg
+    else
+      @players = Player.order(:name).page pg
+    end
   end
 
   def check_vekn_vs_registred(player)
