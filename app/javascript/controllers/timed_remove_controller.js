@@ -12,12 +12,12 @@ export default class extends Controller {
     if (this.hasRemoveTarget) {
       this.removeTargets.forEach((target) => {
         setTimeout(() => {
-          target.remove()
+          target?.remove()
         }, this.timeoutValue)
       })
     } else {
       setTimeout(() => {
-        this.element.remove()
+        this.element?.remove()
       }, this.timeoutValue)
     }
   }
