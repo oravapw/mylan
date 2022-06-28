@@ -20,6 +20,7 @@
         nodate << t
       end
     end
+    future = future.sort_by(&:date) if future.present? # sort these in asc date order
   %>
   <table class="table is-hoverable is-fullwidth mt-4">
     <%= render("grouped_tournaments", tournaments: today, title: "Today", color: "danger-dark") if today.present? %>
