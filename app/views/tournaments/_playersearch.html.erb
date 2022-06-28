@@ -1,0 +1,30 @@
+<%= turbo_frame_tag "players" do %>
+  <div class="columns">
+    <div class="column">
+      <%= form_with(url: search_players_tournament_path(tournament), method: :post,
+                    data: { turbo_frame: "searchresults", controller: "search-form", search_form_target: "form" }) do |f| %>
+        <div class="control has-icons-left">
+          <%= f.search_field :query, placeholder: "Search for players to add", autocomplete: "off",
+                             class: "input is-link is-rounded",
+                             "data-action": "input->search-form#search"
+          %>
+          <span class="icon is-left">
+            <i class="fas fa-search"></i>
+          </span>
+        </div>
+      <% end %>
+    </div>
+    <div class="column is-narrow">
+      <div class="control">
+        <%= button_to "Done", show_players_tournament_path(tournament), class: "button is-link mr-2" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <%= turbo_frame_tag "searchresults" do %>
+    <% end %>
+  </div>
+
+  <template data-controller="grab-focus" data-grab-focus-selector-value="#query"></template>
+<% end %>

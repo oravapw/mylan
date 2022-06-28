@@ -7,6 +7,12 @@ import { application } from "./application"
 import DeleteConfirmController from "./delete_confirm_controller.js"
 application.register("delete-confirm", DeleteConfirmController)
 
+import DisableController from "./disable_controller.js"
+application.register("disable", DisableController)
+
+import FormController from "./form_controller.js"
+application.register("form", FormController)
+
 import GrabFocusController from "./grab_focus_controller.js"
 application.register("grab-focus", GrabFocusController)
 

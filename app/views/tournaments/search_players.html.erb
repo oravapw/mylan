@@ -1,0 +1,46 @@
+<%= turbo_frame_tag "searchresults" do %>
+  <div class="columns">
+    <div class="column">
+      <% unless @results.nil? %>
+        <% if @results.empty? %>
+
+          <p>No matching players found</p>
+
+        <% else %>
+          <table class="table is-striped is-hoverable">
+            <% @results.each do |result| %>
+              <tr class="has-background-<%= result.prereg ? "link-light" : "success-light" %>">
+                <td><%= result.name %></td>
+                <td><%= result.vekn %></td>
+                <td>
+                  <% unless result.added %>
+                    <% player = TournamentPlayer.new(name: result.name, vekn: result.vekn,
+                                                     prereg: result.prereg, player_id: result.player_id) %>
+                    <%= form_with(model: player, url: tournament_tournament_players_path(@tournament),
+                                  data: { controller: "form", form_target: "form" }) do |f| %>
+                      <%= f.hidden_field :name %>
+                      <%= f.hidden_field :vekn %>
+                      <%= f.hidden_field :prereg %>
+                      <%= f.hidden_field :player_id %>
+                      <div class="control">
+                        <%= f.button type: "submit", class: "button is-primary has-text-black is-small",
+                                     data: { action: "click->form#submitAndRemove" } do %>
+                      <span class="icon">
+                        <i class="fas fa-plus"></i>
+                      </span>
+                        <% end %>
+                      </div>
+                    <% end %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </table>
+
+        <% end %>
+      <% end %>
+    </div>
+    <div class="column is-narrow" id="crud_notify">
+    </div>
+  </div>
+<% end %>

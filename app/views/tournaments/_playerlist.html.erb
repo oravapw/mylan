@@ -1,0 +1,61 @@
+<%= turbo_frame_tag "players" do %>
+  <div class="columns">
+    <div class="column">
+      <h2 class="title is-4"><%=
+        tournament.player_count == 0 ? "No players yet" : pluralize(tournament.player_count, "player")
+      %></h2>
+    </div>
+    <div class="column is-narrow">
+      <div class="control">
+        <%= button_to "Add players", show_search_tournament_path(tournament), class: "button is-primary mr-2" %>
+      </div>
+    </div>
+  </div>
+
+  <% if tournament.player_count > 0 %>
+    <table class="table is-striped is-hoverable is-narrow mt-4">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>VEKN#</th>
+        <% if tournament.decklists %>
+          <th>Decklist</th>
+        <% end %>
+        <th>Prereg</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% tournament.tournament_players.sort_by(&:name).each do |p| %>
+        <tr>
+          <td><%= p.name %></td>
+          <td><%= p.vekn %></td>
+          <% if tournament.decklists %>
+            <td>
+              <%= form_with(model: p, url: toggle_decklist_tournament_player_path(p),
+                            data: {controller: "form", form_target: "form"}) do |f| %>
+                <%= f.check_box :decklist, "data-action": "click->form#submit" %>
+              <% end %>
+            </td>
+          <% end %>
+          <td><%= p.prereg ? "yes" : "" %></td>
+          <td>
+            <%= form_with(url: tournament_player_path(p), method: :delete) do |f| %>
+              <div class="control">
+                <%= f.button type: "submit", class: "button is-warning has-text-black is-small",
+                             "data-controller": "delete-confirm",
+                             "data-action": "click->delete-confirm#do",
+                             "data-delete-confirm-action-value": "remove #{p.name} from the tournament" do %>
+                      <span class="icon">
+                        <i class="fas fa-minus"></i>
+                      </span>
+                <% end %>
+              </div>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  <% end %>
+<% end %>

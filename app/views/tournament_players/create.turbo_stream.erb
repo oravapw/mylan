@@ -1,0 +1,6 @@
+<%= turbo_stream.prepend "crud_notify" do %>
+  <div class="notification my-1 px-2 py-2 is-success" data-controller="timed-remove"
+       data-timed-remove-timeout-value="10000" data-timed-remove-target="remove">
+    Added <%= @player.name %>
+  </div>
+<% end %>

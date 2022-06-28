@@ -8,7 +8,17 @@ Rails.application.routes.draw do
   resources :players, except: [:show]
   resources :changelogs, only: [:index]
   resources :tournaments do
-    resources :tournament_players, shallow: true
+    resources :tournament_players, only: [:new, :create]
+    member do
+      post :search_players
+      post :show_players
+      post :show_search
+    end
+  end
+  resources :tournament_players, only: [:destroy] do
+    member do
+      patch :toggle_decklist
+    end
   end
 
   root "overview#index"

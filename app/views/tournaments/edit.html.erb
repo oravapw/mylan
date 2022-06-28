@@ -18,7 +18,7 @@
                         disabled: @tournament.player_count > 0,
                         "data-controller": "delete-confirm",
                         "data-action": "click->delete-confirm#do",
-                        "data-delete-confirm-target": "tournament #{@tournament.name}"
+                        "data-delete-confirm-action-value": "delete tournament #{@tournament.name}"
           %>
         </div>
       </div>

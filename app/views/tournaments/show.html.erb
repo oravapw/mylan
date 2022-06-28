@@ -45,24 +45,18 @@
         </article>
       <% end %>
 
-      <div class="columns">
-        <div class="column is-half">
-          <div class="control">
-            <%= button_to "Back", tournaments_path, method: :get, class: "button is-link is-light" %>
-          </div>
+      <div class="field is-grouped">
+        <div class="control">
+          <%= button_to "Back", tournaments_path, method: :get, class: "button is-link is-light" %>
         </div>
-        <div class="column has-text-right">
-          <div class="control">
-            <%= button_to "Edit", edit_tournament_path(@tournament), method: :get, class: "button is-link" %>
-          </div>
+        <div class="control">
+          <%= button_to "Edit", edit_tournament_path(@tournament), method: :get, class: "button is-link" %>
         </div>
       </div>
 
     </div>
     <div class="column pl-5">
-      <h2 class="title is-4"><%= @tournament.player_count %> players</h2>
-
-      <p>Adding players to tournament has not been implemented yet, but working on it :)</p>
+      <%= render "playerlist", tournament: @tournament %>
     </div>
   </div>
 </div>

@@ -12,6 +12,11 @@
         <% else %>
           Detected the following duplicate names: <%= @prereg_dupes.join(", ") %>.
         <% end %>
+        <% if @no_vekn_count > 0 %>
+          <%= @no_vekn_count %> players are missing VEKN number.
+        <% else %>
+          All players have VEKN numbers.
+        <% end %>
       </p>
     </div>
     <div class="column">
