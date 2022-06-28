@@ -1,0 +1,2 @@
+class TournamentPlayersController < ApplicationController
+end

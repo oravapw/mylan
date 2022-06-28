@@ -1,0 +1,30 @@
+<% if tournaments.empty? %>
+  <p class="subtitle is-5">
+    No tournaments registered
+  </p>
+<% else %>
+  <%
+    today = []
+    future = []
+    past = []
+    nodate = []
+    tournaments.each do |t|
+      d = t.date
+      if t.past?
+        past << t
+      elsif t.future?
+        future << t
+      elsif t.today?
+        today << t
+      else
+        nodate << t
+      end
+    end
+  %>
+  <table class="table is-hoverable is-fullwidth mt-4">
+    <%= render("grouped_tournaments", tournaments: today, title: "Today", color: "danger-dark") if today.present? %>
+    <%= render("grouped_tournaments", tournaments: future, title: "Upcoming", color: "success") if future.present? %>
+    <%= render("grouped_tournaments", tournaments: nodate, title: "Date unknown", color: "warning-dark") if nodate.present? %>
+    <%= render("grouped_tournaments", tournaments: past, title: "Past", color: "link") if past.present? %>
+  </table>
+<% end %>

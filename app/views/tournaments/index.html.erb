@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="columns">
+    <div class="column is-one-third">
+
+      <h1 class="title is-4">Tournaments</h1>
+
+      <p>This list is not visible publicly. Feel free to test and play around before Ropecon, this
+      list will be cleared before EC starts.</p>
+
+      <div class="control mt-4">
+        <%= button_to "Add new tournament", new_tournament_path, method: :get,
+                      form: { data: { turbo_frame: "tournaments" } },
+                      class: "button is-primary"
+        %>
+      </div>
+
+    </div>
+    <div class="column">
+      <%= render "tournaments", tournaments: @tournaments %>
+    </div>
+  </div>
+</div>

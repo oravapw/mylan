@@ -1,0 +1,29 @@
+<h1 class="subtitle is-4">Editing "<%= @tournament.name %>"</h1>
+
+<div class="container">
+  <div class="columns">
+
+    <div class="column">
+      <%= render "form", tournament: @tournament %>
+    </div>
+
+    <div class="column is-narrow mt-auto">
+      <% if @tournament.player_count > 0 %>
+        <p>You cannot delete a tournament which has players.</p>
+      <% end %>
+      <div class="field">
+        <div class="control">
+          <%= button_to "Delete", @tournament, method: :delete,
+                        class: "button is-danger",
+                        disabled: @tournament.player_count > 0,
+                        "data-controller": "delete-confirm",
+                        "data-action": "click->delete-confirm#do",
+                        "data-delete-confirm-target": "tournament #{@tournament.name}"
+          %>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+

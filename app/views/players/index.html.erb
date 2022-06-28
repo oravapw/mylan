@@ -7,6 +7,8 @@
       <p>These are players for EC2022 who have not pre-registered. This list is not visible publicly.
         Note that a player should be registered either here or in the pre-registered list, not both!</p>
 
+      <p>Feel free to test and play around before Ropecon, this list will be cleared before EC starts.</p>
+
       <%= form_with(url: players_path, method: :get,
                     data: { turbo_frame: "players", search_form_target: "form" }) do |f| %>
         <div class="control has-icons-left mt-4">

@@ -7,6 +7,9 @@ Rails.application.routes.draw do
   resources :registereds, only: [:index, :edit, :update, :destroy]
   resources :players, except: [:show]
   resources :changelogs, only: [:index]
+  resources :tournaments do
+    resources :tournament_players, shallow: true
+  end
 
   root "overview#index"
 end
