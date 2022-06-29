@@ -1,0 +1,52 @@
+<%= turbo_frame_tag "searchresults" do %>
+  <%= form_with(model: @player, url: tournament_tournament_players_path(tournament_id: @tournament.id)) do |f| %>
+
+    <%= hidden_field_tag "tournament_id", @tournament.id %>
+    <%= hidden_field_tag "create_player", "true" %>
+
+    <% @player.errors.each do |error| %>
+      <div class="notification is-danger">
+        <%= error.full_message %>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :name, class: "label" %>
+      <div class="control">
+        <%= f.text_field :name, class: "input is-primary", placeholder: "Player name (required)" %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= f.label :vekn, class: "label" %>
+      <div class="control">
+        <%= f.text_field :vekn, class: "input is-info", placeholder: "VEKN # (optional)" %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= f.label :country, class: "label" %>
+      <div class="select">
+        <%= f.country_select :country, include_blank: "-", priority_countries: ["FI"], class: "input is-info" %>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="checkbox">
+        Has decklist?
+        <%= f.check_box :decklist %>
+      </label>
+    </div>
+
+    <div class="field is-grouped">
+      <div class="control">
+        <%= f.button "Save", type: "submit", class: "button is-link" %>
+      </div>
+      <div class="control">
+        <%= f.button "Cancel", type: "submit", name: "cancel", value: true, class: "button is-link is-light" %>
+      </div>
+    </div>
+
+    <template data-controller="grab-focus" data-grab-focus-selector-value="#player_name"></template>
+  <% end %>
+<% end %>

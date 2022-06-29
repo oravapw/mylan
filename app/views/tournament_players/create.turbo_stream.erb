@@ -1,16 +1,47 @@
-<%= turbo_stream.prepend "crud_notify" do %>
-  <div class="notification my-1 px-2 py-2 is-success" data-controller="timed-remove"
-       data-timed-remove-timeout-value="10000" data-timed-remove-target="remove">
-    Added <%= @player.name %>
-  </div>
-<% end %>
+<% basefailed = @baseplayer.present? && !@baseplayer.persisted? %>
+<% ok = @player.present? && @player.persisted? && !basefailed %>
 
-<% if @player.tournament.player_count == 1 %>
-  <%= turbo_stream.update "archon_button" do %>
-    <%= render partial: "tournaments/archon_button", locals: { tournament: @player.tournament } %>
+<% if @baseplayer.present? || @cancel %>
+
+  <%= turbo_stream.update "searchresults" do %>
+    <% if basefailed %>
+      <%= render template: "tournament_players/new" %>
+    <% else %>
+      <%= render template: "tournaments/search_players" %>
+    <% end %>
   <% end %>
 
-  <%= turbo_stream.update "archon_help" do %>
-    <%= render "tournaments/archon_help" %>
+  <%= turbo_stream.update "clear_trigger" do %>
+    <template data-search-form-target="trigger"></template>
+  <% end %>
+
+<% end %>
+
+<% unless @cancel %>
+
+  <%= turbo_stream.prepend "crud_notify" do %>
+    <% status = ok ? "success" : "danger" %>
+    <div class="notification my-1 px-2 py-2 is-<%= status %>" data-controller="timed-remove"
+         data-timed-remove-timeout-value="10000" data-timed-remove-target="remove">
+      <% if ok %>
+        Added <%= @player.name %>
+      <% elsif basefailed %>
+        Unable to create new player: <%= @baseplayer.errors.full_messages.join ", " %>
+      <% else %>
+        Unable to add player: <%= @player.errors.full_messages.join ", " %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if @player.persisted? && @player.tournament.player_count == 1 %>
+
+    <%= turbo_stream.update "archon_button" do %>
+      <%= render partial: "tournaments/archon_button", locals: { tournament: @player.tournament } %>
+    <% end %>
+
+    <%= turbo_stream.update "archon_help" do %>
+      <%= render "tournaments/archon_help" %>
+    <% end %>
+
   <% end %>
 <% end %>

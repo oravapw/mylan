@@ -4,7 +4,13 @@
       <% unless @results.nil? %>
         <% if @results.empty? %>
 
-          <p>No matching players found</p>
+          <p>No matching players found.</p>
+
+          <div class="control mt-4">
+            <%= button_to "Add new player", new_tournament_tournament_player_path(@tournament),
+                          method: :get, data: { turbo_frame: "searchresults" },
+                          class: "button is-primary" %>
+          </div>
 
         <% else %>
           <table class="table is-striped is-hoverable">

@@ -1,6 +1,6 @@
 <%= turbo_frame_tag "players" do %>
   <div class="columns">
-    <div class="column">
+    <div class="column" data-controller="search-form">
       <%= form_with(url: search_players_tournament_path(tournament), method: :post,
                     data: { turbo_frame: "searchresults", controller: "search-form", search_form_target: "form" }) do |f| %>
         <div class="control has-icons-left">
@@ -12,7 +12,8 @@
             <i class="fas fa-search"></i>
           </span>
         </div>
-      <% end %>
+        <template id="clear_trigger"></template>
+    <% end %>
     </div>
     <div class="column is-narrow">
       <div class="control">
