@@ -1,6 +1,6 @@
 <div class="container">
   <div class="columns">
-    <div class="column is-half">
+    <div class="column is-one-third">
 
       <h1 class="title is-4"><%= @tournament.name %></h1>
       <% if @tournament.date.present? %>
@@ -35,27 +35,40 @@
       </table>
 
       <% if @tournament.notes.present? %>
-        <article class="message">
-          <div class="message-header">
-            <p>Notes</p>
-          </div>
+        <article class="message is-dark">
           <div class="message-body">
             <%= @tournament.notes %>
           </div>
         </article>
       <% end %>
 
-      <div class="field is-grouped">
-        <div class="control">
-          <%= button_to "Back", tournaments_path, method: :get, class: "button is-link is-light" %>
+      <div class="columns">
+        <div class="column">
+          <div class="field is-grouped">
+            <div class="control">
+              <%= button_to "Back", tournaments_path, method: :get, class: "button is-link is-light" %>
+            </div>
+            <div class="control">
+              <%= button_to "Edit", edit_tournament_path(@tournament), method: :get, class: "button is-link" %>
+            </div>
+          </div>
         </div>
-        <div class="control">
-          <%= button_to "Edit", edit_tournament_path(@tournament), method: :get, class: "button is-link" %>
+        <div class="column is-narrow has-text-right" id="archon_button">
+          <% if @tournament.has_players? %>
+            <%= render partial: 'archon_button', locals: { tournament: @tournament } %>
+          <% end %>
         </div>
       </div>
 
+      <div id="archon_help">
+        <% if @tournament.has_players? %>
+          <%= render 'archon_help' %>
+        <% end %>
+      </div>
+
     </div>
-    <div class="column pl-5">
+
+    <div class="column pl-5" id="playerlist">
       <%= render "playerlist", tournament: @tournament %>
     </div>
   </div>

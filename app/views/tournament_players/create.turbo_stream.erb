@@ -4,3 +4,13 @@
     Added <%= @player.name %>
   </div>
 <% end %>
+
+<% if @player.tournament.player_count == 1 %>
+  <%= turbo_stream.update "archon_button" do %>
+    <%= render partial: "tournaments/archon_button", locals: { tournament: @player.tournament } %>
+  <% end %>
+
+  <%= turbo_stream.update "archon_help" do %>
+    <%= render "tournaments/archon_help" %>
+  <% end %>
+<% end %>

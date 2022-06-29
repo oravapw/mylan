@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       post :search_players
       post :show_players
       post :show_search
+      post :archon_csv
     end
   end
   resources :tournament_players, only: [:destroy] do

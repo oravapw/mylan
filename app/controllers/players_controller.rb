@@ -38,8 +38,11 @@ class PlayersController < ApplicationController
     check_vekn_vs_registred(@player)
     changed = @player.changelog_text != oldvalues
     if @player.save
-      Changelog.create(change_type: :edit, player_type: :normal, row_id: @player.id,
-                       oldvalues: oldvalues, newvalues: @player.changelog_text) if changed
+      if changed
+        Changelog.create(change_type: :edit, player_type: :normal, row_id: @player.id,
+                         oldvalues: oldvalues, newvalues: @player.changelog_text)
+        TournamentPlayer.update_player_data(@player.id, false, @player.name, @player.vekn)
+      end
       redirect_to players_path(page: params[:page], query: params[:query])
     else
       render :edit, status: :unprocessable_entity

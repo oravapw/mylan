@@ -24,4 +24,8 @@ class Tournament < ApplicationRecord
   def display_date
     date.present? ? date.strftime("%a %d.%m.%Y") : ''
   end
+
+  def has_players?
+    !self.tournament_players.empty?
+  end
 end

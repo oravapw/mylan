@@ -1,0 +1,13 @@
+<%= turbo_stream.update "playerlist" do %>
+  <%= render partial: "tournaments/playerlist", locals: { tournament: @tournament } %>
+<% end %>
+
+<% unless @tournament.has_players? %>
+  <%= turbo_stream.update "archon_button" do %>
+    &nbsp;
+  <% end %>
+
+  <%= turbo_stream.update "archon_help" do %>
+    &nbsp;
+  <% end %>
+<% end %>

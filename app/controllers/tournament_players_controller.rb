@@ -14,9 +14,8 @@ class TournamentPlayersController < ApplicationController
 
   def destroy
     @player = TournamentPlayer.find(params[:id])
-    tournament = @player.tournament
+    @tournament = @player.tournament
     @player.destroy
-    render partial: "tournaments/playerlist", locals: { tournament: tournament }
   end
 
   def toggle_decklist
@@ -29,7 +28,7 @@ class TournamentPlayersController < ApplicationController
   private
 
   def tournament_player_params
-    params.require(:tournament_player).permit(:name, :vekn, :prereg, :player_id)
+    params.require(:tournament_player).permit(:name, :vekn, :prereg, :player_id, :decklist)
   end
 
 end

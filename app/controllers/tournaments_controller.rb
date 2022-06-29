@@ -1,6 +1,6 @@
 class TournamentsController < ApplicationController
   before_action :load_tournament, only: [:show, :edit, :update, :destroy,
-                                         :show_players, :show_search, :search_players]
+                                         :show_players, :show_search, :search_players, :archon_csv]
 
   def index
     load_tournaments
@@ -83,6 +83,33 @@ class TournamentsController < ApplicationController
         if added.include?("#{r.player_id}:#{r.prereg}")
           r.added = true
         end
+      end
+    end
+  end
+
+  # randomize player list and dump as CSV in suitable form for Archon cut+paste into Methuselahs tab
+  def archon_csv
+    respond_to do |format|
+      format.csv do
+        csv_string = CSV.generate do |csv|
+          @tournament.tournament_players.all.shuffle.each.with_index(1) do |p, index|
+            # need to split name into fist and last name, just do simple logic of assuming last word is last name
+            parts = p.name.split
+            first_name = if parts.count > 1
+                           p.name.split[0..-2].join(' ')
+                         else
+                           p.name
+                         end
+            last_name = if parts.count > 1
+                          parts.last
+                        else
+                          ''
+                        end
+            csv << [index, first_name, last_name, '', p.vekn]
+          end
+        end
+        tname = @tournament.name.gsub(/[^\da-z]/i, '-').downcase
+        send_data csv_string, filename: "#{tname}-random.csv", type: "text/csv"
       end
     end
   end

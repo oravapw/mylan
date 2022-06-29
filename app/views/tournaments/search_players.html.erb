@@ -22,13 +22,21 @@
                       <%= f.hidden_field :vekn %>
                       <%= f.hidden_field :prereg %>
                       <%= f.hidden_field :player_id %>
-                      <div class="control">
-                        <%= f.button type: "submit", class: "button is-primary has-text-black is-small",
-                                     data: { action: "click->form#submitAndRemove" } do %>
-                      <span class="icon">
-                        <i class="fas fa-plus"></i>
-                      </span>
+                      <div class="field is-grouped">
+                        <% if @tournament.decklists %>
+                          <label class="checkbox">
+                            Has decklist?
+                            <%= f.check_box :decklist %>
+                          </label>
                         <% end %>
+                        <div class="control">
+                          <%= f.button type: "submit", class: "button is-primary has-text-black is-small py-0 ml-4",
+                                       data: { action: "click->form#submitAndRemove" } do %>
+                            <span class="icon">
+                              <i class="fas fa-plus"></i>
+                            </span>
+                          <% end %>
+                        </div>
                       </div>
                     <% end %>
                   <% end %>

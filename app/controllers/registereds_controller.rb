@@ -50,8 +50,11 @@ class RegisteredsController < ApplicationController
     @prereg.assign_attributes(prereg_params)
     changed = @prereg.changelog_text != oldvalues
     if @prereg.save
-      Changelog.create(change_type: :edit, player_type: :prereg, row_id: @prereg.id,
-        oldvalues: oldvalues, newvalues: @prereg.changelog_text) if changed
+      if changed
+        Changelog.create(change_type: :edit, player_type: :prereg, row_id: @prereg.id,
+                         oldvalues: oldvalues, newvalues: @prereg.changelog_text)
+        TournamentPlayer.update_player_data(@prereg.id, true, @prereg.name, @prereg.vekn)
+      end
       redirect_to registereds_path(page: params[:page], query: params[:query])
     else
       render :edit, status: :unprocessable_entity
