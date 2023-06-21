@@ -8,7 +8,7 @@ class LoginController < ApplicationController
     want_username = Rails.application.credentials.dig(:login, :username)
     want_password = Rails.application.credentials.dig(:login, :password)
     if params[:username] == want_username &&  params[:password] == want_password
-      session[:logged_in] = true
+      session[:user_name] = want_username
       redirect_to root_path
     else
       redirect_to login_path, alert: "Username and/or password not valid"
@@ -16,7 +16,7 @@ class LoginController < ApplicationController
   end
 
   def logout
-    session[:logged_in] = false
+    session[:user_name] = nil
     redirect_to login_path
   end
 

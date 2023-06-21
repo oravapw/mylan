@@ -3,7 +3,6 @@
     <thead>
     <tr>
       <th>Timestamp</th>
-      <th>Player type</th>
       <th>Change</th>
       <th>Old values</th>
       <th>New values</th>
@@ -13,7 +12,6 @@
     <% @logs.each do |log| %>
       <tr>
         <td style="white-space: nowrap"><%= log.created_at&.strftime("%d.%m.%Y %H:%M:%S") %></td>
-        <td><span class="<%= log.player_type_class %>"><%= log.player_type_display %></span></td>
         <td>
           <%= log.change_type.capitalize %>
           <span class="icon">

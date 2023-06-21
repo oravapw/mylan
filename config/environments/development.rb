@@ -67,6 +67,7 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
 
   # Stop console complaints when running inside Docker container
-  config.web_console.whitelisted_ips = '172.20.0.0/16'
+  #config.web_console.whitelisted_ips = '172.20.0.0/16'
+  config.web_console.allowed_ips = [ '172.20.0.0/16', '172.19.0.0/16' ]
 
 end

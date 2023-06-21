@@ -28,7 +28,6 @@
         <% if tournament.decklists %>
           <th>Decklist</th>
         <% end %>
-        <th>Prereg</th>
         <th></th>
       </tr>
       </thead>
@@ -45,7 +44,6 @@
               <% end %>
             </td>
           <% end %>
-          <td><%= p.prereg ? "yes" : "" %></td>
           <td>
             <% unless tournament.past? %>
               <%= form_with(url: tournament_player_path(p), method: :delete) do |f| %>

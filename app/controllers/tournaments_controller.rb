@@ -1,6 +1,8 @@
 class TournamentsController < ApplicationController
+  before_action :check_authorized
   before_action :load_tournament, only: [:show, :edit, :update, :destroy,
                                          :show_players, :show_search, :search_players, :archon_csv]
+  before_action :redirect_cancel, only: [:create, :update]
 
   def index
     load_tournaments
@@ -60,27 +62,18 @@ class TournamentsController < ApplicationController
     @results = nil
     if query.present?
       @results = []
-
-      EcRegistration.includes(:name_meta, :vekn_meta)
-                    .joins(:vekn_meta).where("wp_frm_item_metas.meta_value LIKE ?", "%#{query}%")
-                    .or(EcRegistration.where("name LIKE ?", "%#{query}%")).find_each do |p|
-        @results << SearchResult.new(name: p.name, vekn: p.vekn, prereg: true, player_id: p.id)
+      Player.where("name LIKE ?", "%#{query}%").or(Player.where("vekn LIKE ?", "%#{query}%")).order(:name).find_each do |p|
+        @results << SearchResult.new(name: p.name, vekn: p.vekn, player_id: p.id)
       end
-
-      Player.where("name LIKE ?", "%#{query}%").or(Player.where("vekn LIKE ?", "%#{query}%")).find_each do |p|
-        @results << SearchResult.new(name: p.name, vekn: p.vekn, prereg: false, player_id: p.id)
-      end
-
-      @results.sort_by!(&:name)
 
       # mark players already entered in this tournament
       added = {}
       @tournament.tournament_players.each do |p|
-        added["#{p.player_id}:#{p.prereg}"] = 1
+        added[p.player_id] = 1
       end
 
       @results.each do |r|
-        if added.include?("#{r.player_id}:#{r.prereg}")
+        if added.include?(r.player_id)
           r.added = true
         end
       end
@@ -126,6 +119,10 @@ class TournamentsController < ApplicationController
 
   def tournament_params
     params.require(:tournament).permit(:name, :location, :organizers, :date, :decklists, :notes)
+  end
+
+  def redirect_cancel
+    redirect_to tournaments_path if params[:cancel]
   end
 
 end

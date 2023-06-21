@@ -1,4 +1,5 @@
 class PlayersController < ApplicationController
+  before_action :check_authorized
   before_action :store_page_and_query
   before_action :load_player, only: [:edit, :update, :destroy]
   before_action :redirect_cancel, only: [:create, :update]
@@ -19,9 +20,9 @@ class PlayersController < ApplicationController
 
   def create
     @player = Player.new(player_params)
-    check_vekn_vs_registred(@player)
+    @player.normalize_fields
     if @player.save
-      Changelog.create(change_type: :add, player_type: :normal, row_id: @player.id,
+      Changelog.create(change_type: :add, row_id: @player.id,
                        oldvalues: nil, newvalues: @player.changelog_text)
       respond_to do |format|
         format.html { redirect_to players_path }
@@ -35,13 +36,13 @@ class PlayersController < ApplicationController
   def update
     oldvalues = @player.changelog_text
     @player.assign_attributes(player_params)
-    check_vekn_vs_registred(@player)
+    @player.normalize_fields
     changed = @player.changelog_text != oldvalues
     if @player.save
       if changed
-        Changelog.create(change_type: :edit, player_type: :normal, row_id: @player.id,
+        Changelog.create(change_type: :edit, row_id: @player.id,
                          oldvalues: oldvalues, newvalues: @player.changelog_text)
-        TournamentPlayer.update_player_data(@player.id, false, @player.name, @player.vekn)
+        TournamentPlayer.update_player_data(@player.id, @player.name, @player.vekn)
       end
       redirect_to players_path(page: params[:page], query: params[:query])
     else
@@ -54,7 +55,7 @@ class PlayersController < ApplicationController
     @ident = @player.identifier
     oldvalues = @player.changelog_text
     @player.destroy
-    Changelog.create(change_type: :remove, player_type: :normal, row_id: row_id, oldvalues: oldvalues)
+    Changelog.create(change_type: :remove, row_id: row_id, oldvalues: oldvalues)
     respond_to do |format|
       format.html { redirect_to players_path }
       format.turbo_stream { load_paged_players }
@@ -88,18 +89,6 @@ class PlayersController < ApplicationController
                        .order(:name).page pg
     else
       @players = Player.order(:name).page pg
-    end
-  end
-
-  def check_vekn_vs_registred(player)
-    player.normalize_fields
-    if player.vekn.present?
-      prereg_meta = EcRegistrationMeta.where(field_id: EcRegistrationMeta::VEKN_FIELD_ID, meta_value: player.vekn).first
-      if prereg_meta.present?
-        name = EcRegistration.find(prereg_meta.item_id)&.name
-        logger.debug("XXX: conflict with #{name}")
-        player.duplicate_vekn_name = name
-      end
     end
   end
 
