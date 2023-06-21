@@ -12,7 +12,7 @@
   </tr>
   <% tournaments.each do |t| %>
     <tr>
-      <td><%= t.display_date %></td>
+      <td style="white-space: nowrap"><%= t.display_date %></td>
       <td><%= link_to t.name, t %></td>
       <td><%= t.location %></td>
       <td><%= t.organizers %></td>

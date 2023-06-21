@@ -23,14 +23,13 @@ class TournamentPlayersController < ApplicationController
         @baseplayer.country = @player.country
         if @baseplayer.save
           @player.player_id = @baseplayer.id
-          Changelog.create(change_type: :add, player_type: :normal, row_id: @baseplayer.id,
+          Changelog.create(change_type: :add, row_id: @baseplayer.id,
                            oldvalues: nil, newvalues: @baseplayer.changelog_text)
         else
           # do not show validation errors about player_id in this scenario, since form validation uses
           # TournamentPlayer object and not Player
           @player.skip_playerid_check = true
         end
-        @player.prereg = false
       end
 
       @player.save
@@ -59,7 +58,7 @@ class TournamentPlayersController < ApplicationController
   end
 
   def tournament_player_params
-    params.require(:tournament_player).permit(:name, :vekn, :prereg, :player_id, :decklist, :country)
+    params.require(:tournament_player).permit(:name, :vekn, :player_id, :decklist, :country)
   end
 
 end

@@ -4,7 +4,6 @@ Rails.application.routes.draw do
   post "authenticate", to: "login#authenticate"
   post "logout", to: "login#logout"
 
-  resources :registereds, only: [:index, :edit, :update, :destroy]
   resources :players, except: [:show]
   resources :changelogs, only: [:index]
   resources :tournaments do
@@ -22,5 +21,5 @@ Rails.application.routes.draw do
     end
   end
 
-  root "overview#index"
+  root "tournaments#index"
 end

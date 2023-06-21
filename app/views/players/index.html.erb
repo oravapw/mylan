@@ -2,12 +2,11 @@
   <div class="columns">
     <div class="column is-one-third" data-controller="search-form">
 
-      <h1 class="title is-4">Other Players</h1>
+      <h1 class="title is-4">Players</h1>
 
-      <p>These are players for EC2022 who have not pre-registered. This list is not visible publicly.
-        Note that a player should be registered either here or in the pre-registered list, not both!</p>
-
-      <p>Feel free to test and play around before Ropecon, this list will be cleared before EC starts.</p>
+      <p>List of all players registered to this system. If a tournament player does not yet exist here,
+        you can either add them with the button below or via the "Add player" button on the specific
+        tournament page.</p>
 
       <%= form_with(url: players_path, method: :get,
                     data: { turbo_frame: "players", search_form_target: "form" }) do |f| %>

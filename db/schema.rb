@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_28_063404) do
-  create_table "changelogs", charset: "utf8mb4", force: :cascade do |t|
+ActiveRecord::Schema[7.0].define(version: 2023_06_20_094457) do
+  create_table "changelogs", charset: "utf8mb3", force: :cascade do |t|
     t.integer "change_type", null: false
-    t.integer "player_type", null: false
     t.string "oldvalues"
     t.string "newvalues"
     t.datetime "created_at", null: false
@@ -21,7 +20,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_28_063404) do
     t.bigint "row_id"
   end
 
-  create_table "players", charset: "utf8mb4", force: :cascade do |t|
+  create_table "players", charset: "utf8mb3", force: :cascade do |t|
     t.string "name", limit: 40, null: false
     t.string "vekn", limit: 7
     t.string "country", limit: 2
@@ -30,7 +29,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_28_063404) do
     t.index ["vekn"], name: "index_players_on_vekn", unique: true
   end
 
-  create_table "tournament_players", charset: "utf8mb4", force: :cascade do |t|
+  create_table "tournament_players", charset: "utf8mb3", force: :cascade do |t|
     t.string "name", limit: 40, null: false
     t.string "vekn", limit: 7
     t.boolean "decklist", default: false, null: false
@@ -40,7 +39,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_28_063404) do
     t.index ["tournament_id"], name: "index_tournament_players_on_tournament_id"
   end
 
-  create_table "tournaments", charset: "utf8mb4", force: :cascade do |t|
+  create_table "tournaments", charset: "utf8mb3", force: :cascade do |t|
     t.string "name", limit: 40, null: false
     t.string "location", limit: 80
     t.string "organizers", limit: 120
