@@ -6,11 +6,11 @@
       <% if @tournament.date.present? %>
         <h2 class="subtitle">
           <% if @tournament.date.today? %>
-            (<%= @tournament.display_date %>, <span class="has-text-danger-dark">today</span>)
+            <%= @tournament.display_date %>, <span class="has-text-danger-dark">today</span>
           <% elsif @tournament.date.future? %>
-            (<%= @tournament.display_date %>, <%= distance_of_time_in_words_to_now(@tournament.date) %> from now)
+            <%= @tournament.display_date %>, <%= distance_of_time_in_words_to_now(@tournament.date) %> from now
           <% else %>
-            (<%= @tournament.display_date %>, <%= distance_of_time_in_words_to_now(@tournament.date) %> ago)
+            <%= @tournament.display_date %>, <%= distance_of_time_in_words_to_now(@tournament.date) %> ago
           <% end %>
         </h2>
       <% end %>
@@ -35,14 +35,21 @@
       </table>
 
       <% if @tournament.notes.present? %>
-        <article class="message is-dark">
-          <div class="message-body">
-            <%= @tournament.notes %>
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title">
+              Notes (not public)
+            </p>
+          </header>
+          <div class="card-content">
+            <div class="content">
+              <%= Kramdown::Document.new(@tournament.notes).to_html.html_safe %>
+            </div>
           </div>
-        </article>
+        </div>
       <% end %>
 
-      <div class="columns">
+      <div class="columns pt-5">
         <div class="column">
           <div class="field is-grouped">
             <div class="control">

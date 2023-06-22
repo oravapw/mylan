@@ -75,3 +75,4 @@ end
 
 gem "kaminari"
 gem 'country_select', '~> 6.0'
+gem "kramdown"

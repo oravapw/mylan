@@ -1,4 +1,6 @@
-<%= form_with(model: tournament) do |f| %>
+<%= form_with(model: tournament, data: {
+  controller: "flatpickr"
+}) do |f| %>
 
   <% tournament.errors.each do |error| %>
     <div class="notification is-danger">
@@ -14,9 +16,9 @@
   </div>
 
   <div class="field">
-    <%= f.label :date, class: "label" %>
+    <%= f.label :date, "Date and start time", class: "label" %>
     <div class="control">
-      <%= f.date_field :date, min: 2.days.ago, class: "input is-info" %>
+      <%= f.datetime_field :date, class: "input is-info tournament-start" %>
     </div>
   </div>
 
@@ -42,9 +44,9 @@
   </div>
 
   <div class="field">
-    <%= f.label :notes, class: "label" %>
+    <%= f.label :notes, 'Non-public notes', class: "label" %>
     <div class="control">
-      <%= f.text_area :notes, class: "textarea is-info", placeholder: "Notes (optional)" %>
+      <%= f.text_area :notes, class: "textarea is-info", placeholder: "Notes (optional), Markdown format supported" %>
     </div>
   </div>
 

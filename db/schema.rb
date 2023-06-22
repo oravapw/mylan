@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_20_094457) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_21_151223) do
   create_table "changelogs", charset: "utf8mb3", force: :cascade do |t|
     t.integer "change_type", null: false
     t.string "oldvalues"
@@ -33,7 +33,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_20_094457) do
     t.string "name", limit: 40, null: false
     t.string "vekn", limit: 7
     t.boolean "decklist", default: false, null: false
-    t.boolean "prereg", default: false, null: false
     t.bigint "player_id", null: false
     t.bigint "tournament_id", null: false
     t.index ["tournament_id"], name: "index_tournament_players_on_tournament_id"
@@ -43,11 +42,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_20_094457) do
     t.string "name", limit: 40, null: false
     t.string "location", limit: 80
     t.string "organizers", limit: 120
-    t.date "date"
+    t.datetime "date"
     t.boolean "decklists", default: false, null: false
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "prereg", default: false, null: false
+    t.string "prereg_slug"
+    t.text "prereg_info"
+    t.datetime "prereg_end"
   end
 
 end

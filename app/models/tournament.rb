@@ -22,7 +22,17 @@ class Tournament < ApplicationRecord
   end
 
   def display_date
-    date.present? ? date.strftime("%a %d.%m.%Y") : ''
+    if date.present?
+      # this used to be just a date field, so old entries will have "zero" as time, or more
+      # precisely the zero adjusted by Finnish time zone, leave those times out
+      if date.min == 0 && date.hour.between?(2,3)
+        date.strftime("%a %d.%m.%Y")
+      else
+        date.strftime("%a %d.%m.%Y (%H:%M)")
+      end
+    else
+      ''
+    end
   end
 
   def has_players?

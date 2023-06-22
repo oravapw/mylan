@@ -9,9 +9,9 @@ class TournamentPlayer < ApplicationRecord
   validates :player_id, presence: true, numericality: { only_integer: true }, unless: -> { skip_playerid_check }
 
   def self.update_player_data(player_id, name, vekn)
-    self.where(player_id: player_id, prereg: false).find_each do |p|
+    self.where(player_id: player_id).find_each do |p|
       p.name = name
-      p.vekn = vekn
+      p.vekn = vekn unless vekn.blank?
       p.save!
     end
   end

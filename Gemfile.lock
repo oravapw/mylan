@@ -96,7 +96,7 @@ GEM
       countries (~> 4.2)
       sort_alphabetical (~> 1.1)
     crass (1.0.6)
-    cssbundling-rails (1.1.2)
+    cssbundling-rails (1.2.0)
       railties (>= 6.0.0)
     date (3.3.3)
     debug (1.8.0)
@@ -116,7 +116,7 @@ GEM
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
-    jsbundling-rails (1.1.1)
+    jsbundling-rails (1.1.2)
       railties (>= 6.0.0)
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
@@ -130,6 +130,8 @@ GEM
       activerecord
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
+    kramdown (2.4.0)
+      rexml
     loofah (2.21.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -166,7 +168,7 @@ GEM
       activesupport (>= 7.0.0)
       rack
       railties (>= 7.0.0)
-    puma (5.6.5)
+    puma (5.6.6)
       nio4r (~> 2.0)
     racc (1.7.1)
     rack (2.2.7)
@@ -202,6 +204,7 @@ GEM
     rake (13.0.6)
     reline (0.3.5)
       io-console (~> 0.5)
+    rexml (3.2.5)
     simple_po_parser (1.1.6)
     sixarm_ruby_unaccent (1.2.2)
     sort_alphabetical (1.1.0)
@@ -251,6 +254,7 @@ DEPENDENCIES
   jbuilder
   jsbundling-rails
   kaminari
+  kramdown
   mysql2 (~> 0.5)
   propshaft
   puma (~> 5.0)
