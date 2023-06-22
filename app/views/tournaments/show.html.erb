@@ -67,9 +67,16 @@
         </div>
       </div>
 
-      <div id="archon_help">
+      <div id="archon_help" data-controller="toggle" data-toggle-hidden-class="is-hidden">
         <% if @tournament.has_players? %>
-          <%= render 'archon_help' %>
+          <button data-action="toggle#toggle"
+                  data-toggle-target="button"
+                  data-show-text="Show Archon help"
+                  data-hide-text="Hide Archon help"
+                  class="button is-success is-light is-small">Show Archon help</button>
+          <div id="archonhelp" class="is-hidden" data-toggle-target="item">
+            <%= render 'archon_help' %>
+          </div>
         <% end %>
       </div>
 

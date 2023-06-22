@@ -27,3 +27,6 @@ application.register("search-form", SearchFormController)
 
 import TimedRemoveController from "./timed_remove_controller"
 application.register("timed-remove", TimedRemoveController)
+
+import ToggleController from "./toggle_controller"
+application.register("toggle", ToggleController)
