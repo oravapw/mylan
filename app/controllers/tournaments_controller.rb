@@ -13,6 +13,7 @@ class TournamentsController < ApplicationController
 
   def new
     @tournament = Tournament.new
+    @tournament.proxies = true # default to allowing proxies
   end
 
   def edit
@@ -118,7 +119,8 @@ class TournamentsController < ApplicationController
   end
 
   def tournament_params
-    params.require(:tournament).permit(:name, :location, :organizers, :date, :decklists, :notes)
+    params.require(:tournament).permit(:name, :location, :organizers, :date, :decklists, :notes,
+      :prereg, :prereg_slug, :prereg_info, :prereg_end)
   end
 
   def redirect_cancel

@@ -1,0 +1,59 @@
+<% if @tournament.present? %>
+
+  <h1 class="title is-4">Registration for "<%= @tournament.name %>"</h1>
+  <h2 class="subtitle"><%= @tournament.display_date %></h2>
+
+  <table class="table is-narrow mt-4">
+    <% if @tournament.location.present? %>
+      <tr>
+        <th>Location</th>
+        <td><%= @tournament.location %></td>
+      </tr>
+    <% end %>
+    <% if @tournament.organizers.present? %>
+      <tr>
+        <th><%= "Organizer".pluralize(@tournament.organizers.count(',') + 1) %></th>
+        <td><%= @tournament.organizers %></td>
+      </tr>
+    <% end %>
+    <tr>
+      <th>Deck lists required?</th>
+      <td><%= @tournament.decklists ? "Yes" : "No" %></td>
+    </tr>
+    <tr>
+      <th>Proxies allowed?</th>
+      <td><%= @tournament.proxies ? "Yes" : "No" %></td>
+    </tr>
+    <tr>
+      <th>Registration open?</th>
+      <td>
+        <% if @tournament.prereg && @tournament.prereg_end.future? %>
+          <span class="has-text-weight-semibold has-text-info">Yes</span>
+          <span class="has-text-weight-semibold has-text-<%=
+            (@tournament.prereg_end - Time.now) < 1.hour ? 'danger' : 'success'
+          %>">
+            (closes in <%= distance_of_time_in_words_to_now(@tournament.prereg_end) %>)
+          </span>
+        <% else %>
+          <span class="has-text-weight-semibold has-text-danger">No</span>
+          <% if @tournament.prereg_end.past? %>
+          (registration closed <%= distance_of_time_in_words_to_now(@tournament.prereg_end) %> ago)
+          <% end %>
+        <% end %>
+      </td>
+    </tr>
+  </table>
+
+  <% if @tournament.prereg_info.present? %>
+    <div class="card">
+      <div class="card-content has-background-white-ter">
+        <div class="content">
+          <%= Kramdown::Document.new(@tournament.prereg_info).to_html.html_safe %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <p><b>Actual registration capability coming soon, working on it!</b></p>
+
+<% end %>

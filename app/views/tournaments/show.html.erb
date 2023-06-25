@@ -24,7 +24,7 @@
         <% end %>
         <% if @tournament.organizers.present? %>
           <tr>
-            <th>Organizers</th>
+            <th><%= "Organizer".pluralize(@tournament.organizers.count(',') + 1) %></th>
             <td><%= @tournament.organizers %></td>
           </tr>
         <% end %>
@@ -32,11 +32,39 @@
           <th>Deck lists?</th>
           <td><%= @tournament.decklists ? "Yes" : "No" %></td>
         </tr>
+        <tr>
+          <th>Proxies allowed?</th>
+          <td><%= @tournament.proxies ? "Yes" : "No" %></td>
+        </tr>
+        <tr>
+          <th>Pre-registration?</th>
+          <td><%= @tournament.prereg ? "Yes" : "No" %></td>
+        </tr>
+        <% if @tournament.prereg %>
+          <tr>
+            <th>Pre-registration ends</th>
+            <td><%= @tournament.display_prereg_end %></td>
+          </tr>
+        <% end %>
       </table>
+
+      <% if @tournament.prereg_slug.present? %>
+        <div class="card">
+          <div class="card-content has-background-white-ter">
+            <div class="content">
+              Public registration page is at<br/>
+              <%=
+                url = registration_url(@tournament.prereg_slug)
+                link_to url, url, target: '_blank'
+              %>
+            </div>
+          </div>
+        </div>
+      <% end %>
 
       <% if @tournament.notes.present? %>
         <div class="card">
-          <header class="card-header">
+          <header class="card-header has-background-grey-lighter">
             <p class="card-header-title">
               Notes (not public)
             </p>
@@ -44,6 +72,21 @@
           <div class="card-content">
             <div class="content">
               <%= Kramdown::Document.new(@tournament.notes).to_html.html_safe %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <% if @tournament.prereg_info.present? %>
+        <div class="card">
+          <header class="card-header has-background-grey-lighter">
+            <p class="card-header-title">
+              Pre-registration info
+            </p>
+          </header>
+          <div class="card-content">
+            <div class="content">
+              <%= Kramdown::Document.new(@tournament.prereg_info).to_html.html_safe %>
             </div>
           </div>
         </div>
@@ -73,7 +116,8 @@
                   data-toggle-target="button"
                   data-show-text="Show Archon help"
                   data-hide-text="Hide Archon help"
-                  class="button is-success is-light is-small">Show Archon help</button>
+                  class="button is-success is-light is-small">Show Archon help
+          </button>
           <div id="archonhelp" class="is-hidden" data-toggle-target="item">
             <%= render 'archon_help' %>
           </div>

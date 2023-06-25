@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_21_151223) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_23_171507) do
   create_table "changelogs", charset: "utf8mb3", force: :cascade do |t|
     t.integer "change_type", null: false
     t.string "oldvalues"
@@ -51,6 +51,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_21_151223) do
     t.string "prereg_slug"
     t.text "prereg_info"
     t.datetime "prereg_end"
+    t.boolean "proxies", default: false, null: false
+    t.index ["name"], name: "index_tournaments_on_name", unique: true
+    t.index ["prereg_slug"], name: "index_tournaments_on_prereg_slug", unique: true
   end
 
 end

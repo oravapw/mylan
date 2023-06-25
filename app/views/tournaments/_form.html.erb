@@ -30,6 +30,13 @@
   </div>
 
   <div class="field">
+    <label class="checkbox">
+      <%= f.check_box :proxies %>
+      Proxies are allowed
+    </label>
+  </div>
+
+  <div class="field">
     <%= f.label :location, class: "label" %>
     <div class="control">
       <%= f.text_field :location, class: "input is-info", placeholder: "Location (optional)" %>
@@ -50,7 +57,35 @@
     </div>
   </div>
 
-  <div class="field is-grouped">
+  <div class="field">
+    <label class="checkbox">
+      <%= f.check_box :prereg %>
+      Pre-registration is possible
+    </label>
+  </div>
+
+  <div class="field">
+    <%= f.label :prereg_end, "Pre-registration closing time", class: "label" %>
+    <p class="has-text-info is-size-7">(automatically set to one hour before tournament start if left blank)</p>
+    <div class="control">
+      <%= f.datetime_field :prereg_end, class: "input is-info tournament-start" %>
+    </div>
+  </div>
+
+  <div class="field">
+    <%= f.label :prereg_info, 'Pre-registration info', class: "label" %>
+    <p class="has-text-info is-size-7">(this text will be displayed on the pre-registration page
+      in addition to the basic tournament info)</p>
+    <div class="control">
+      <%= f.text_area :prereg_info, class: "textarea is-info", placeholder: "Info text (optional), Markdown format supported" %>
+    </div>
+  </div>
+
+  <p>Notes and pre-registration info support Markdown format, see
+    <%= link_to 'here', 'https://www.markdownguide.org/basic-syntax/', target: '_blank' %>
+    for syntax.</p>
+
+  <div class="field is-grouped pt-4">
     <div class="control">
       <%= f.button "Save", type: "submit", class: "button is-link" %>
     </div>

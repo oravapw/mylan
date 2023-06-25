@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   resources :players, except: [:show]
   resources :changelogs, only: [:index]
+
   resources :tournaments do
     resources :tournament_players, only: [:new, :create]
     member do
@@ -15,11 +16,14 @@ Rails.application.routes.draw do
       post :archon_csv
     end
   end
+
   resources :tournament_players, only: [:destroy] do
     member do
       patch :toggle_decklist
     end
   end
+
+  resources :registrations, only: [:show]
 
   root "tournaments#index"
 end
