@@ -23,8 +23,7 @@ class TournamentPlayersController < ApplicationController
         @baseplayer.country = @player.country
         if @baseplayer.save
           @player.player_id = @baseplayer.id
-          Changelog.create(change_type: :add, row_id: @baseplayer.id,
-                           oldvalues: nil, newvalues: @baseplayer.changelog_text)
+          log_player_create @baseplayer
         else
           # do not show validation errors about player_id in this scenario, since form validation uses
           # TournamentPlayer object and not Player

@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_23_171507) do
-  create_table "changelogs", charset: "utf8mb3", force: :cascade do |t|
-    t.integer "change_type", null: false
-    t.string "oldvalues"
-    t.string "newvalues"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "row_id"
+ActiveRecord::Schema[7.0].define(version: 2023_06_25_173832) do
+  create_table "changelogs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.datetime "timestamp", null: false
+    t.string "change", null: false
+    t.bigint "player_id"
+    t.bigint "tournament_id"
+    t.index ["player_id"], name: "index_changelogs_on_player_id"
+    t.index ["tournament_id"], name: "index_changelogs_on_tournament_id"
   end
 
   create_table "players", charset: "utf8mb3", force: :cascade do |t|
@@ -56,4 +56,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_23_171507) do
     t.index ["prereg_slug"], name: "index_tournaments_on_prereg_slug", unique: true
   end
 
+  add_foreign_key "changelogs", "players", on_delete: :nullify
+  add_foreign_key "changelogs", "tournaments", on_delete: :nullify
 end

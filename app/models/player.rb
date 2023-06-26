@@ -18,10 +18,6 @@ class Player < ApplicationRecord
     "#{name} / #{vekn} / #{country}"
   end
 
-  def changelog_text
-    "#{name},#{vekn},#{country}"
-  end
-
   def normalize_fields
     self.name = name.blank? ? nil : name.strip
     self.vekn = vekn.blank? ? nil : vekn.strip.gsub(/\D/, '')

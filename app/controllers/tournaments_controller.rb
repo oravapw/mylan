@@ -22,6 +22,7 @@ class TournamentsController < ApplicationController
   def create
     @tournament = Tournament.new(tournament_params)
     if @tournament.save
+      log_tournament_create @tournament
       redirect_to tournaments_path
     else
       render :new, status: :unprocessable_entity
@@ -47,6 +48,7 @@ class TournamentsController < ApplicationController
       return
     end
     @tournament.destroy
+    log_tournament_delete @tournament
     redirect_to tournaments_path
   end
 
@@ -120,7 +122,7 @@ class TournamentsController < ApplicationController
 
   def tournament_params
     params.require(:tournament).permit(:name, :location, :organizers, :date, :decklists, :notes,
-      :prereg, :prereg_slug, :prereg_info, :prereg_end)
+      :prereg, :prereg_slug, :prereg_info, :prereg_end, :proxies)
   end
 
   def redirect_cancel

@@ -4,22 +4,29 @@
     <tr>
       <th>Timestamp</th>
       <th>Change</th>
-      <th>Old values</th>
-      <th>New values</th>
+      <th>Player</th>
+      <th>Tournament</th>
     </tr>
     </thead>
     <tbody>
     <% @logs.each do |log| %>
       <tr>
-        <td style="white-space: nowrap"><%= log.created_at&.strftime("%d.%m.%Y %H:%M:%S") %></td>
-        <td>
-          <%= log.change_type.capitalize %>
-          <span class="icon">
-                <i class="fas fa-<%= log.change_type_icon %>"></i>
-              </span>
-        </td>
-        <td><%= log.oldvalues %></td>
-        <td><%= log.newvalues %></td>
+        <td style="white-space: nowrap"><%= log.timestamp&.strftime("%d.%m.%Y %H:%M:%S") %></td>
+        <td><%= log.change %></td>
+        <td><%=
+          if log.player
+            link_to 'link', player_path(log.player.id), data: { "turbo-frame": "_top" }
+          else
+            ''
+          end
+        %></td>
+        <td><%=
+          if log.tournament
+            link_to 'link', tournament_path(log.tournament.id), data: { "turbo-frame": "_top" }
+          else
+            ''
+          end
+        %></td>
       </tr>
     <% end %>
     </tbody>

@@ -1,17 +1,7 @@
 class Changelog < ApplicationRecord
-  enum change_type: { add: 0, edit: 1, remove: 2 }
+  validates :timestamp, presence: true
+  validates :change, presence: true, length: { maximum: 255 }
 
-  validates :change_type, presence: true
-
-  def change_type_icon
-    case change_type
-      when "add"
-        "user-plus"
-      when "remove"
-        "trash"
-      else
-        "edit"
-    end
-  end
-
+  belongs_to :player, optional: true
+  belongs_to :tournament, optional: true
 end

@@ -22,8 +22,7 @@ class PlayersController < ApplicationController
     @player = Player.new(player_params)
     @player.normalize_fields
     if @player.save
-      Changelog.create(change_type: :add, row_id: @player.id,
-                       oldvalues: nil, newvalues: @player.changelog_text)
+      log_player_create @player
       respond_to do |format|
         format.html { redirect_to players_path }
         format.turbo_stream { load_paged_players }
@@ -34,14 +33,13 @@ class PlayersController < ApplicationController
   end
 
   def update
-    oldvalues = @player.changelog_text
+    oldident = @player.identifier
     @player.assign_attributes(player_params)
     @player.normalize_fields
-    changed = @player.changelog_text != oldvalues
+    changed = @player.identifier != oldident
     if @player.save
       if changed
-        Changelog.create(change_type: :edit, row_id: @player.id,
-                         oldvalues: oldvalues, newvalues: @player.changelog_text)
+        log_player_update @player, oldident
         TournamentPlayer.update_player_data(@player.id, @player.name, @player.vekn)
       end
       redirect_to players_path(page: params[:page], query: params[:query])
@@ -51,11 +49,9 @@ class PlayersController < ApplicationController
   end
 
   def destroy
-    row_id = @player.id
     @ident = @player.identifier
-    oldvalues = @player.changelog_text
     @player.destroy
-    Changelog.create(change_type: :remove, row_id: row_id, oldvalues: oldvalues)
+    log_player_delete @player
     respond_to do |format|
       format.html { redirect_to players_path }
       format.turbo_stream { load_paged_players }
