@@ -1,13 +1,21 @@
 class PlayersController < ApplicationController
   before_action :check_authorized
   before_action :store_page_and_query
-  before_action :load_player, only: [:edit, :update, :destroy]
-  before_action :redirect_cancel, only: [:create, :update]
+  before_action :load_player, only: [:show, :edit, :update, :destroy]
+  before_action :redirect_cancel, only: [:edit, :create, :update]
 
   def index
     load_paged_players
     if turbo_frame_request?
       render partial: "players", locals: { players: @players, query: @query, page: @page }
+    end
+  end
+
+  def show
+    @framed = params[:framed]
+    ids = TournamentPlayer.select('distinct tournament_id').where(player_id: @player.id).map {|t| t.tournament_id}
+    if ids.present?
+      @tournaments = Tournament.where(id: ids).order('date')
     end
   end
 

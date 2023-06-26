@@ -20,6 +20,12 @@
   </div>
 
   <% if tournament.player_count > 0 %>
+
+    <% if tournament.prereg %>
+      <p>"Confirmed" is for marking pre-registered players as actually present at the tournament site.
+        It is purely a visual aid, all non-removed players will still be included in the output Archon.</p>
+    <% end %>
+
     <table class="table is-striped is-hoverable is-narrow mt-4">
       <thead>
       <tr>
@@ -28,12 +34,15 @@
         <% if tournament.decklists %>
           <th>Decklist</th>
         <% end %>
+        <% if tournament.prereg %>
+          <th>Confirmed</th>
+        <% end %>
         <th></th>
       </tr>
       </thead>
       <tbody>
-      <% tournament.tournament_players.sort_by(&:name).each do |p| %>
-        <tr>
+      <% tournament.tournament_players.each do |p| %>
+        <tr class="has-background-<%= !tournament.prereg || p.confirmed ? "success-light" : "link-light" %>">
           <td><%= p.name %></td>
           <td><%= p.vekn %></td>
           <% if tournament.decklists %>
@@ -41,6 +50,14 @@
               <%= form_with(model: p, url: toggle_decklist_tournament_player_path(p),
                             data: { controller: "form", form_target: "form" }) do |f| %>
                 <%= f.check_box :decklist, "data-action": "click->form#submit" %>
+              <% end %>
+            </td>
+          <% end %>
+          <% if tournament.prereg %>
+            <td>
+              <%= form_with(model: p, url: toggle_confirm_tournament_player_path(p),
+                            data: { controller: "form", form_target: "form" }) do |f| %>
+                <%= f.check_box :confirmed, "data-action": "click->form#submit" %>
               <% end %>
             </td>
           <% end %>

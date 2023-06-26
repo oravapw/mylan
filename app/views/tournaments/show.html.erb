@@ -96,10 +96,10 @@
         <div class="column">
           <div class="field is-grouped">
             <div class="control">
-              <%= button_to "Back", tournaments_path, method: :get, class: "button is-link is-light" %>
+              <%= button_to "Edit", edit_tournament_path(@tournament), method: :get, class: "button is-link" %>
             </div>
             <div class="control">
-              <%= button_to "Edit", edit_tournament_path(@tournament), method: :get, class: "button is-link" %>
+              <%= button_to "Back", tournaments_path, method: :get, class: "button is-link is-light" %>
             </div>
           </div>
         </div>

@@ -1,0 +1,14 @@
+<% if @framed %>
+  <div class="container">
+    <div class="columns">
+      <div class="column is-one-third" data-controller="search-form">
+        <%= render "list_box" %>
+      </div>
+      <div class="column">
+<% end %>
+<%= render "player", player: @player, query: @query, page: @page %>
+<% if @framed %>
+</div>
+</div>
+</div>
+<% end %>

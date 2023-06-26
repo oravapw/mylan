@@ -20,7 +20,7 @@
       <tbody>
       <% players.each do |p| %>
         <tr>
-          <td><%= link_to p.name, edit_player_path(p, page: page, query: query) %></td>
+          <td><%= link_to p.name, player_path(p, page: page, query: query) %></td>
           <td><%= p.vekn %></td>
           <td><%= p.country_name %></td>
           <td><%= p.created_at&.strftime("%d.%m.%Y %H:%M:%S") %></td>

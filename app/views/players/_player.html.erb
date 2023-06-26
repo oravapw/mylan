@@ -1,0 +1,44 @@
+<%= turbo_frame_tag "players" do %>
+  <h1 class="subtitle is-4"><%= player.name %></h1>
+
+  <table class="table is-narrow">
+    <tr>
+      <th>VEKN</th>
+      <td><%= player.vekn.present? ? player.vekn : '-' %></td>
+    </tr>
+    <tr>
+      <th>Country</th>
+      <td><%= player.country.present? ? player.country_name : '-' %></td>
+    </tr>
+  </table>
+
+  <%= form_with(url: edit_player_path(player), method: :get) do |f| %>
+    <%= hidden_field_tag 'page', page %>
+    <%= hidden_field_tag 'query', query %>
+    <div class="field is-grouped">
+      <div class="control">
+        <%= f.button "Edit", type: "submit", class: "button is-link" %>
+      </div>
+      <div class="control">
+        <%= f.button "Back", type: "submit", name: "cancel", value: true, class: "button is-link is-light" %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @tournaments.present? %>
+    <table class="table mt-6 is-striped is-hoverable">
+      <tr>
+        <th>Tournament</th>
+        <th>Date</th>
+      </tr>
+      <% @tournaments.each do |t| %>
+      <tr>
+        <td><%= link_to t.name, tournament_path(t), data: { "turbo-frame": "_top" } %></td>
+        <td><%= t.display_date %></td>
+      </tr>
+      <% end %>
+    </table>
+
+  <% end %>
+
+<% end %>

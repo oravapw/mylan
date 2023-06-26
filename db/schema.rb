@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_25_173832) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_26_144814) do
   create_table "changelogs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "timestamp", null: false
     t.string "change", null: false
@@ -35,6 +35,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_25_173832) do
     t.boolean "decklist", default: false, null: false
     t.bigint "player_id", null: false
     t.bigint "tournament_id", null: false
+    t.boolean "confirmed", default: false, null: false
     t.index ["tournament_id"], name: "index_tournament_players_on_tournament_id"
   end
 

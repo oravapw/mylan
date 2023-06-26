@@ -1,5 +1,6 @@
 class TournamentPlayer < ApplicationRecord
   belongs_to :tournament
+  belongs_to :player, optional: true
 
   attr_accessor :country
   attr_accessor :skip_playerid_check

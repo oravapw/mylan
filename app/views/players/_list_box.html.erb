@@ -1,0 +1,28 @@
+<h1 class="title is-4">Players</h1>
+
+<p>List of all players registered to this system. If a tournament player does not yet exist here,
+  you can either add them with the button below or via the "Add player" button on the specific
+  tournament page.</p>
+
+<%= form_with(url: players_path, method: :get,
+              data: { turbo_frame: "players", search_form_target: "form" }) do |f| %>
+  <div class="control has-icons-left mt-4">
+    <%= f.search_field :query, placeholder: "Search names and VEKN numbers", autocomplete: "off",
+                       class: "input is-link is-rounded",
+                       "data-action": "click->search-form#clear input->search-form#search"
+    %>
+    <span class="icon is-left">
+            <i class="fas fa-search"></i>
+          </span>
+  </div>
+<% end %>
+
+<div class="control mt-4">
+  <%= button_to "Add new player", new_player_path, method: :get,
+                form: { data: { turbo_frame: "players" } },
+                class: "button is-primary"
+  %>
+</div>
+
+<template id="clear_trigger"></template>
+<div id="crud_notify" class="mt-4"></div>

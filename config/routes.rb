@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   post "authenticate", to: "login#authenticate"
   post "logout", to: "login#logout"
 
-  resources :players, except: [:show]
+  resources :players
   resources :changelogs, only: [:index]
 
   resources :tournaments do
@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   resources :tournament_players, only: [:destroy] do
     member do
       patch :toggle_decklist
+      patch :toggle_confirm
     end
   end
 

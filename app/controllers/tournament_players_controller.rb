@@ -1,6 +1,6 @@
 class TournamentPlayersController < ApplicationController
 
-  before_action :load_player, only: [:destroy, :toggle_decklist]
+  before_action :load_player, only: [:destroy, :toggle_decklist, :toggle_confirm]
   before_action :load_tournament, only: [:new, :create]
 
   def new
@@ -32,16 +32,24 @@ class TournamentPlayersController < ApplicationController
       end
 
       @player.save
+      log_tournament_player_add @player
     end
   end
 
   def destroy
     @tournament = @player.tournament
     @player.destroy
+    log_tournament_player_remove @player
   end
 
   def toggle_decklist
     @player.decklist = !@player.decklist
+    @player.save!
+    render partial: "tournaments/playerlist", locals: { tournament: @player.tournament }
+  end
+
+  def toggle_confirm
+    @player.confirmed = !@player.confirmed
     @player.save!
     render partial: "tournaments/playerlist", locals: { tournament: @player.tournament }
   end
@@ -57,7 +65,7 @@ class TournamentPlayersController < ApplicationController
   end
 
   def tournament_player_params
-    params.require(:tournament_player).permit(:name, :vekn, :player_id, :decklist, :country)
+    params.require(:tournament_player).permit(:name, :vekn, :player_id, :decklist, :country, :confirmed)
   end
 
 end

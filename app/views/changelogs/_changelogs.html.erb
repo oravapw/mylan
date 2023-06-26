@@ -13,20 +13,20 @@
       <tr>
         <td style="white-space: nowrap"><%= log.timestamp&.strftime("%d.%m.%Y %H:%M:%S") %></td>
         <td><%= log.change %></td>
-        <td><%=
+        <td><span class="is-size-7"><%=
           if log.player
-            link_to 'link', player_path(log.player.id), data: { "turbo-frame": "_top" }
+            link_to log.player.name, player_path(log.player.id, framed: true), data: { "turbo-frame": "_top" }
           else
             ''
           end
-        %></td>
-        <td><%=
+        %></span></td>
+        <td><span class="is-size-7"><%=
           if log.tournament
-            link_to 'link', tournament_path(log.tournament.id), data: { "turbo-frame": "_top" }
+            link_to log.tournament.name, tournament_path(log.tournament.id), data: { "turbo-frame": "_top" }
           else
             ''
           end
-        %></td>
+        %></span></td>
       </tr>
     <% end %>
     </tbody>
