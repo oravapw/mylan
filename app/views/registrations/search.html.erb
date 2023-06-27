@@ -7,7 +7,8 @@
         <div class="control has-icons-left">
           <%= f.search_field :query, placeholder: "Enter your name or VEKN number", autocomplete: "off",
                              class: "input is-link is-rounded",
-                             "data-action": "input->search-form#search"
+                             "data-action": "input->search-form#search",
+                             "data-search-form-target": "focus"
           %>
           <span class="icon is-left">
             <i class="fas fa-search"></i>
