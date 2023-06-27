@@ -27,7 +27,7 @@
     <tr>
       <th>Registration open?</th>
       <td>
-        <% if @tournament.prereg && @tournament.prereg_end.future? %>
+        <% if @tournament.prereg_open? %>
           <span class="has-text-weight-semibold has-text-info">Yes</span>
           <span class="has-text-weight-semibold has-text-<%=
             (@tournament.prereg_end - Time.now) < 1.hour ? 'danger' : 'success'
@@ -36,8 +36,8 @@
           </span>
         <% else %>
           <span class="has-text-weight-semibold has-text-danger">No</span>
-          <% if @tournament.prereg_end.past? %>
-          (registration closed <%= distance_of_time_in_words_to_now(@tournament.prereg_end) %> ago)
+          <% if @tournament.prereg_closed? %>
+            (registration closed <%= distance_of_time_in_words_to_now(@tournament.prereg_end) %> ago)
           <% end %>
         <% end %>
       </td>
@@ -46,7 +46,7 @@
 
   <% if @tournament.prereg_info.present? %>
     <div class="card">
-      <div class="card-content has-background-white-ter">
+      <div class="card-content has-background-primary-light">
         <div class="content">
           <%= Kramdown::Document.new(@tournament.prereg_info).to_html.html_safe %>
         </div>
@@ -54,6 +54,16 @@
     </div>
   <% end %>
 
-  <p><b>Actual registration capability coming soon, working on it!</b></p>
-
+  <div class="card mt-4">
+    <div class="card-content has-background-info-light">
+      <%= turbo_frame_tag "register" do %>
+        <% if @tournament.prereg_open? %>
+          <%= button_to 'Register to this tournament', search_registration_path(@tournament), class: "button is-primary" %>
+        <% elsif @tournament.prereg_closed? %>
+          <p class="has-text-danger-dark">Registration here is now closed, please register on site.</p>
+        <% end %>
+        <%= render "playerlist", players: @tournament.tournament_players %>
+      <% end %>
+    </div>
+  </div>
 <% end %>

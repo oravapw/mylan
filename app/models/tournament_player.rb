@@ -17,4 +17,13 @@ class TournamentPlayer < ApplicationRecord
     end
   end
 
+  def country_name
+    if country.blank?
+      ''
+    else
+      c = ISO3166::Country[country]
+      c.translations[I18n.locale.to_s] || c.common_name || c.iso_short_name
+    end
+  end
+
 end

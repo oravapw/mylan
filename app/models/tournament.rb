@@ -5,7 +5,7 @@ class Tournament < ApplicationRecord
   validates :location, length: { maximum: 80 }
   validates :organizers, length: { maximum: 120 }
   validates :prereg_slug, uniqueness: true, allow_blank: true
-  validate :check_prereg, if: :preregister?
+  validate :check_prereg, if: :prereg?
 
   before_validation :initialize_prereg
 
@@ -25,8 +25,12 @@ class Tournament < ApplicationRecord
     date.present? ? date < Time.now.beginning_of_day : false
   end
 
-  def preregister?
-    prereg?
+  def prereg_open?
+    prereg? && prereg_end&.future?
+  end
+
+  def prereg_closed?
+    prereg? && prereg_end&.past?
   end
 
   def display_date

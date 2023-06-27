@@ -4,6 +4,8 @@
     <%= hidden_field_tag "tournament_id", @tournament.id %>
     <%= hidden_field_tag "create_player", "true" %>
 
+    <%= f.hidden_field :confirmed %>
+
     <% @player.errors.each do |error| %>
       <div class="notification is-danger">
         <%= error.full_message %>
@@ -18,7 +20,11 @@
     </div>
 
     <div class="field">
-      <%= f.label :vekn, class: "label" %>
+      <%= f.label :vekn, "VEKN number", class: "label" %>
+      <p>You can find this via the
+        <%= link_to "VEKN Player Registry", "https://www.vekn.net/player-registry", target: '_blank' %>, leave
+        blank if player does not have a VEKN# yet.
+      </p>
       <div class="control">
         <%= f.text_field :vekn, class: "input is-info", placeholder: "VEKN # (optional)" %>
       </div>
@@ -31,12 +37,14 @@
       </div>
     </div>
 
-    <div class="field">
-      <label class="checkbox">
-        Has decklist?
-        <%= f.check_box :decklist %>
-      </label>
-    </div>
+    <% if !@prereg %>
+      <div class="field">
+        <label class="checkbox">
+          Has decklist?
+          <%= f.check_box :decklist %>
+        </label>
+      </div>
+    <% end %>
 
     <div class="field is-grouped">
       <div class="control">

@@ -1,11 +1,13 @@
 <% basefailed = @baseplayer.present? && !@baseplayer.persisted? %>
 <% ok = @player.present? && @player.persisted? && !basefailed %>
 
-<% if @baseplayer.present? || @cancel %>
+<% if @baseplayer.present? || @cancel || @prereg %>
 
   <%= turbo_stream.update "searchresults" do %>
     <% if basefailed %>
       <%= render template: "tournament_players/new" %>
+    <% elsif @prereg %>
+      <%= render template: "registrations/done" %>
     <% else %>
       <%= render template: "tournaments/search_players" %>
     <% end %>
@@ -17,7 +19,7 @@
 
 <% end %>
 
-<% unless @cancel %>
+<% unless @cancel || @prereg %>
 
   <%= turbo_stream.prepend "crud_notify" do %>
     <% status = ok ? "success" : "danger" %>

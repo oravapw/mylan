@@ -21,7 +21,7 @@
 
   <% if tournament.player_count > 0 %>
 
-    <% if tournament.prereg %>
+    <% if tournament.prereg? %>
       <p>"Confirmed" is for marking pre-registered players as actually present at the tournament site.
         It is purely a visual aid, all non-removed players will still be included in the output Archon.</p>
     <% end %>

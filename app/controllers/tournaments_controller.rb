@@ -1,5 +1,5 @@
 class TournamentsController < ApplicationController
-  before_action :check_authorized
+  before_action :check_authorized, except: [:search_players]
   before_action :load_tournament, only: [:show, :edit, :update, :destroy,
                                          :show_players, :show_search, :search_players, :archon_csv]
   before_action :redirect_cancel, only: [:create, :update]
@@ -53,15 +53,16 @@ class TournamentsController < ApplicationController
   end
 
   def show_players
-    render partial: "playerlist", locals: { tournament: @tournament}
+    render partial: "playerlist", locals: { tournament: @tournament }
   end
 
   def show_search
-    render partial: "playersearch", locals: { tournament: @tournament}
+    render partial: "playersearch", locals: { tournament: @tournament }
   end
 
   def search_players
     query = params[:query]
+    @prereg = params[:prereg]
     @results = nil
     if query.present?
       @results = []
@@ -122,7 +123,7 @@ class TournamentsController < ApplicationController
 
   def tournament_params
     params.require(:tournament).permit(:name, :location, :organizers, :date, :decklists, :notes,
-      :prereg, :prereg_slug, :prereg_info, :prereg_end, :proxies)
+                                       :prereg, :prereg_slug, :prereg_info, :prereg_end, :proxies)
   end
 
   def redirect_cancel

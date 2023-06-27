@@ -1,24 +1,26 @@
-<%= turbo_frame_tag "players" do %>
+<%= turbo_frame_tag "register" do %>
+
   <div class="columns">
     <div class="column" data-controller="search-form">
-      <%= form_with(url: search_players_tournament_path(tournament), method: :post,
+      <%= form_with(url: search_players_tournament_path(@tournament), method: :post,
                     data: { turbo_frame: "searchresults", controller: "search-form", search_form_target: "form" }) do |f| %>
         <div class="control has-icons-left">
-          <%= f.search_field :query, placeholder: "Search for players to add", autocomplete: "off",
+          <%= f.search_field :query, placeholder: "Enter your name or VEKN number", autocomplete: "off",
                              class: "input is-link is-rounded",
-                             "data-action": "input->search-form#search",
-                             "data-search-form-target": "focus"
+                             "data-action": "input->search-form#search"
           %>
           <span class="icon is-left">
             <i class="fas fa-search"></i>
           </span>
         </div>
         <template id="clear_trigger"></template>
-    <% end %>
+        <%= hidden_field_tag 'prereg', true %>
+      <% end %>
     </div>
     <div class="column is-narrow">
       <div class="control">
-        <%= button_to "Done", show_players_tournament_path(tournament), class: "button is-link mr-2" %>
+        <%= button_to "Never mind", registration_path(@tournament.prereg_slug),
+                      method: :get, class: "button is-link mr-2", data: { "turbo-frame": "_top" } %>
       </div>
     </div>
   </div>
@@ -29,4 +31,5 @@
   </div>
 
   <template data-controller="grab-focus" data-grab-focus-selector-value="#query"></template>
+
 <% end %>

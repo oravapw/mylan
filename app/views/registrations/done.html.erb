@@ -1,0 +1,9 @@
+<% if @prereg_error %>
+  <p class="has-text-danger-dark"><%= @prereg_error %></p>
+<% else %>
+  <p><b><%= @player.name %></b> is now registered to the tournament. If you want to cancel the
+    registration, please contact the organizer(s).</p>
+<% end %>
+
+<%= button_to "Ok", registration_path(@tournament.prereg_slug),
+              method: :get, class: "button is-link mt-4", data: { "turbo-frame": "_top" } %>

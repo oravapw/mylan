@@ -6,12 +6,6 @@
 
           <p>No matching players found.</p>
 
-          <div class="control mt-4">
-            <%= button_to "Add new player", new_tournament_tournament_player_path(@tournament),
-                          method: :get, data: { turbo_frame: "searchresults" },
-                          class: "button is-primary" %>
-          </div>
-
         <% else %>
           <table class="table is-striped is-hoverable">
             <% @results.each do |result| %>
@@ -19,9 +13,13 @@
                 <td><%= result.name %></td>
                 <td><%= result.vekn %></td>
                 <td>
-                  <% unless result.added %>
+                  <% if result.added %>
+                    <% if @prereg %>
+                      <span class="has-text-primary-dark">Already registered</span>
+                    <% end %>
+                  <% else %>
                     <% player = TournamentPlayer.new(name: result.name, vekn: result.vekn,
-                                                     player_id: result.player_id, confirmed: true) %>
+                                                     player_id: result.player_id, confirmed: !@prereg) %>
                     <%= form_with(model: player, url: tournament_tournament_players_path(@tournament),
                                   data: { controller: "form", form_target: "form" }) do |f| %>
                       <%= f.hidden_field :name %>
@@ -29,7 +27,7 @@
                       <%= f.hidden_field :player_id %>
                       <%= f.hidden_field :confirmed %>
                       <div class="field is-grouped">
-                        <% if @tournament.decklists %>
+                        <% if @tournament.decklists && !@prereg %>
                           <label class="checkbox">
                             Has decklist?
                             <%= f.check_box :decklist %>
@@ -38,9 +36,13 @@
                         <div class="control">
                           <%= f.button type: "submit", class: "button is-primary has-text-black is-small py-0 ml-4",
                                        data: { action: "click->form#submitAndRemove" } do %>
+                            <% if @prereg %>
+                              <span class="has-text-weight-bold">Register me</span>
+                            <% else %>
                             <span class="icon">
                               <i class="fas fa-plus"></i>
                             </span>
+                            <% end %>
                           <% end %>
                         </div>
                       </div>
@@ -52,6 +54,15 @@
           </table>
 
         <% end %>
+
+        <div class="control mt-4">
+          <%= button_to "Create new player entry",
+                        new_tournament_tournament_player_path(@tournament),
+                        method: :get, data: { turbo_frame: "searchresults" },
+                        params: { prereg: @prereg },
+                        class: "button is-primary" %>
+        </div>
+
       <% end %>
     </div>
     <div class="column is-narrow" id="crud_notify">

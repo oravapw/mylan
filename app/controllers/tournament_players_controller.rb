@@ -4,34 +4,44 @@ class TournamentPlayersController < ApplicationController
   before_action :load_tournament, only: [:new, :create]
 
   def new
-    @player = TournamentPlayer.new
+    @prereg = (params[:prereg] == "true")
+    @player = TournamentPlayer.new(confirmed: !@prereg)
   end
 
   # this is a bit weird, since we handle multiple scenarios here and the result processing is with turbo streams
   def create
     @cancel = params[:cancel]
-    unless @cancel
-      # base functionality has us just creating  tournament-specific player and linking it in
-      @player = TournamentPlayer.new(tournament_player_params)
-      @player.tournament = @tournament
+    return if @cancel
 
-      # optionally create an "actual" player object (this is when user selects "Add new" option on search)
-      if params[:create_player] == "true"
-        @baseplayer = Player.new
-        @baseplayer.name = @player.name
-        @baseplayer.vekn = @player.vekn
-        @baseplayer.country = @player.country
-        if @baseplayer.save
-          @player.player_id = @baseplayer.id
-          log_player_create @baseplayer
-        else
-          # do not show validation errors about player_id in this scenario, since form validation uses
-          # TournamentPlayer object and not Player
-          @player.skip_playerid_check = true
-        end
+    # base functionality has us just creating  tournament-specific player and linking it in
+    @player = TournamentPlayer.new(tournament_player_params)
+    @prereg = !@player.confirmed?
+
+    if @prereg && !@tournament.prereg_open?
+      @prereg_error = @tournament.prereg_closed? ?
+                      "Registration to this tournament has closed" : "Registration to this tournament is not possible"
+      return
+    end
+
+    @player.tournament = @tournament
+
+    # optionally create an "actual" player object (this is when user selects "Add new" option on search)
+    if params[:create_player] == "true"
+      @baseplayer = Player.new
+      @baseplayer.name = @player.name
+      @baseplayer.vekn = @player.vekn
+      @baseplayer.country = @player.country
+      if @baseplayer.save
+        @player.player_id = @baseplayer.id
+        log_player_create @baseplayer
+      else
+        # do not show validation errors about player_id in this scenario, since form validation uses
+        # TournamentPlayer object and not Player
+        @player.skip_playerid_check = true
       end
+    end
 
-      @player.save
+    if @player.save
       log_tournament_player_add @player
     end
   end

@@ -24,7 +24,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :registrations, only: [:show]
+  resources :registrations, only: [:show] do
+    member do
+      post :search
+    end
+  end
 
   root "tournaments#index"
 end
