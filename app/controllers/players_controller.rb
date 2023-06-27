@@ -12,10 +12,12 @@ class PlayersController < ApplicationController
   end
 
   def show
-    @framed = params[:framed]
     ids = TournamentPlayer.select('distinct tournament_id').where(player_id: @player.id).map {|t| t.tournament_id}
     if ids.present?
       @tournaments = Tournament.where(id: ids).order('date')
+    end
+    if turbo_frame_request?
+      render partial: "player", locals: { player: @player, query: @query, page: @page }
     end
   end
 

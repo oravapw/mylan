@@ -15,7 +15,7 @@
         <td><%= log.change %></td>
         <td><span class="is-size-7"><%=
           if log.player
-            link_to log.player.name, player_path(log.player.id, framed: true), data: { "turbo-frame": "_top" }
+            link_to log.player.name, player_path(log.player.id), data: { "turbo-frame": "_top" }
           else
             ''
           end
