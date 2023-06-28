@@ -21,10 +21,13 @@
 
     <div class="field">
       <%= f.label :vekn, "VEKN number", class: "label" %>
-      <p>You can find this via the
-        <%= link_to "VEKN Player Registry", "https://www.vekn.net/player-registry", target: '_blank' %>, leave
-        blank if player does not have a VEKN# yet.
-      </p>
+      <% if @prereg %>
+        <p>Leave this blank if you do not have a VEKN number or do not know it</p>
+      <% else %>
+        <p>You can check VEKN# with the
+          <%= link_to "VEKN Player Registry", "https://www.vekn.net/player-registry", target: '_blank' %>
+        </p>
+      <% end %>
       <div class="control">
         <%= f.text_field :vekn, class: "input is-info", placeholder: "VEKN # (optional)" %>
       </div>
