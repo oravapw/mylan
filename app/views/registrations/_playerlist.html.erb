@@ -3,22 +3,59 @@
 <% else %>
   <h2 class="title is-6 mt-5"><%= players.size %> players currently registered</h2>
 
-  <table class="table is-striped is-narrow is-hoverable">
-    <thead>
-    <tr>
-      <th>#</th>
-      <th>Name</th>
-      <th>VEKN</th>
-      <th>Country</th>
-    </tr>
-    </thead>
-    <% players.each_with_index do |p, i| %>
-      <tr>
-        <th><%= i + 1 %></th>
-        <td><%= p.name %></td>
-        <td><%= p.vekn %></td>
-        <td><%= p.country_name %></td>
-      </tr>
-    <% end %>
-  </table>
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+
+        <table class="table is-striped is-narrow is-hoverable">
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>VEKN</th>
+            <th>Country</th>
+          </tr>
+          </thead>
+          <% players.each_with_index do |p, i| %>
+            <tr>
+              <th><%= i + 1 %></th>
+              <td><%= p.name %></td>
+              <td><%= p.vekn %></td>
+              <td><%= p.country_name %></td>
+            </tr>
+          <% end %>
+        </table>
+
+      </div>
+      <div class="column">
+        <% if @per_country.size > 1 %>
+
+          <table class="table is-striped is-narrow is-hoverable">
+            <thead>
+            <tr>
+              <th colspan="2">Players per country</th>
+            </tr>
+            </thead>
+            <% @per_country.each do |entry| %>
+              <% country = entry[0] %>
+              <% count = entry[1] %>
+              <tr>
+                <td>
+                  <% if country.blank? %>
+                    <em>(unknown)</em>
+                  <% else %>
+                    <%= country %>
+                  <% end %>
+                </td>
+                <td class="has-text-right"><%= count %></td>
+              </tr>
+            <% end %>
+          </table>
+
+
+        <% end %>
+      </div>
+    </div>
+  </div>
+
 <% end %>
