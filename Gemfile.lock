@@ -258,7 +258,7 @@ DEPENDENCIES
   mysql2 (~> 0.5)
   propshaft
   puma (~> 5.0)
-  rails (~> 7.0.3)
+  rails (~> 7.0.5.1)
   stimulus-rails
   turbo-rails
   tzinfo-data
