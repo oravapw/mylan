@@ -25,6 +25,9 @@ application.register("remove-alert", RemoveAlertController)
 import SearchFormController from "./search_form_controller"
 application.register("search-form", SearchFormController)
 
+import SetPageTitleController from "./set_page_title_controller"
+application.register("set-page-title", SetPageTitleController)
+
 import TimedRemoveController from "./timed_remove_controller"
 application.register("timed-remove", TimedRemoveController)
 

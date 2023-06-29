@@ -41,4 +41,8 @@
 
   <% end %>
 
+  <% if title.present? %>
+    <template data-controller="set-page-title"  data-set-page-title-title-value="<%= title %>"></template>
+  <% end %>
+
 <% end %>

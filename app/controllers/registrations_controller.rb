@@ -8,6 +8,7 @@ class RegistrationsController < ApplicationController
       return
     end
 
+    @page_title = "Registration for \"#{@tournament.name}\""
     @per_country = []
 
     if @tournament.tournament_players.present?

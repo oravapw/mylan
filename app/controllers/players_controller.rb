@@ -12,12 +12,14 @@ class PlayersController < ApplicationController
   end
 
   def show
-    ids = TournamentPlayer.select('distinct tournament_id').where(player_id: @player.id).map {|t| t.tournament_id}
+    @page_title_extra = "player \"#{@player.name}\""
+    ids = TournamentPlayer.select('distinct tournament_id').where(player_id: @player.id).map { |t| t.tournament_id }
     if ids.present?
       @tournaments = Tournament.where(id: ids).order('date')
     end
     if turbo_frame_request?
-      render partial: "player", locals: { player: @player, query: @query, page: @page }
+      render partial: "player", locals: { player: @player, query: @query, page: @page,
+                                          title: helpers.page_title(@page_title_extra) }
     end
   end
 

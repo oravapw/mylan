@@ -12,4 +12,11 @@ module ApplicationHelper
     session[:user_name].present?
   end
 
+  def page_title(extra = 'Little VTES Tournament Helper')
+    if @page_title.present?
+      @page_title
+    else
+      "Mylan: #{@page_title_extra.present? ? @page_title_extra : extra}"
+    end
+  end
 end

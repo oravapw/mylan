@@ -9,6 +9,7 @@ class TournamentsController < ApplicationController
   end
 
   def show
+    @page_title_extra = "tournament \"#{@tournament.name}\""
   end
 
   def new
