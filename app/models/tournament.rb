@@ -55,6 +55,14 @@ class Tournament < ApplicationRecord
     !self.tournament_players.empty?
   end
 
+  def has_unconfirmed_players?
+    self.tournament_players.find { |tp| !tp.confirmed? }.present?
+  end
+
+  def unconfirmed_players
+    self.tournament_players.select { |tp| !tp.confirmed? }
+  end
+
   private
 
   def check_prereg

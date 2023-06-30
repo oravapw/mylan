@@ -1,7 +1,8 @@
 class TournamentsController < ApplicationController
   before_action :check_authorized, except: [:search_players]
   before_action :load_tournament, only: [:show, :edit, :update, :destroy,
-                                         :show_players, :show_search, :search_players, :archon_csv]
+                                         :show_players, :show_search, :search_players,
+                                         :archon_csv, :unconfirmed_sheet]
   before_action :redirect_cancel, only: [:create, :update]
 
   def index
@@ -110,6 +111,11 @@ class TournamentsController < ApplicationController
         send_data csv_string, filename: "#{tname}-random.csv", type: "text/csv"
       end
     end
+  end
+
+  def unconfirmed_sheet
+    @page_title_extra = "Confirmation sheet for \"#{@tournament.name}\""
+    render layout: 'print'
   end
 
   private

@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       post :show_players
       post :show_search
       post :archon_csv
+      get :unconfirmed_sheet
     end
   end
 

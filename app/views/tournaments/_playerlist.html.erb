@@ -21,14 +21,18 @@
 
   <% if tournament.player_count > 0 %>
 
-    <% if tournament.prereg? %>
+    <% if tournament.has_unconfirmed_players? %>
       <p>"Confirmed" is for marking pre-registered players as actually present at the tournament site.
-        It is purely a visual aid, all non-removed players will still be included in the output Archon.</p>
+        It is purely a visual aid, all non-removed players will still be included in the output Archon.
+        You can also print
+        a <%= link_to 'confirmation sheet', unconfirmed_sheet_tournament_path(tournament), target: '_blank' %>
+        to help with player check-in.</p>
     <% end %>
 
     <table class="table is-striped is-hoverable is-narrow mt-4">
       <thead>
       <tr>
+        <th class="has-text-right">#</th>
         <th>Name</th>
         <th>VEKN#</th>
         <% if tournament.decklists %>
@@ -41,8 +45,9 @@
       </tr>
       </thead>
       <tbody>
-      <% tournament.tournament_players.each do |p| %>
+      <% tournament.tournament_players.each_with_index do |p, n| %>
         <tr class="has-background-<%= !tournament.prereg || p.confirmed ? "success-light" : "link-light" %>">
+          <td class="has-text-right"><%= n + 1 %></td>
           <td><%= p.name %></td>
           <td><%= p.vekn %></td>
           <% if tournament.decklists %>

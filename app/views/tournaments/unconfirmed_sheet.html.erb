@@ -1,0 +1,27 @@
+<h1 class="title is-1"><%= @tournament.name %></h1>
+<h2 class="subtitle is-3">Online registration confirmation</h2>
+
+<table class="table" style="font-size: 0.9rem">
+  <thead>
+  <tr>
+    <th>I'm here!</th>
+    <th>Name</th>
+    <th>VEKN</th>
+  </tr>
+  </thead>
+  <% @tournament.unconfirmed_players.sort_by(&:name).each do |p| %>
+    <tr>
+      <td class="has-text-centered" style="padding: 0.1em 0.75em">
+          <span class="icon">
+            <i class="fa-sharp fa-regular fa-square fa-lg"></i>
+          </span>
+      </td>
+      <td class="has-text-weight-semibold" style="padding: 0.1em 0.75em">
+        <%= p.name %>
+      </td>
+      <td style="padding: 0.1em 0.75em">
+        <%= p.vekn %>
+      </td>
+    </tr>
+  <% end %>
+</table>
