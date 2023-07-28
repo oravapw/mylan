@@ -1,3 +1,5 @@
+require 'csv'
+
 class TournamentsController < ApplicationController
   before_action :check_authorized, except: [:search_players]
   before_action :load_tournament, only: [:show, :edit, :update, :destroy,
