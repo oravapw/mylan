@@ -40,10 +40,6 @@ dbsh:
 db:
 	docker compose exec db mysql -umylan -pmylan mylan_dev
 
-# Mysql client connected to EC data dev database
-dbec:
-	docker compose exec db mysql -umylan -pmylan ecdata_dev
-
 # Mysql client connected to root
 dbroot:
 	docker compose exec db mysql -uroot -proot

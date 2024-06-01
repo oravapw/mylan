@@ -41,4 +41,3 @@
 #/config/credentials/development.key
 
 /config/credentials/production.key
-/docker-compose.yml

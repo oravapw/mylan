@@ -1,7 +1,9 @@
 # development setup with external (localhost) mysql
-
+#
+# (no real reason to run this way instead of just local Rails, except
+# to test connectivity to out-of-container mysql instance)
+#
 # Note: most credentials are in Rails credentials store, protected by master.key
-version: "3.8"
 
 services:
 

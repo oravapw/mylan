@@ -1,16 +1,28 @@
-# development setup with external (localhost) mysql
+# development setup
 
 # Note: most credentials are in Rails credentials store, protected by master.key
-version: "3.8"
 
 services:
+
+  db:
+    image: mysql:8
+    restart: always
+    volumes: 
+      - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
 
   web:
     build: .
     environment:
-      - RAILS_DB_HOST=host.docker.internal
+      - RAILS_DB_HOST=db
     volumes:
       - .:/app:cached
     working_dir: /app
     ports:
       - "3000:3000"
+    depends_on:
+      - db
+
+volumes:
+  mysql_data:
