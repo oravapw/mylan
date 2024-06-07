@@ -34,20 +34,18 @@
     </div>
 
     <div class="field">
+      <%= f.label :email, "Email address", class: "label" %>
+      <div class="control">
+        <%= f.text_field :email, class: "input is-info", placeholder: "Email (optional)" %>
+      </div>
+    </div>
+
+    <div class="field">
       <%= f.label :country, class: "label" %>
       <div class="select">
         <%= f.country_select :country, include_blank: "-", priority_countries: ["FI"], class: "input is-info" %>
       </div>
     </div>
-
-    <% if !@prereg %>
-      <div class="field">
-        <label class="checkbox">
-          Has decklist?
-          <%= f.check_box :decklist %>
-        </label>
-      </div>
-    <% end %>
 
     <div class="field is-grouped">
       <div class="control">

@@ -1,0 +1,7 @@
+<div class="card">
+  <div class="card-content has-background-primary-light">
+    <div class="content">
+      <%= Kramdown::Document.new(@tournament.prereg_info).to_html.html_safe %>
+    </div>
+  </div>
+</div>

@@ -30,6 +30,13 @@
     </div>
   </div>
 
+  <div class="field">
+    <%= f.label :email, class: "label" %>
+    <div class="control">
+      <%= f.text_field :email, class: "input is-info", placeholder: "Email address (optional)" %>
+    </div>
+  </div>
+
   <div class="field is-grouped">
     <div class="control">
       <%= f.button "Save", type: "submit", class: "button is-link" %>

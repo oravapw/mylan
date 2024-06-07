@@ -52,7 +52,7 @@ class PlayersController < ApplicationController
     if @player.save
       if changed
         log_player_update @player, oldident
-        TournamentPlayer.update_player_data(@player.id, @player.name, @player.vekn)
+        TournamentPlayer.update_player_data(@player.id, @player.name, @player.vekn, @player.email)
       end
       redirect_to players_path(page: params[:page], query: params[:query])
     else
@@ -77,7 +77,7 @@ class PlayersController < ApplicationController
   end
 
   def player_params
-    params.require(:player).permit(:name, :vekn, :country)
+    params.require(:player).permit(:name, :vekn, :country, :email)
   end
 
   def redirect_cancel

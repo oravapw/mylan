@@ -20,12 +20,11 @@ Rails.application.routes.draw do
 
   resources :tournament_players, only: [:destroy] do
     member do
-      patch :toggle_decklist
       patch :toggle_confirm
     end
   end
 
-  resources :registrations, only: [:show] do
+  resources :registrations, only: [:show, :edit, :update] do
     member do
       post :search
     end

@@ -70,6 +70,6 @@ Rails.application.configure do
 
   # Stop console complaints when running inside Docker container
   #config.web_console.whitelisted_ips = '172.20.0.0/16'
-  config.web_console.allowed_ips = [ '172.20.0.0/16', '172.19.0.0/16' ]
+  config.web_console.allowed_ips = [ '172.20.0.0/16', '172.19.0.0/16', '192.168.65.1' ]
 
 end

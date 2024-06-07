@@ -16,20 +16,16 @@
       <% end %>
 
       <table class="table is-narrow mt-4">
-        <% if @tournament.location.present? %>
-          <tr>
-            <th>Location</th>
-            <td><%= @tournament.location %></td>
-          </tr>
-        <% end %>
-        <% if @tournament.organizers.present? %>
-          <tr>
-            <th><%= "Organizer".pluralize(@tournament.organizers.count(',') + 1) %></th>
-            <td><%= @tournament.organizers %></td>
-          </tr>
-        <% end %>
         <tr>
-          <th>Deck lists?</th>
+          <th>Location</th>
+          <td><%= blank2minus(@tournament.location) %></td>
+        </tr>
+        <tr>
+          <th><%= "Organizer".pluralize(@tournament.organizers&.count(',') + 1) %></th>
+          <td><%= blank2minus(@tournament.organizers) %></td>
+        </tr>
+        <tr>
+          <th>Deck lists required?</th>
           <td><%= @tournament.decklists ? "Yes" : "No" %></td>
         </tr>
         <tr>
@@ -112,15 +108,7 @@
 
       <div id="archon_help" data-controller="toggle" data-toggle-hidden-class="is-hidden">
         <% if @tournament.has_players? %>
-          <button data-action="toggle#toggle"
-                  data-toggle-target="button"
-                  data-show-text="Show Archon help"
-                  data-hide-text="Hide Archon help"
-                  class="button is-success is-light is-small">Show Archon help
-          </button>
-          <div id="archonhelp" class="is-hidden" data-toggle-target="item">
-            <%= render 'archon_help' %>
-          </div>
+          <%= render 'archon_help' %>
         <% end %>
       </div>
 

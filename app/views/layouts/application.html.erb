@@ -57,11 +57,11 @@
           <%
             flashclass = case type
                          when "notice"
-                           "is-info"
+                           "is-info is-light"
                          when "alert"
-                           "is-warning"
+                           "is-warning is-light"
                          else
-                           "is-success"
+                           "is-success is-light"
                          end
           %>
           <div class="notification my-1 <%= flashclass %>"

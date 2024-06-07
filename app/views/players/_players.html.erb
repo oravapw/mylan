@@ -13,6 +13,7 @@
         <th>Name</th>
         <th>VEKN#</th>
         <th>Country</th>
+        <th>Email</th>
         <th>Registered</th>
         <th>Updated</th>
       </tr>
@@ -23,6 +24,7 @@
           <td><%= link_to p.name, player_path(p, page: page, query: query) %></td>
           <td><%= p.vekn %></td>
           <td><%= p.country_name %></td>
+          <td><%= p.email %></td>
           <td><%= p.created_at&.strftime("%d.%m.%Y %H:%M:%S") %></td>
           <td><%= p.updated_at != p.created_at ? p.updated_at&.strftime("%d.%m.%Y %H:%M:%S") : '' %></td>
         </tr>

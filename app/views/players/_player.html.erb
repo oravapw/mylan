@@ -4,11 +4,15 @@
   <table class="table is-narrow">
     <tr>
       <th>VEKN</th>
-      <td><%= player.vekn.present? ? player.vekn : '-' %></td>
+      <td><%= blank2minus(player.vekn) %></td>
     </tr>
     <tr>
       <th>Country</th>
-      <td><%= player.country.present? ? player.country_name : '-' %></td>
+      <td><%= blank2minus(player.country) %></td>
+    </tr>
+    <tr>
+      <th>Email</th>
+      <td><%= blank2minus(player.email) %></td>
     </tr>
   </table>
 

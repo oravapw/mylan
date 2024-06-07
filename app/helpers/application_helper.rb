@@ -3,8 +3,8 @@ module ApplicationHelper
   def navtabs
     [
       { label: "Tournaments", path: tournaments_path },
-      { label: "Players", path: players_path },
-      { label: "Changes", path: changelogs_path }
+      { label: "Players", path: players_path }
+    #      { label: "Changes", path: changelogs_path }
     ]
   end
 
@@ -18,5 +18,9 @@ module ApplicationHelper
     else
       "Mylan: #{@page_title_extra.present? ? @page_title_extra : extra}"
     end
+  end
+
+  def blank2minus(s)
+    s.present? ? s : '-'
   end
 end

@@ -29,15 +29,18 @@
         to help with player check-in.</p>
     <% end %>
 
+    <% if tournament.decklists && tournament.missing_decklist_count > 0 %>
+      <p class="pt-2"><b>Missing decklists:</b>
+        <%= tournament.missing_decklist_count %> players have not submitted deck lists yet.</p>
+    <% end %>
+
     <table class="table is-striped is-hoverable is-narrow mt-4">
       <thead>
       <tr>
         <th class="has-text-right">#</th>
         <th>Name</th>
         <th>VEKN#</th>
-        <% if tournament.decklists %>
-          <th>Decklist</th>
-        <% end %>
+        <th>Decklist</th>
         <% if tournament.prereg %>
           <th>Confirmed</th>
         <% end %>
@@ -50,14 +53,15 @@
           <td class="has-text-right"><%= n + 1 %></td>
           <td><%= p.name %></td>
           <td><%= p.vekn %></td>
-          <% if tournament.decklists %>
-            <td>
-              <%= form_with(model: p, url: toggle_decklist_tournament_player_path(p),
-                            data: { controller: "form", form_target: "form" }) do |f| %>
-                <%= f.check_box :decklist, "data-action": "click->form#submit" %>
-              <% end %>
-            </td>
-          <% end %>
+          <td>
+            <% if p.decklist.present? %>
+              <span class="icon" style="color:green">
+                <i class="fas fa-check"></i>
+              </span>
+            <% else %>
+              -
+            <% end %>
+          </td>
           <% if tournament.prereg %>
             <td>
               <%= form_with(model: p, url: toggle_confirm_tournament_player_path(p),

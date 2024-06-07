@@ -1,6 +1,6 @@
 class TournamentPlayersController < ApplicationController
 
-  before_action :load_player, only: [:destroy, :toggle_decklist, :toggle_confirm]
+  before_action :load_player, only: [:destroy, :toggle_confirm]
   before_action :load_tournament, only: [:new, :create]
 
   def new
@@ -15,11 +15,12 @@ class TournamentPlayersController < ApplicationController
 
     # base functionality has us just creating  tournament-specific player and linking it in
     @player = TournamentPlayer.new(tournament_player_params)
+    @player.generate_token!
     @prereg = !@player.confirmed?
 
     if @prereg && !@tournament.prereg_open?
       @prereg_error = @tournament.prereg_closed? ?
-                      "Registration to this tournament has closed" : "Registration to this tournament is not possible"
+                        "Registration to this tournament has closed" : "Registration to this tournament is not possible"
       return
     end
 
@@ -31,6 +32,7 @@ class TournamentPlayersController < ApplicationController
       @baseplayer.name = @player.name
       @baseplayer.vekn = @player.vekn
       @baseplayer.country = @player.country
+      @baseplayer.email = @player.email
       if @baseplayer.save
         @player.player_id = @baseplayer.id
         log_player_create @baseplayer
@@ -52,11 +54,11 @@ class TournamentPlayersController < ApplicationController
     log_tournament_player_remove @player
   end
 
-  def toggle_decklist
-    @player.decklist = !@player.decklist
-    @player.save!
-    render partial: "tournaments/playerlist", locals: { tournament: @player.tournament }
-  end
+  # def toggle_decklist
+  #   @player.decklist = !@player.decklist
+  #   @player.save!
+  #   render partial: "tournaments/playerlist", locals: { tournament: @player.tournament }
+  # end
 
   def toggle_confirm
     @player.confirmed = !@player.confirmed
@@ -75,7 +77,7 @@ class TournamentPlayersController < ApplicationController
   end
 
   def tournament_player_params
-    params.require(:tournament_player).permit(:name, :vekn, :player_id, :decklist, :country, :confirmed)
+    params.require(:tournament_player).permit(:name, :vekn, :player_id, :country, :email, :confirmed, :decklist)
   end
 
 end

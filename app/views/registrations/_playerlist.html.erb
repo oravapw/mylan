@@ -28,7 +28,7 @@
 
       </div>
       <div class="column">
-        <% if @per_country.size > 1 %>
+        <% if @per_country.present? && @per_country.size > 1 %>
 
           <table class="table is-striped is-narrow is-hoverable">
             <thead>

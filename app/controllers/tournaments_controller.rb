@@ -71,7 +71,7 @@ class TournamentsController < ApplicationController
     if query.present?
       @results = []
       Player.where("name LIKE ?", "%#{query}%").or(Player.where("vekn LIKE ?", "%#{query}%")).order(:name).find_each do |p|
-        @results << SearchResult.new(name: p.name, vekn: p.vekn, player_id: p.id)
+        @results << SearchResult.new(name: p.name, vekn: p.vekn, email: p.email, player_id: p.id)
       end
 
       # mark players already entered in this tournament

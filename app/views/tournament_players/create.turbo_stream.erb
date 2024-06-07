@@ -1,22 +1,29 @@
 <% basefailed = @baseplayer.present? && !@baseplayer.persisted? %>
 <% ok = @player.present? && @player.persisted? && !basefailed %>
 
-<% if @baseplayer.present? || @cancel || @prereg %>
-
+<% if @baseplayer.present? || @cancel %>
   <%= turbo_stream.update "searchresults" do %>
     <% if basefailed %>
       <%= render template: "tournament_players/new" %>
-    <% elsif @prereg %>
-      <%= render template: "registrations/done" %>
     <% else %>
       <%= render template: "tournaments/search_players" %>
     <% end %>
   <% end %>
+<% end %>
 
+<% if @prereg %>
+  <% if @prereg_error %>
+    <%= turbo_stream.update "searchresults" do %>
+      <%= render partial: "registrations/prereg_error" %>
+    <% end %>
+  <% else %>
+    <%= turbo_stream.update "prereg" do %>
+      <%= render template: "registrations/edit" %>
+    <% end %>
+  <% end %>
 <% end %>
 
 <% unless @cancel || @prereg %>
-
   <%= turbo_stream.prepend "crud_notify" do %>
     <% status = ok ? "success" : "danger" %>
     <div class="notification my-1 px-2 py-2 is-<%= status %>" data-controller="timed-remove"
@@ -32,7 +39,6 @@
   <% end %>
 
   <% if @player.persisted? && @player.tournament.player_count == 1 %>
-
     <%= turbo_stream.update "archon_button" do %>
       <%= render partial: "tournaments/archon_button", locals: { tournament: @player.tournament } %>
     <% end %>

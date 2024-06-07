@@ -13,6 +13,14 @@ class Tournament < ApplicationRecord
     tournament_players.size
   end
 
+  def decklist_count
+    tournament_players.select {|p| p.decklist.present? }.size
+  end
+
+  def missing_decklist_count
+    player_count - decklist_count
+  end
+
   def today?
     date.present? ? date >= Time.now.beginning_of_day && date <= Time.now.end_of_day : false
   end

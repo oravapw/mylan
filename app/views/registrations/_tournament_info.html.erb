@@ -1,0 +1,34 @@
+<table class="table is-narrow mt-4">
+  <tr>
+    <th>Location</th>
+    <td><%= blank2minus(@tournament.location) %></td>
+    <th>Deck lists required?</th>
+    <td><%= @tournament.decklists ? "Yes" : "No" %></td>
+  </tr>
+  <tr>
+    <th><%= "Organizer".pluralize(@tournament.organizers&.count(',') + 1) %></th>
+    <td><%= blank2minus(@tournament.organizers) %></td>
+    <th>Proxies allowed?</th>
+    <td><%= @tournament.proxies ? "Yes" : "No" %></td>
+  </tr>
+  <% if local_assigns[:with_prereg] %>
+    <tr>
+      <th>Registration open?</th>
+      <td>
+        <% if @tournament.prereg_open? %>
+          <span class="has-text-weight-semibold has-text-info">Yes</span>
+          <span class="has-text-weight-semibold has-text-<%=
+            (@tournament.prereg_end - Time.now) < 1.hour ? 'danger' : 'success'
+          %>">
+            (closes in <%= distance_of_time_in_words_to_now(@tournament.prereg_end) %>)
+          </span>
+        <% else %>
+          <span class="has-text-weight-semibold has-text-danger">No</span>
+          <% if @tournament.prereg_closed? %>
+            (registration closed <%= distance_of_time_in_words_to_now(@tournament.prereg_end) %> ago)
+          <% end %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>

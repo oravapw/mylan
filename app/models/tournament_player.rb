@@ -1,3 +1,5 @@
+require 'securerandom'
+
 class TournamentPlayer < ApplicationRecord
   belongs_to :tournament
   belongs_to :player, optional: true
@@ -9,10 +11,11 @@ class TournamentPlayer < ApplicationRecord
   validates :vekn, allow_blank: true, length: { is: 7 }, numericality: { only_integer: true }
   validates :player_id, presence: true, numericality: { only_integer: true }, unless: -> { skip_playerid_check }
 
-  def self.update_player_data(player_id, name, vekn)
+  def self.update_player_data(player_id, name, vekn, email)
     self.where(player_id: player_id).find_each do |p|
       p.name = name
       p.vekn = vekn unless vekn.blank?
+      p.email = email unless email.blank?
       p.save!
     end
   end
@@ -26,4 +29,7 @@ class TournamentPlayer < ApplicationRecord
     end
   end
 
+  def generate_token!
+    self.token = SecureRandom.hex(16)
+  end
 end
