@@ -47,4 +47,14 @@ class ApplicationController < ActionController::Base
                      player_id: tp.player_id)
   end
 
+  def email_enabled?
+    Rails.application.credentials.dig(:email, :enabled)
+  end
+
+  def send_registration_email(player)
+    if email_enabled? && player.email.present?
+      PlayerMailer.with(player: player, url: edit_registration_url(player.token)).register.deliver_later
+    end
+  end
+
 end

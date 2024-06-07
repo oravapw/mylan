@@ -1,0 +1,14 @@
+You are now registered for tournament "<%= @tournament.name %>"
+Tournament start: <%= @tournament.display_date %>
+
+You can edit your registration info with this link: <%= link_to @url, @url %>
+
+<% if @tournament.decklists -%>
+<% if @player.decklist.present? -%>
+This tournament requires a deck list but it looks like you already submitted one, so you're all set!
+<% else -%>
+Note: this tournament requires a deck list to be submitted before the tournament starts. Please use the above link to submit one.
+<% end -%>
+<% else -%>
+This tournament does not require a deck list, but organizers often appreciate them anyway. Feel free to add yours using the above link.
+<% end -%>

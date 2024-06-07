@@ -46,6 +46,8 @@ class TournamentPlayersController < ApplicationController
     if @player.save
       log_tournament_player_add @player
     end
+
+    send_registration_email(@player) if @prereg
   end
 
   def destroy

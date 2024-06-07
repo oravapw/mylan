@@ -12,28 +12,30 @@
   <% if can_edit %>
     <p>You can access and edit this registration info later by using this
       link: <%= link_to edit_registration_url(@player.token), edit_registration_url(@player.token) %>.
-      <% if @player.email.present? %>
+      <% if email_enabled? && @player.email.present? %>
         This link has also been emailed to you.
+      <% else %>
+        Please copy/bookmark it.
       <% end %>
     </p>
 
     <% if @tournament.decklists && @player.decklist.blank? %>
       <p class="pt-3"><span class="has-text-danger has-text-weight-bold">Note:</span> this tournament requires decklists
-        and you have
-        not submitted one yet.</p>
+        and you have not submitted one yet.</p>
     <% end %>
   <% end %>
 
   <% if can_edit || need_decklist %>
     <div class="pt-5">
-      <%= form_with method: :patch, url: registration_path(@player.token) do |f| %>
+      <%= form_with method: :patch, url: registration_path(@player.token), data: { turbo_frame: '_top' } do |f| %>
 
         <% if can_edit %>
           <div class="field">
             <%= f.label :email, "Email (optional)", class: "label" %>
             <div class="control">
               <%= f.text_field :email, class: "input is-info",
-                               placeholder: "Your email address (will be used to send registration info)",
+                               placeholder: "Your email address" +
+                                 (email_enabled? ? " (will be used to send registration info)" : ''),
                                value: @player.email %>
             </div>
           </div>

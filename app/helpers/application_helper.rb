@@ -23,4 +23,9 @@ module ApplicationHelper
   def blank2minus(s)
     s.present? ? s : '-'
   end
+
+  def email_enabled?
+    Rails.application.credentials.dig(:email, :enabled)
+  end
+
 end

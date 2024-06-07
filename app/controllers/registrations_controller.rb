@@ -26,6 +26,7 @@ class RegistrationsController < ApplicationController
   def update
     return unless init_for_token(params[:id])
     changes = []
+    email_changed = false
 
     email = params[:email]
     if email.present? && email != @player.email
@@ -35,6 +36,7 @@ class RegistrationsController < ApplicationController
         @player.player.email = email
         @player.player.save!
       end
+      email_changed = true
       changes << "Email updated"
     end
 
@@ -45,6 +47,7 @@ class RegistrationsController < ApplicationController
       changes << "Decklist updated"
     end
 
+    send_registration_email(@player) if email_changed
     flash.notice = changes.join(", ") unless changes.empty?
     redirect_to edit_registration_path(params[:id])
   end
