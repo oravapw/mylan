@@ -49,17 +49,34 @@
       </thead>
       <tbody>
       <% tournament.tournament_players.each_with_index do |p, n| %>
-        <tr class="has-background-<%= !tournament.prereg || p.confirmed ? "success-light" : "link-light" %>">
+        <tr class="has-background-<%= p.ready_to_play? ? "success-light" : "link-light" %>">
           <td class="has-text-right"><%= n + 1 %></td>
           <td><%= p.name %></td>
           <td><%= p.vekn %></td>
-          <td>
-            <% if p.decklist.present? %>
-              <span class="icon" style="color:green">
-                <i class="fas fa-check"></i>
-              </span>
+          <td class="has-text-right">
+            <% if tournament.decklists_visible? %>
+              <%= form_with(url: edit_decklist_tournament_player_path(p)) do |f| %>
+                <div class="control">
+                  <% if p.decklist.present? %>
+                    <span class="icon" style="color:green">
+                      <i class="fas fa-check"></i>
+                    </span>
+                  <% end %>
+                  <%= f.button type: "submit", class: "button is-small is-primary is-light" do %>
+                    <span class="icon" style="color: black">
+                      <i class="fas fa-solid fa-file-pen"></i>
+                    </span>
+                  <% end %>
+                </div>
+              <% end %>
             <% else %>
-              -
+              <% if p.decklist.present? %>
+                <span class="icon" style="color:green">
+                  <i class="fas fa-check"></i>
+                </span>
+              <% else %>
+                -
+              <% end %>
             <% end %>
           </td>
           <% if tournament.prereg %>

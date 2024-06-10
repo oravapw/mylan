@@ -52,12 +52,18 @@ class RegistrationsController < ApplicationController
     redirect_to edit_registration_path(params[:id])
   end
 
+  def destroy
+    return unless init_for_token(params[:id])
+    @player.destroy
+    log_tournament_player_remove @player
+  end
+
   private
 
   def init_for_token(token)
     @player = TournamentPlayer.where(token: token).first
     if @player.nil?
-      flash.alert = 'Invalid token'
+      flash.now[:alert] = 'Registration entry not found (may have been cancelled)'
       false
     else
       @tournament = @player.tournament

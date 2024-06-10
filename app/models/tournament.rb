@@ -71,6 +71,10 @@ class Tournament < ApplicationRecord
     self.tournament_players.select { |tp| !tp.confirmed? }
   end
 
+  def decklists_visible?
+    true
+  end
+
   private
 
   def check_prereg

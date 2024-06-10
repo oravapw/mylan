@@ -1,6 +1,6 @@
 class TournamentPlayersController < ApplicationController
 
-  before_action :load_player, only: [:destroy, :toggle_confirm]
+  before_action :load_player, only: [:destroy, :toggle_confirm, :edit_decklist, :update_decklist]
   before_action :load_tournament, only: [:new, :create]
 
   def new
@@ -65,6 +65,22 @@ class TournamentPlayersController < ApplicationController
   def toggle_confirm
     @player.confirmed = !@player.confirmed
     @player.save!
+    render partial: "tournaments/playerlist", locals: { tournament: @player.tournament }
+  end
+
+  def edit_decklist
+    unless @player.tournament.decklists_visible?
+      flash.now[:alert] = "Decklists for this tournament are not visible yet!"
+      render partial: "tournaments/playerlist", locals: { tournament: @player.tournament }
+    end
+  end
+
+  def update_decklist
+    decklist = params[:decklist]
+    if decklist.present? && !params[:cancel]
+      @player.decklist = decklist
+      @player.save!
+    end
     render partial: "tournaments/playerlist", locals: { tournament: @player.tournament }
   end
 

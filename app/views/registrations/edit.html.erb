@@ -1,92 +1,108 @@
 <% if @tournament.present? %>
-  <%
-    can_edit = @tournament.date >= Time.now
-    need_decklist = @tournament.decklists && @player.decklist.blank?
-  %>
+  <div data-turbo="false">
+    <%
+      can_edit = @tournament.date >= Time.now
+      need_decklist = @tournament.decklists && @player.decklist.blank?
+    %>
 
-  <h1 class="title is-4"><%= @player.name %> is registered for "<%= @tournament.name %>"</h1>
-  <h2 class="subtitle"><%= @tournament.display_date %></h2>
+    <h1 class="title is-4"><%= @player.name %> is registered for "<%= @tournament.name %>"</h1>
+    <h2 class="subtitle"><%= @tournament.display_date %></h2>
 
-  <%= render 'registrations/tournament_info' %>
+    <%= render 'registrations/tournament_info' %>
 
-  <% if can_edit %>
-    <p>You can access and edit this registration info later by using this
-      link: <%= link_to edit_registration_url(@player.token), edit_registration_url(@player.token) %>.
-      <% if email_enabled? && @player.email.present? %>
-        This link has also been emailed to you.
-      <% else %>
-        Please copy/bookmark it.
+    <% if can_edit %>
+      <p>You can access and edit this registration info later by using this
+        link: <%= link_to edit_registration_url(@player.token), edit_registration_url(@player.token) %>.
+        <% if email_enabled? && @player.email.present? %>
+          This link has also been emailed to you.
+        <% else %>
+          Please copy/bookmark it.
+        <% end %>
+      </p>
+
+      <% if @tournament.decklists && @player.decklist.blank? %>
+        <p class="pt-3"><span class="has-text-danger has-text-weight-bold">Note:</span> this tournament requires
+          decklists
+          and you have not submitted one yet.</p>
       <% end %>
-    </p>
-
-    <% if @tournament.decklists && @player.decklist.blank? %>
-      <p class="pt-3"><span class="has-text-danger has-text-weight-bold">Note:</span> this tournament requires decklists
-        and you have not submitted one yet.</p>
     <% end %>
-  <% end %>
 
-  <% if can_edit || need_decklist %>
-    <div class="pt-5">
-      <%= form_with method: :patch, url: registration_path(@player.token), data: { turbo_frame: '_top' } do |f| %>
+    <% if can_edit || need_decklist %>
+      <div class="pt-5">
+        <%= form_with method: :patch, url: registration_path(@player.token) do |f| %>
 
-        <% if can_edit %>
+          <% if can_edit %>
+            <div class="field">
+              <%= f.label :email, "Email (optional)", class: "label" %>
+              <div class="control">
+                <%= f.text_field :email, class: "input is-info",
+                                 placeholder: "Your email address" +
+                                   (email_enabled? ? " (will be used to send registration info)" : ''),
+                                 value: @player.email %>
+              </div>
+            </div>
+          <% end %>
+
           <div class="field">
-            <%= f.label :email, "Email (optional)", class: "label" %>
+            <%= f.label :decklist,
+                        @tournament.decklists? ? "Decklist (REQUIRED for this tournament)" : "Decklist (optional)",
+                        class: "label" %>
+            <p class="has-text-info is-size-6">The preferred format is text export from
+              <%= link_to "VDB", "https://vdb.im", target: '_blank' %>
+              or other tool, but handwritten is also fine.</p>
             <div class="control">
-              <%= f.text_field :email, class: "input is-info",
-                               placeholder: "Your email address" +
-                                 (email_enabled? ? " (will be used to send registration info)" : ''),
-                               value: @player.email %>
+              <%= f.text_area :decklist, class: "textarea is-info", placeholder: "Decklist in text form", rows: 10, value: @player.decklist %>
+            </div>
+          </div>
+
+          <div class="field is-grouped">
+            <div class="control">
+              <%= f.button "Save", type: "submit", class: "button is-link" %>
             </div>
           </div>
         <% end %>
+      </div>
+    <% end %>
 
-        <div class="field">
-          <%= f.label :decklist,
-                      @tournament.decklists? ? "Decklist (REQUIRED for this tournament)" : "Decklist (optional)",
-                      class: "label" %>
-          <p class="has-text-info is-size-6">The preferred format is text export from
-            <%= link_to "VDB", "https://vdb.im", target: '_blank' %>
-            or other tool, but handwritten is also fine.</p>
-          <div class="control">
-            <%= f.text_area :decklist, class: "textarea is-info", placeholder: "Decklist in text form", rows: 10, value: @player.decklist %>
+    <% if !can_edit && @player.decklist.present? %>
+      <div class="card">
+        <header class="card-header has-background-grey-lighter">
+          <p class="card-header-title">
+            Decklist (tournament has started, can no longer be edited)
+          </p>
+        </header>
+        <div class="card-content">
+          <div class="content">
+            <pre><%= @player.decklist %></pre>
           </div>
         </div>
+      </div>
 
-        <div class="field is-grouped">
-          <div class="control">
-            <%= f.button "Save", type: "submit", class: "button is-link" %>
-          </div>
-        </div>
-      <% end %>
-    </div>
-  <% end %>
+    <% end %>
 
-  <% if !can_edit && @player.decklist.present? %>
-    <div class="card">
-      <header class="card-header has-background-grey-lighter">
-        <p class="card-header-title">
-          Decklist (tournament has started, can no longer be edited)
-        </p>
-      </header>
-      <div class="card-content">
-        <div class="content">
-          <pre><%= @player.decklist %></pre>
-        </div>
+    <% if @tournament.prereg_info.present? %>
+      <h3 class="title is-5 pt-5">Additional info about the tournament</h3>
+      <%= render 'registrations/prereg_info' %>
+    <% end %>
+
+    <div class="card mt-4">
+      <div class="card-content has-background-info-light">
+        <%= render "registrations/playerlist", players: @tournament.tournament_players %>
       </div>
     </div>
 
-  <% end %>
+    <% if can_edit %>
+      <div class="field pt-4 pb-4">
+        <div class="control">
+          <%= button_to "Cancel registration", registration_path(@player.token), method: :delete,
+                        class: "button is-danger",
+                        "data-controller": "delete-confirm",
+                        "data-action": "click->delete-confirm#do",
+                        "data-delete-confirm-action-value": "cancel your registration to this tournament"
+          %>
+        </div>
+      </div>
+    <% end %>
 
-  <% if @tournament.prereg_info.present? %>
-    <h3 class="title is-5 pt-5">Additional info about the tournament</h3>
-    <%= render 'registrations/prereg_info' %>
-  <% end %>
-
-  <div class="card mt-4">
-    <div class="card-content has-background-info-light">
-      <%= render "registrations/playerlist", players: @tournament.tournament_players %>
-    </div>
   </div>
-
 <% end %>

@@ -32,4 +32,12 @@ class TournamentPlayer < ApplicationRecord
   def generate_token!
     self.token = SecureRandom.hex(16)
   end
+
+  def ready_to_play?
+    if tournament.decklists && decklist.blank?
+      false
+    else
+      !tournament.prereg || confirmed?
+    end
+  end
 end
