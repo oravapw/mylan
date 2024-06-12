@@ -4,6 +4,9 @@
 
 import { application } from "./application"
 
+import ClipboardController from "./clipboard_controller"
+application.register("clipboard", ClipboardController)
+
 import DeleteConfirmController from "./delete_confirm_controller"
 application.register("delete-confirm", DeleteConfirmController)
 

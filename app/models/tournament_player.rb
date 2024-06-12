@@ -11,6 +11,8 @@ class TournamentPlayer < ApplicationRecord
   validates :vekn, allow_blank: true, length: { is: 7 }, numericality: { only_integer: true }
   validates :player_id, presence: true, numericality: { only_integer: true }, unless: -> { skip_playerid_check }
 
+  scope :with_decklist, -> { where.not(decklist: nil) }
+
   def self.update_player_data(player_id, name, vekn, email)
     self.where(player_id: player_id).find_each do |p|
       p.name = name
@@ -39,5 +41,15 @@ class TournamentPlayer < ApplicationRecord
     else
       !tournament.prereg || confirmed?
     end
+  end
+
+  def decklist_name
+    return nil if decklist.blank?
+    re = /^\s*deck name:\s(.+)\s$/i
+    decklist.each_line do |line|
+      match = re.match(line)
+      return match[1] if match
+    end
+    nil
   end
 end

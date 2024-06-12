@@ -9,12 +9,14 @@ class Tournament < ApplicationRecord
 
   before_validation :initialize_prereg
 
+  scope :not_future, -> { where(date: ..Time.now) }
+
   def player_count
     tournament_players.size
   end
 
   def decklist_count
-    tournament_players.select {|p| p.decklist.present? }.size
+    tournament_players.select { |p| p.decklist.present? }.size
   end
 
   def missing_decklist_count
@@ -41,11 +43,13 @@ class Tournament < ApplicationRecord
     prereg? && prereg_end&.past?
   end
 
-  def display_date
+  def display_date(only_compact_date = false)
     if date.present?
-      # this used to be just a date field, so old entries will have "zero" as time, or more
-      # precisely the zero adjusted by Finnish time zone, leave those times out
-      if date.min == 0 && date.hour.between?(2,3)
+      if only_compact_date
+        date.strftime("%d.%m.%Y")
+      elsif date.min == 0 && date.hour.between?(2, 3)
+        # this used to be just a date field, so old entries will have "zero" as time, or more
+        # precisely the zero adjusted by Finnish time zone, leave those times out
         date.strftime("%a %d.%m.%Y")
       else
         date.strftime("%a %d.%m.%Y (%H:%M)")

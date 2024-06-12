@@ -32,5 +32,11 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :decklists, only: [:index, :show] do
+    member do
+      get :tournament_index
+    end
+  end
+
   root "tournaments#index"
 end

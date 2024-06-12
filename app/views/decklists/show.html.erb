@@ -1,0 +1,30 @@
+<%= turbo_frame_tag "decklist" do %>
+  <h2 class="title is-5">Decklist for <%= @player.name %></h2>
+
+  <div data-controller="clipboard">
+
+    <div class="field is-grouped">
+      <div class="control">
+        <button type="button"
+                class="button is-info is-light is-small">
+          <span>Download</span>
+          <span class="icon">
+            <i class="fas fa-solid fa-file-arrow-down"></i>
+          </span>
+        </button>
+      </div>
+      <div class="control">
+        <button type="button"
+                data-action="clipboard#copy"
+                class="button is-success is-light is-small">
+          <span>Copy to clipboard</span>
+          <span class="icon">
+            <i class="fas fa-regular fa-copy"></i>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <pre data-clipboard-target="source"><%= @player.decklist %></pre>
+  </div>
+<% end %>
