@@ -21,12 +21,7 @@ Bundler.require(*Rails.groups)
 module Mylan
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.1
-
-    # Please, add to the `ignore` list any other `lib` subdirectories that do
-    # not contain `.rb` files, or that should not be reloaded or eager loaded.
-    # Common ones are `templates`, `generators`, or `middleware`, for example.
-    config.autoload_lib(ignore: %w(assets tasks))
+    config.load_defaults 7.0
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -42,5 +37,6 @@ module Mylan
     # time zone from credentials
     tz = Rails.application.credentials.dig(:time_zone)
     config.time_zone = tz if tz.present?
+
   end
 end
