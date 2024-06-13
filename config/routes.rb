@@ -35,6 +35,9 @@ Rails.application.routes.draw do
   resources :decklists, only: [:index, :show] do
     member do
       get :tournament_index
+      post :download
+      post :download_combined
+      post :download_zip
     end
   end
 

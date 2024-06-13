@@ -52,4 +52,10 @@ class TournamentPlayer < ApplicationRecord
     end
     nil
   end
+
+  def decklist_filename(counter = nil)
+    nameslug = name.strip.gsub(/\W/, '_').downcase
+    c = counter.nil? ? '' : "_#{'%02d' % counter}"
+    "decklist_#{tournament.generate_slug}#{c}_#{nameslug}.txt"
+  end
 end

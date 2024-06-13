@@ -77,3 +77,4 @@ end
 gem "kaminari"
 gem 'country_select', '~> 6.0'
 gem "kramdown"
+gem "rubyzip", "~> 2.3.0"

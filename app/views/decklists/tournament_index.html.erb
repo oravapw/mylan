@@ -1,6 +1,29 @@
 <%= turbo_frame_tag "index" do %>
   <h1 class="title is-4">Decklists for <%= @tournament.name %></h1>
 
+  <div class="field is-grouped">
+    <div class="control">
+      <%= button_to download_zip_decklist_path(@tournament),
+                    class: "button is-info is-light is-small",
+                    data: { turbo: false } do %>
+        <span>Download all as zip</span>
+        <span class="icon">
+            <i class="fas fa-solid fa-file-arrow-down"></i>
+          </span>
+      <% end %>
+    </div>
+    <div class="control">
+      <%= button_to download_combined_decklist_path(@tournament),
+                    class: "button is-info is-light is-small",
+                    data: { turbo: false } do %>
+        <span>Download all as text</span>
+        <span class="icon">
+            <i class="fas fa-solid fa-file-arrow-down"></i>
+          </span>
+      <% end %>
+    </div>
+  </div>
+
   <ol class="pl-2">
     <% @players.each do |p| %>
       <%

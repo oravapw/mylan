@@ -76,7 +76,11 @@ class Tournament < ApplicationRecord
   end
 
   def decklists_visible?
-    true
+    date < Time.now
+  end
+
+  def generate_slug
+    name.strip.gsub(/\W/, '_').downcase
   end
 
   private
@@ -102,7 +106,7 @@ class Tournament < ApplicationRecord
 
     # set prereg slug from name if it is not set
     if prereg_slug.blank? && name.present?
-      self.prereg_slug = name.strip.gsub(/\W/, '_').downcase
+      self.prereg_slug = generate_slug
     end
 
     # set prereg end to be one hour before tournament start, if null
