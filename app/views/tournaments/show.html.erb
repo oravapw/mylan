@@ -45,7 +45,7 @@
       </table>
 
       <% if @tournament.prereg_slug.present? %>
-        <div class="card">
+        <div class="card" data-turbo="false">
           <div class="card-content has-background-white-ter">
             <div class="content">
               Public registration page is at<br/>
@@ -59,7 +59,7 @@
       <% end %>
 
       <% if @tournament.notes.present? %>
-        <div class="card">
+        <div class="card" data-turbo="false">
           <header class="card-header has-background-grey-lighter">
             <p class="card-header-title">
               Notes (not public)
@@ -67,14 +67,14 @@
           </header>
           <div class="card-content">
             <div class="content">
-              <%= Kramdown::Document.new(@tournament.notes).to_html.html_safe %>
+              <%= @tournament.notes_as_html %>
             </div>
           </div>
         </div>
       <% end %>
 
       <% if @tournament.prereg_info.present? %>
-        <div class="card">
+        <div class="card" data-turbo="false">
           <header class="card-header has-background-grey-lighter">
             <p class="card-header-title">
               Pre-registration info
@@ -82,7 +82,7 @@
           </header>
           <div class="card-content">
             <div class="content">
-              <%= Kramdown::Document.new(@tournament.prereg_info).to_html.html_safe %>
+              <%= @tournament.prereg_info_as_html %>
             </div>
           </div>
         </div>

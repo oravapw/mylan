@@ -83,7 +83,26 @@ class Tournament < ApplicationRecord
     name.strip.gsub(/\W/, '_').downcase
   end
 
+  def notes_as_html
+    Kramdown::Document.new(notes).to_html.html_safe
+  end
+
+  def prereg_info_as_html
+    kramdoc2html Kramdown::Document.new(prereg_info)
+  end
+
+  class MyHtmlConverter < Kramdown::Converter::Html
+    def convert_a(el, indent)
+      format_as_span_html("a", el.attr.merge('target': '_blank'), inner(el, indent))
+    end
+  end
+
   private
+
+  def kramdoc2html(doc)
+    html, _ = MyHtmlConverter.convert(doc.root, {})
+    html.html_safe
+  end
 
   def check_prereg
     if prereg_slug.blank?
@@ -114,4 +133,5 @@ class Tournament < ApplicationRecord
       self.prereg_end = date - 1.hour
     end
   end
+
 end
