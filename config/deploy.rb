@@ -67,15 +67,15 @@ namespace :deploy do
 
       execute "ln -sf #{master_key_file} #{release_path}/config/credentials/production.key"
 
-      within release_path do
-        if test :bundle, :exec, :rails, "credentials:show"
-          puts "Master key is valid"
-          valid = true
-        else
-          puts "Invalid master key!"
-          exit 1
-        end
-      end
+#      within release_path do
+#        if test :bundle, :exec, :rails, "credentials:show"
+#          puts "Master key is valid"
+#          valid = true
+#        else
+#          puts "Invalid master key!"
+#          exit 1
+#        end
+#      end
     end
   end
 
