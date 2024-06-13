@@ -84,7 +84,7 @@ class Tournament < ApplicationRecord
   end
 
   def notes_as_html
-    Kramdown::Document.new(notes).to_html.html_safe
+    kramdoc2html Kramdown::Document.new(notes)
   end
 
   def prereg_info_as_html
