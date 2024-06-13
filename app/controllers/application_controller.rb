@@ -1,7 +1,5 @@
 class ApplicationController < ActionController::Base
 
-  skip_forgery_protection
-
   def check_authorized
     redirect_to login_path unless helpers.logged_in?
   end
