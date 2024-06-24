@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: players
+#
+#  id         :bigint           not null, primary key
+#  country    :string(2)
+#  email      :string(255)
+#  name       :string(40)       not null
+#  vekn       :string(7)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+# Indexes
+#
+#  index_players_on_vekn  (vekn) UNIQUE
+#
 class Player < ApplicationRecord
   before_validation :normalize_fields
 

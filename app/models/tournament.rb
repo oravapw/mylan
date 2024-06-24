@@ -1,3 +1,27 @@
+# == Schema Information
+#
+# Table name: tournaments
+#
+#  id          :bigint           not null, primary key
+#  date        :datetime
+#  decklists   :boolean          default(FALSE), not null
+#  location    :string(80)
+#  name        :string(40)       not null
+#  notes       :text(65535)
+#  organizers  :string(120)
+#  prereg      :boolean          default(FALSE), not null
+#  prereg_end  :datetime
+#  prereg_info :text(65535)
+#  prereg_slug :string(255)
+#  proxies     :boolean          default(FALSE), not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+# Indexes
+#
+#  index_tournaments_on_name         (name) UNIQUE
+#  index_tournaments_on_prereg_slug  (prereg_slug) UNIQUE
+#
 class Tournament < ApplicationRecord
   has_many :tournament_players
 

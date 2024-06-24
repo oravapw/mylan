@@ -1,3 +1,22 @@
+# == Schema Information
+#
+# Table name: tournament_players
+#
+#  id            :bigint           not null, primary key
+#  confirmed     :boolean          default(FALSE), not null
+#  decklist      :text(65535)
+#  email         :string(255)
+#  name          :string(40)       not null
+#  token         :string(255)
+#  vekn          :string(7)
+#  player_id     :bigint           not null
+#  tournament_id :bigint           not null
+#
+# Indexes
+#
+#  index_tournament_players_on_token          (token) UNIQUE
+#  index_tournament_players_on_tournament_id  (tournament_id)
+#
 require 'securerandom'
 
 class TournamentPlayer < ApplicationRecord
