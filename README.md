@@ -75,8 +75,7 @@ production. You can skip this step if only running in development
 mode. Production deployment setup via Capistrano is included in the
 source, but I am not going to be documenting that here.
 
-
-## Future plans
+## Future plans / TODO
 
 This app, like most, is a work in progress. Things I may
 implement/change when I have time include:
@@ -85,3 +84,4 @@ implement/change when I have time include:
 - move away from Rails credential storage to .env (more convenient in most situations imho)
 - figure out a production setup with docker (compose), Capistrano can be a bit fragile
 - update to latest Rails (7.1.x as of this writing)
+- add some Capybara tests for the UI (yes, this should have been in at the beginning, but wasn't due to the original use case and timetable)
