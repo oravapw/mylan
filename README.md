@@ -1,11 +1,10 @@
 # README
 
 Mylan is a VTES tournament organization helper, covering registration
-both beforehand (work in progress) and on site, and generating input
-for Archon when all players are registered. Actual tournament score
-tracking is done via Archon as normal, this app is intended for
-generating the initial filled-in Archon spreadsheet as easily as
-possible.
+both beforehand and on site, and generating input for Archon when all
+players are registered. Actual tournament score tracking is done via
+Archon as normal, this app is intended for generating the initial
+filled-in Archon spreadsheet as easily as possible.
 
 This was originally a specialized one-off app for managing EC2020
 registration and tournaments, but is now being changed into a more
@@ -17,16 +16,13 @@ I don't expect other people to find much use for this source code at
 the moment, but in case you want to try it out for whatever reason,
 read on.
 
-Builts with Rails 7, with support for local develoment with Docker
-Compose (with either mysql running in Docker or an external mysql
-running on localhost) and production deploy with Capistrano. By
-default developent database data is stored in a named Docker data
-volume, app code is mounted from current dir for easy development.
+Built with Rails 7, with support for local develoment with Docker
+Compose (with mysql also running in Docker) and production deploy with
+Capistrano. Default developent database data is stored in a named
+Docker data volume, app code is mounted from current dir for easy
+development.
 
-## Quick setup for development
-
-This assumes you want to use the Docker-embedded mysql version, which
-is the easiest way to get started.
+## Quick setup for development with Docker
 
 1. "bundle install; yarn install"
 
@@ -59,7 +55,7 @@ on-the-fly compilation of CSS and Javascript when those change.
 screen. Type in login credentials (see below), and you should see the
 main overview tab.
 
-## Credentials
+## Credentials management
 
 To see credentials, run "rails credentials:edit --environment
 development". This will display the development credentials settings,
@@ -76,6 +72,16 @@ new credentials file, with newly generated secret key base. Copy over
 the configuration from the development configuration (except
 secret_key_base), and change credentials to something suitable for
 production. You can skip this step if only running in development
-mode. Production deployment via Capistrano is included here, but I am
-not going to be covering that here.
+mode. Production deployment setup via Capistrano is included in the
+source, but I am not going to be documenting that here.
 
+
+## Future plans
+
+This app, like most, is a work in progress. Things I may
+implement/change when I have time include:
+
+- support for actual user accounts (and possibly user groups), instead of just one shared "admin" account.
+- move away from Rails credential storage to .env (more convenient in most situations imho)
+- figure out a production setup with docker (compose), Capistrano can be a bit fragile
+- update to latest Rails (7.1.x as of this writing)
