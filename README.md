@@ -8,7 +8,7 @@ filled-in Archon spreadsheet as easily as possible.
 
 This was originally a specialized one-off app for managing EC2020
 registration and tournaments, but is now being changed into a more
-general tool.  Access control is currenty a single username + password
+general tool.  Access control is currently a single username + password
 pair, all tournament judges will use the same access credentials. I
 may add proper user accounts later, we'll see.
 
@@ -16,9 +16,9 @@ I don't expect other people to find much use for this source code at
 the moment, but in case you want to try it out for whatever reason,
 read on.
 
-Built with Rails 7, with support for local develoment with Docker
+Built with Rails 7, with support for local development with Docker
 Compose (with mysql also running in Docker) and production deploy with
-Capistrano. Default developent database data is stored in a named
+Capistrano. Default development database data is stored in a named
 Docker data volume, app code is mounted from current dir for easy
 development.
 
@@ -31,7 +31,7 @@ development.
 3. Run "docker compose up", this should start up the web and db
 containers. Mariadb will create a new empty database on first run.
 
-3. Once Docker Compose has started up everything, run "make dbroot"
+4. Once Docker Compose has started up everything, run "make dbroot"
 and then run the following SQL (this sets up according to development
 credentials as shown in step 1).
 
@@ -42,16 +42,16 @@ CREATE USER mylan@'%' IDENTIFIED BY 'mylan';
 GRANT ALL ON *.* TO mylan@'%';
 ```
 
-4. Run "make migrate". If everything is set up correctly, this should
+5. Run "make migrate". If everything is set up correctly, this should
 connect to the web container and run "rake db:migrate" there,
 connecting to the database in the "db" container.
 
-5. Shut down the docker compose instance.
+6. Shut down the docker compose instance.
 
-8. Run "./bin/dev". This (re)starts docker compose along with
+7. Run "./bin/dev". This (re)starts docker compose along with
 on-the-fly compilation of CSS and Javascript when those change.
 
-9. Connect to localhost:3000, where you should see the app login
+8. Connect to localhost:3000, where you should see the app login
 screen. Type in login credentials (see below), and you should see the
 main overview tab.
 
@@ -85,3 +85,4 @@ implement/change when I have time include:
 - figure out a production setup with docker (compose), Capistrano can be a bit fragile
 - update to latest Rails (7.1.x as of this writing)
 - add some Capybara tests for the UI (yes, this should have been in at the beginning, but wasn't due to the original use case and timetable)
+- add button to (re)send registration email to a player (on tournament player list view)
