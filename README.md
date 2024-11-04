@@ -85,4 +85,3 @@ implement/change when I have time include:
 - figure out a production setup with docker (compose), Capistrano can be a bit fragile
 - update to latest Rails (7.1.x as of this writing)
 - add some Capybara tests for the UI (yes, this should have been in at the beginning, but wasn't due to the original use case and timetable)
-- add button to (re)send registration email to a player (on tournament player list view)
