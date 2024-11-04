@@ -132,7 +132,8 @@ class TournamentsController < ApplicationController
 
   def tournament_params
     params.require(:tournament).permit(:name, :location, :organizers, :date, :decklists, :notes,
-                                       :prereg, :prereg_slug, :prereg_info, :prereg_end, :proxies)
+                                       :prereg, :prereg_slug, :prereg_info, :prereg_end, :proxies,
+                                       :decklist_delay)
   end
 
   def redirect_cancel

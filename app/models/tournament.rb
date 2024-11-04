@@ -2,20 +2,21 @@
 #
 # Table name: tournaments
 #
-#  id          :bigint           not null, primary key
-#  date        :datetime
-#  decklists   :boolean          default(FALSE), not null
-#  location    :string(80)
-#  name        :string(40)       not null
-#  notes       :text(65535)
-#  organizers  :string(120)
-#  prereg      :boolean          default(FALSE), not null
-#  prereg_end  :datetime
-#  prereg_info :text(65535)
-#  prereg_slug :string(255)
-#  proxies     :boolean          default(FALSE), not null
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  id             :bigint           not null, primary key
+#  date           :datetime
+#  decklist_delay :integer          default(0), not null
+#  decklists      :boolean          default(FALSE), not null
+#  location       :string(80)
+#  name           :string(40)       not null
+#  notes          :text(65535)
+#  organizers     :string(120)
+#  prereg         :boolean          default(FALSE), not null
+#  prereg_end     :datetime
+#  prereg_info    :text(65535)
+#  prereg_slug    :string(255)
+#  proxies        :boolean          default(FALSE), not null
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
 #
 # Indexes
 #
@@ -100,7 +101,11 @@ class Tournament < ApplicationRecord
   end
 
   def decklists_visible?
-    date < Time.now
+    date.present? && date.advance(minutes: decklist_delay) < Time.now
+  end
+
+  def started?
+    date.present? && date < Time.now
   end
 
   def generate_slug

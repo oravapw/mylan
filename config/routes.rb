@@ -23,6 +23,7 @@ Rails.application.routes.draw do
       patch :toggle_confirm
       post :edit_decklist
       patch :update_decklist
+      post :resend_link
     end
   end
 

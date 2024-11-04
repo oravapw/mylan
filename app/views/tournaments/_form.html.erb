@@ -1,7 +1,6 @@
 <%= form_with(model: tournament, data: {
   controller: "flatpickr"
 }) do |f| %>
-
   <% tournament.errors.each do |error| %>
     <div class="notification is-danger">
       <%= error.full_message %>
@@ -18,7 +17,7 @@
   <div class="field">
     <%= f.label :date, "Date and start time", class: "label" %>
     <div class="control">
-      <%= f.datetime_field :date, class: "input is-info tournament-start" %>
+      <%= f.datetime_field :date, class: "input is-info tournament-start", disabled: tournament.started? %>
     </div>
   </div>
 
@@ -27,6 +26,16 @@
       <%= f.check_box :decklists %>
       Decklists are required
     </label>
+  </div>
+
+  <div class="field">
+    <%= f.label :decklist_delay, "Decklists viewable", class: "label" %>
+    <div class="control">
+      <div class="select is-info">
+        <% opts = [0, 30, 60, 120, 180, 240, 300, 360, 420, 480, 540].map { |m| [decklist_delay_text(m), m] } %>
+        <%= f.select :decklist_delay, opts, {}, disabled: tournament.started? %>
+      </div>
+    </div>
   </div>
 
   <div class="field">
@@ -59,7 +68,7 @@
 
   <div class="field">
     <label class="checkbox">
-      <%= f.check_box :prereg %>
+      <%= f.check_box :prereg, disabled: tournament.started? %>
       Pre-registration is possible
     </label>
   </div>
@@ -68,7 +77,7 @@
     <%= f.label :prereg_end, "Pre-registration closing time", class: "label" %>
     <p class="has-text-info is-size-7">(automatically set to one hour before tournament start if left blank)</p>
     <div class="control">
-      <%= f.datetime_field :prereg_end, class: "input is-info tournament-start" %>
+      <%= f.datetime_field :prereg_end, class: "input is-info tournament-start", disabled: tournament.started? %>
     </div>
   </div>
 

@@ -34,6 +34,8 @@
         <%= tournament.missing_decklist_count %> players have not submitted deck lists yet.</p>
     <% end %>
 
+    <div id="playerlist_info" class="has-text-info"></div>
+
     <table class="table is-striped is-hoverable is-narrow mt-4">
       <thead>
       <tr>
@@ -42,7 +44,7 @@
         <th>VEKN#</th>
         <th>Decklist</th>
         <% if tournament.prereg %>
-          <th>Confirmed</th>
+          <th colspan="2">Confirmed</th>
         <% end %>
         <th></th>
       </tr>
@@ -84,6 +86,17 @@
               <%= form_with(model: p, url: toggle_confirm_tournament_player_path(p),
                             data: { controller: "form", form_target: "form" }) do |f| %>
                 <%= f.check_box :confirmed, "data-action": "click->form#submit" %>
+              <% end %>
+            </td>
+            <td>
+              <% if email_enabled? && p.token.present? && p.email.present? %>
+                <%= form_with(url: resend_link_tournament_player_path(p)) do |f| %>
+                  <div class="control">
+                    <%= f.button type: "submit", class: "button is-info is-small" do %>
+                      Resend registration link
+                    <% end %>
+                  </div>
+                <% end %>
               <% end %>
             </td>
           <% end %>

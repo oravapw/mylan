@@ -8,17 +8,17 @@
 
       <li>Generate randomized CSV using button above (will download file).</li>
 
-      <li>Open the downloaded CVS file with your spreadsheet app:</li>
-      <ul>
-        <li class="mt-2"><b>LibreOffice</b>: open CSV file normally, make sure that the import dialog sets the
-          correct character set (Unicode UTF-8).
-        </li>
-        <li class="my-2"><b>Excel</b>: opening the file normally will probably use wrong character set and
-          your Scandinavian characters etc will be messed up. Instead, do this:
-          use import function in "Data" tab, import "from text" (selecting the CSV file),
-          and choose UTF-8 encoding.
-        </li>
-      </ul>
+      <li>Open the downloaded CVS file with your spreadsheet app:
+        <ul>
+          <li class="mt-2"><b>LibreOffice</b>: open CSV file normally, make sure that the import dialog sets the
+            correct character set (Unicode UTF-8).
+          </li>
+          <li class="my-2"><b>Excel</b>: <%= link_to 'import the CSV into Excel',
+                                                     'https://support.microsoft.com/en-us/office/import-or-export-text-txt-or-csv-files-5250ac4c-663c-47ce-937b-339e391393ba',
+                                                     target: '_blank' %>
+          </li>
+        </ul>
+      </li>
 
       <li>Cut-paste contents into Archon "Methuselahs" tab player list.</li>
 

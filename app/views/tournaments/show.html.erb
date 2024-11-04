@@ -5,12 +5,17 @@
       <h1 class="title is-4"><%= @tournament.name %></h1>
       <% if @tournament.date.present? %>
         <h2 class="subtitle">
+          <%= @tournament.display_date %>,
           <% if @tournament.date.today? %>
-            <%= @tournament.display_date %>, <span class="has-text-danger-dark">today</span>
+            <% if @tournament.started? %>
+              <span class="has-text-success-dark">started</span>
+            <% else %>
+              <span class="has-text-danger-dark">today</span>
+            <% end %>
           <% elsif @tournament.date.future? %>
-            <%= @tournament.display_date %>, <%= distance_of_time_in_words_to_now(@tournament.date) %> from now
+            <%= distance_of_time_in_words_to_now(@tournament.date) %> from now
           <% else %>
-            <%= @tournament.display_date %>, <%= distance_of_time_in_words_to_now(@tournament.date) %> ago
+            <%= distance_of_time_in_words_to_now(@tournament.date) %> ago
           <% end %>
         </h2>
       <% end %>
@@ -27,6 +32,10 @@
         <tr>
           <th>Deck lists required?</th>
           <td><%= @tournament.decklists ? "Yes" : "No" %></td>
+        </tr>
+        <tr>
+          <th>Deck lists viewable</th>
+          <td><%= decklist_delay_text(@tournament.decklist_delay) %></td>
         </tr>
         <tr>
           <th>Proxies allowed?</th>

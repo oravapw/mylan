@@ -52,7 +52,7 @@ class ApplicationController < ActionController::Base
   end
 
   def send_registration_email(player)
-    if email_enabled? && player.email.present?
+    if email_enabled? && player.email.present? && player.token.present?
       PlayerMailer.with(player: player, url: edit_registration_url(player.token)).register.deliver_later
     end
   end

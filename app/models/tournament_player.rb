@@ -62,6 +62,14 @@ class TournamentPlayer < ApplicationRecord
     end
   end
 
+  def first_name
+    name.split(' ').first
+  end
+
+  def last_name
+    name.split(' ').last
+  end
+
   def decklist_name
     return nil if decklist.blank?
     re = /^\s*deck name:\s(.+)\s$/i

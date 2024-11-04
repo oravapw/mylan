@@ -10,6 +10,7 @@ class DecklistsController < ApplicationController
                              .merge(TournamentPlayer.with_decklist)
                              .order("date desc", :name)
                              .distinct
+                             .select { |t| t.decklists_visible? }
     @tournament_players = TournamentPlayer.group(:tournament_id).count
   end
 

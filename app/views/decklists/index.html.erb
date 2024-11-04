@@ -4,7 +4,7 @@
       <%= turbo_frame_tag "index" do %>
         <h1 class="title is-4">Decklists</h1>
 
-        <p>Decklists are only visible here when their tournament has started.</p>
+        <p>Decklists are only visible here a specified time after their tournament has started.</p>
 
         <% if @tournaments.empty? %>
           <p class="pt-4">

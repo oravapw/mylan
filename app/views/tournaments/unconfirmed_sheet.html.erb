@@ -9,7 +9,7 @@
     <th>VEKN</th>
   </tr>
   </thead>
-  <% @tournament.unconfirmed_players.sort_by(&:name).each do |p| %>
+  <% @tournament.unconfirmed_players.sort_by { |p| [p.last_name, p.first_name] }.each do |p| %>
     <tr>
       <td class="has-text-centered" style="padding: 0.1em 0.75em">
           <span class="icon">

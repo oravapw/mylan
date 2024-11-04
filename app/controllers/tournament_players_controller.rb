@@ -1,6 +1,6 @@
 class TournamentPlayersController < ApplicationController
 
-  before_action :load_player, only: [:destroy, :toggle_confirm, :edit_decklist, :update_decklist]
+  before_action :load_player, only: [:destroy, :toggle_confirm, :edit_decklist, :update_decklist, :resend_link]
   before_action :load_tournament, only: [:new, :create]
 
   def new
@@ -56,11 +56,9 @@ class TournamentPlayersController < ApplicationController
     log_tournament_player_remove @player
   end
 
-  # def toggle_decklist
-  #   @player.decklist = !@player.decklist
-  #   @player.save!
-  #   render partial: "tournaments/playerlist", locals: { tournament: @player.tournament }
-  # end
+  def resend_link
+    send_registration_email(@player)
+  end
 
   def toggle_confirm
     @player.confirmed = !@player.confirmed
