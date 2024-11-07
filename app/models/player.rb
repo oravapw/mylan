@@ -31,13 +31,14 @@ class Player < ApplicationRecord
   end
 
   def identifier
-    "#{name} / #{vekn} / #{country}"
+    "#{name} / #{vekn} / #{country} / #{email}"
   end
 
   def normalize_fields
     self.name = name.blank? ? nil : name.strip
     self.vekn = vekn.blank? ? nil : vekn.strip.gsub(/\D/, '')
     self.country = country.blank? ? nil : country.strip
+    self.email = email.blank? ? nil : email.strip
   end
 
 end

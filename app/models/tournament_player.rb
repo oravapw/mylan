@@ -20,6 +20,8 @@
 require 'securerandom'
 
 class TournamentPlayer < ApplicationRecord
+  before_validation :normalize_fields
+
   belongs_to :tournament
   belongs_to :player, optional: true
 
@@ -85,4 +87,11 @@ class TournamentPlayer < ApplicationRecord
     c = counter.nil? ? '' : "_#{'%02d' % counter}"
     "decklist_#{tournament.generate_slug}#{c}_#{nameslug}.txt"
   end
+
+  def normalize_fields
+    self.name = name.blank? ? nil : name.strip
+    self.vekn = vekn.blank? ? nil : vekn.strip.gsub(/\D/, '')
+    self.email = email.blank? ? nil : email.strip
+  end
+
 end
