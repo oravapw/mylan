@@ -5,7 +5,7 @@ set :application,       "mylan"
 set :repo_url,          "git@github.com:oravapw/mylan.git"
 set :deploy_to,         "/usr/local/webapps/capistrano/mylan"
 set :rvm_type,          :user
-set :rvm_ruby_version,  "3.1.2@mylan"
+set :rvm_ruby_version,  "3.3.6@mylan"
 set :branch,            "main"
 set :deploy_user,       "rails"
 append :linked_dirs,    "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
