@@ -2,7 +2,9 @@
 
 # stage 1: build gems
 
-FROM ruby:3.1.2-alpine AS build-base
+ARG RUBY_VERSION=3.3.6
+
+FROM ruby:$RUBY_VERSION-alpine AS build-base
 
 ARG APP_DIR=/app
 
@@ -23,7 +25,7 @@ RUN gem update --system && \
 
 # stage 2: development environment
 
-FROM ruby:3.1.2-alpine
+FROM ruby:$RUBY_VERSION-alpine
 
 ARG APP_DIR=/app
 
