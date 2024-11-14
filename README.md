@@ -183,9 +183,8 @@ to your Docker Hub repo.
 
 ## Future plans / TODO
 
-There are guarantees that any of these will happen :)
+There are no guarantees that any of these will actually happen :)
 
-- support for actual user accounts (and possibly user groups), instead of just one shared "admin" account.
-- add some Capybara tests for the UI (yes, this should have been in at the beginning, but wasn't due to the original use case and timetable)
-- update CSS to Bulma 1.x. A drop-in replacement broke everything, so this probablt needs a bit of tinkering.
-
+- Support for actual user accounts (and possibly user groups), instead of just one shared "admin" account. This would be quite a bit of work.
+- Add some Capybara tests for the UI (yes, this should have been in at the beginning, but wasn't due to the original use case and timetable).
+- Update CSS to Bulma 1.x. A drop-in replacement attempt broke everything, so this probably needs a bit of tinkering.
