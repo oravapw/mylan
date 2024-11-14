@@ -1,4 +1,4 @@
-require 'zip'
+require "zip"
 
 class DecklistsController < ApplicationController
   before_action :check_authorized
@@ -36,17 +36,17 @@ class DecklistsController < ApplicationController
 
   def download
     player = TournamentPlayer.find(params[:id])
-    send_data player.decklist, filename: player.decklist_filename, type: 'text/plain'
+    send_data player.decklist, filename: player.decklist_filename, type: "text/plain"
   end
 
   def download_combined
-    delim = "\n\n" + ('- ' * 40) + "\n\n"
+    delim = "\n\n" + ("- " * 40) + "\n\n"
     tournament = Tournament.find(params[:id])
     decklists = tournament.tournament_players.with_decklist.order(:name)
                           .map { |p| p.decklist.strip }
                           .join(delim)
     filename = "decklists_#{tournament.generate_slug}.txt"
-    send_data decklists, filename: filename, type: 'text/plain'
+    send_data decklists, filename: filename, type: "text/plain"
   end
 
   def download_zip

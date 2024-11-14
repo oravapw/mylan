@@ -1,34 +1,31 @@
 class PlayersController < ApplicationController
   before_action :check_authorized
   before_action :store_page_and_query
-  before_action :load_player, only: [:show, :edit, :update, :destroy]
-  before_action :redirect_cancel, only: [:edit, :create, :update]
+  before_action :load_player, only: %i[show edit update destroy]
+  before_action :redirect_cancel, only: %i[edit create update]
 
   def index
     load_paged_players
-    if turbo_frame_request?
-      render partial: "players", locals: { players: @players, query: @query, page: @page }
-    end
+    return unless turbo_frame_request?
+
+    render partial: "players", locals: { players: @players, query: @query, page: @page }
   end
 
   def show
     @page_title_extra = "player \"#{@player.name}\""
-    ids = TournamentPlayer.select('distinct tournament_id').where(player_id: @player.id).map { |t| t.tournament_id }
-    if ids.present?
-      @tournaments = Tournament.where(id: ids).order('date')
-    end
-    if turbo_frame_request?
-      render partial: "player", locals: { player: @player, query: @query, page: @page,
-                                          title: helpers.page_title(@page_title_extra) }
-    end
+    ids = TournamentPlayer.select("distinct tournament_id").where(player_id: @player.id).map { |t| t.tournament_id }
+    @tournaments = Tournament.where(id: ids).order("date") if ids.present?
+    return unless turbo_frame_request?
+
+    render partial: "player", locals: { player: @player, query: @query, page: @page,
+                                        title: helpers.page_title(@page_title_extra) }
   end
 
   def new
     @player = Player.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @player = Player.new(player_params)
@@ -92,12 +89,11 @@ class PlayersController < ApplicationController
 
   def load_paged_players
     pg = params[:page] || @page
-    if @query.present?
-      @players = Player.where("name LIKE ?", "%#{@query}%").or(Player.where("vekn LIKE ?", "%#{@query}%"))
+    @players = if @query.present?
+                 Player.where("name LIKE ?", "%#{@query}%").or(Player.where("vekn LIKE ?", "%#{@query}%"))
                        .order(:name).page pg
     else
-      @players = Player.order(:name).page pg
+                 Player.order(:name).page pg
     end
   end
-
 end

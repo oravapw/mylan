@@ -21,7 +21,12 @@ Bundler.require(*Rails.groups)
 module Mylan
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.0
+    config.load_defaults 8.0
+
+    # Please, add to the `ignore` list any other `lib` subdirectories that do
+    # not contain `.rb` files, or that should not be reloaded or eager loaded.
+    # Common ones are `templates`, `generators`, or `middleware`, for example.
+    config.autoload_lib(ignore: %w[assets tasks])
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -34,9 +39,29 @@ module Mylan
     # Don't generate system test files.
     config.generators.system_tests = nil
 
-    # time zone from credentials
-    tz = Rails.application.credentials.dig(:time_zone)
-    config.time_zone = tz if tz.present?
+    # time zone from settings
+    config.time_zone = ENV["TIME_ZONE"] if ENV["TIME_ZONE"].present?
 
+    # set our subpath, if any
+    config.relative_url_root = ENV["RAILS_RELATIVE_URL_ROOT"]
+
+    # SMTP_ADDRESS acts as "email enabled" toggle
+    config.action_mailer.perform_deliveries = ENV["SMTP_ADDRESS"].present?
+
+    # map SMTP_xxx envs to smtp_settings
+    smtp_conf = {}
+    ENV.select { |k, _| k.start_with?("SMTP_") }.map { |k, v| [ k[5..-1].downcase, v ] }.to_h.each do |key, value|
+      key = key.to_sym
+      value = case key
+      when :port, :open_timeout, :read_timeout
+                value.present? ? value.to_i : nil
+      when :authentication, :openssl_verify_mode
+                value.present? ? value.to_sym : nil
+      else
+                value
+      end
+      smtp_conf[key] = value unless value.nil?
+    end
+    config.action_mailer.smtp_settings = smtp_conf unless smtp_conf.empty?
   end
 end

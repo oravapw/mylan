@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_11_04_054756) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_13_143507) do
   create_table "changelogs", charset: "utf8mb3", force: :cascade do |t|
     t.datetime "timestamp", null: false
     t.string "change", null: false

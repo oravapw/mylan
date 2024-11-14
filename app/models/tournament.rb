@@ -1,28 +1,3 @@
-# == Schema Information
-#
-# Table name: tournaments
-#
-#  id             :bigint           not null, primary key
-#  date           :datetime
-#  decklist_delay :integer          default(0), not null
-#  decklists      :boolean          default(FALSE), not null
-#  location       :string(80)
-#  name           :string(40)       not null
-#  notes          :text(65535)
-#  organizers     :string(120)
-#  prereg         :boolean          default(FALSE), not null
-#  prereg_end     :datetime
-#  prereg_info    :text(65535)
-#  prereg_slug    :string(255)
-#  proxies        :boolean          default(FALSE), not null
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#
-# Indexes
-#
-#  index_tournaments_on_name         (name) UNIQUE
-#  index_tournaments_on_prereg_slug  (prereg_slug) UNIQUE
-#
 class Tournament < ApplicationRecord
   has_many :tournament_players
 
@@ -80,24 +55,24 @@ class Tournament < ApplicationRecord
         date.strftime("%a %d.%m.%Y (%H:%M)")
       end
     else
-      ''
+      ""
     end
   end
 
   def display_prereg_end
-    prereg_end.present? ? prereg_end.strftime("%a %d.%m.%Y (%H:%M)") : ''
+    prereg_end.present? ? prereg_end.strftime("%a %d.%m.%Y (%H:%M)") : ""
   end
 
   def has_players?
-    !self.tournament_players.empty?
+    !tournament_players.empty?
   end
 
   def has_unconfirmed_players?
-    self.tournament_players.find { |tp| !tp.confirmed? }.present?
+    tournament_players.find { |tp| !tp.confirmed? }.present?
   end
 
   def unconfirmed_players
-    self.tournament_players.select { |tp| !tp.confirmed? }
+    tournament_players.select { |tp| !tp.confirmed? }
   end
 
   def decklists_visible?
@@ -109,7 +84,7 @@ class Tournament < ApplicationRecord
   end
 
   def generate_slug
-    name.strip.gsub(/\W/, '_').downcase
+    name.strip.gsub(/\W/, "_").downcase
   end
 
   def notes_as_html
@@ -122,25 +97,21 @@ class Tournament < ApplicationRecord
 
   class MyHtmlConverter < Kramdown::Converter::Html
     def convert_a(el, indent)
-      format_as_span_html("a", el.attr.merge('target': '_blank'), inner(el, indent))
+      format_as_span_html("a", el.attr.merge('target': "_blank"), inner(el, indent))
     end
   end
 
   private
 
   def kramdoc2html(doc)
-    html, _ = MyHtmlConverter.convert(doc.root, {})
+    html, = MyHtmlConverter.convert(doc.root, {})
     html.html_safe
   end
 
   def check_prereg
-    if prereg_slug.blank?
-      errors.add :prereg_slug, "must be non-blank"
-    end
+    errors.add :prereg_slug, "must be non-blank" if prereg_slug.blank?
 
-    if date.nil?
-      errors.add :date, "tournament start must be specified for pre-registration"
-    end
+    errors.add :date, "tournament start must be specified for pre-registration" if date.nil?
 
     if prereg_end.nil?
       errors.add :prereg_end, "must be specified"
@@ -153,14 +124,11 @@ class Tournament < ApplicationRecord
     return unless prereg?
 
     # set prereg slug from name if it is not set
-    if prereg_slug.blank? && name.present?
-      self.prereg_slug = generate_slug
-    end
+    self.prereg_slug = generate_slug if prereg_slug.blank? && name.present?
 
     # set prereg end to be one hour before tournament start, if null
-    if prereg_end.nil? && date.present?
-      self.prereg_end = date - 1.hour
-    end
-  end
+    return unless prereg_end.nil? && date.present?
 
+    self.prereg_end = date - 1.hour
+  end
 end

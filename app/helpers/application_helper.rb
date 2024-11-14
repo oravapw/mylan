@@ -1,5 +1,4 @@
 module ApplicationHelper
-
   def navtabs
     [
       { label: "Tournaments", path: tournaments_path },
@@ -12,7 +11,7 @@ module ApplicationHelper
     session[:user_name].present?
   end
 
-  def page_title(extra = 'Little VTES Tournament Helper')
+  def page_title(extra = "Little VTES Tournament Helper")
     if @page_title.present?
       @page_title
     else
@@ -21,11 +20,14 @@ module ApplicationHelper
   end
 
   def blank2minus(s)
-    s.present? ? s : '-'
+    s.present? ? s : "-"
   end
 
   def email_enabled?
-    Rails.application.credentials.dig(:email, :enabled)
+    ENV["SMTP_ADDRESS"].present?
   end
 
+  def app_version
+    @version ||= File.read(Rails.root.join("VERSION")).strip
+  end
 end

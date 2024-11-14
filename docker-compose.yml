@@ -1,7 +1,5 @@
 # development setup
 
-# Note: most credentials are in Rails credentials store, protected by master.key
-
 services:
 
   db:
@@ -14,11 +12,9 @@ services:
 
   web:
     build: .
-    environment:
-      - RAILS_DB_HOST=db
+    env_file: .env.development
     volumes:
-      - .:/app:cached
-    working_dir: /app
+      - .:/rails:cached
     ports:
       - "3000:3000"
     depends_on:

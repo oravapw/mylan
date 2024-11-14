@@ -3,9 +3,8 @@ class ChangelogsController < ApplicationController
 
   def index
     @logs = Changelog.includes(:player, :tournament).order(id: :desc).page params[:page]
-    if turbo_frame_request?
-      render partial: "changelogs", locals: { logs: @logs }
-    end
-  end
+    return unless turbo_frame_request?
 
+    render partial: "changelogs", locals: { logs: @logs }
+  end
 end

@@ -1,7 +1,5 @@
 class PlayerMailer < ApplicationMailer
-  if Rails.application.credentials.dig(:email, :default_from).present?
-    default from: Rails.application.credentials.dig(:email, :default_from)
-  end
+  default from: ENV["EMAIL_FROM"] if ENV["EMAIL_FROM"].present?
 
   def register
     @player = params[:player]

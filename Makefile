@@ -1,20 +1,21 @@
 # Helpers for Docker
 
-.PHONY: all build clean imageclean migrate rollback console websh dbsh db dbec dbroot creddev credprod
+.PHONY: all build migrate rollback console websh dbsh db dbec dbroot env image push version release
+
+# version tag for production image (do not set with :=, may change during run)
+VERSION = $(shell cat VERSION)
+
+# image name
+IMAGE := mylan
+
+# Docker Hub account, override this as needed with env variable
+DOCKERHUB ?= petriwessman
 
 all: build
 
 # build image(s)
-build:
+build: env
 	docker compose build
-
-# remove stopped Docker containers
-clean:
-	docker rm `docker ps -q -a`
-
-# remove non-referenced images
-imageclean:
-	docker image prune -f
 
 # Run Rails migrations
 migrate:
@@ -44,10 +45,34 @@ db:
 dbroot:
 	docker compose exec db mysql -uroot -proot
 
-# Edit/view development secrets
-creddev:
-	./bin/rails credentials:edit --environment development
+# Build production image (versioned and same as "latest")
+image:
+	docker build . -t ${DOCKERHUB}/${IMAGE}:${VERSION} -t ${DOCKERHUB}/${IMAGE}:latest -f Dockerfile.production
 
-# Edit/view production secrets
-credprod:
-	./bin/rails credentials:edit --environment production
+# Push production images
+push:
+	docker push ${DOCKERHUB}/${IMAGE}:${VERSION}
+	docker push ${DOCKERHUB}/${IMAGE}:latest
+
+# Set new production version
+version:
+ifndef V
+	@echo "usage: V=newversion make ..."
+	@exit 1
+else ifeq ($(strip ${V}), ${VERSION})
+	@echo "version is already ${V}"
+	@exit 1
+else
+	echo ${V} >VERSION
+	git commit -a -m "version ${V}"
+	git tag "${V}"
+	@echo version set to ${V}
+endif
+
+# tag new version, build image, push it to Docker Hub
+release: version image push
+
+env: .env.development
+
+.env.development:
+	cp env-template .env.development

@@ -1,3 +1,6 @@
+# syntax=docker/dockerfile:1
+# check=error=true
+
 # Development dockerfile, for use with docker compose (mount app from current dir)
 
 # stage 1: build gems
@@ -6,15 +9,13 @@ ARG RUBY_VERSION=3.3.6
 
 FROM ruby:$RUBY_VERSION-alpine AS build-base
 
-ARG APP_DIR=/app
+WORKDIR /rails
 
 RUN apk update && \
     apk upgrade && \
     apk add --update --no-cache \
-    git build-base mysql-dev tzdata && \
+    git build-base mysql-dev tzdata jemalloc && \
     rm -rf /var/cache/apk/* 
-
-WORKDIR $APP_DIR
 
 COPY Gemfile Gemfile.lock ./
 
@@ -27,10 +28,7 @@ RUN gem update --system && \
 
 FROM ruby:$RUBY_VERSION-alpine
 
-ARG APP_DIR=/app
-
-ARG USER_ID=1000
-ARG GROUP_ID=1000
+WORKDIR /rails
 
 ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8
@@ -39,10 +37,8 @@ ENV LANG=C.UTF-8 \
 RUN apk update && \
     apk upgrade && \
     apk add --update --no-cache \
-    mysql-dev tzdata bash && \
+    mysql-dev tzdata bash jemalloc && \
     rm -rf /var/cache/apk/* 
-
-WORKDIR $APP_DIR
 
 # copy gems built by first stage
 COPY --from=build-base $GEM_HOME $GEM_HOME
@@ -50,19 +46,16 @@ COPY --from=build-base $GEM_HOME $GEM_HOME
 RUN gem update --system && \
     gem install bundler
 
+COPY ./bin/docker-entrypoint /usr/bin/
+RUN chmod +x /usr/bin/docker-entrypoint
+ENTRYPOINT ["/usr/bin/docker-entrypoint"]
+
 # don't run as root, build a "rails" user + group and use those
-RUN addgroup --gid $GROUP_ID rails && \
-    adduser -D -g 'Rails pseudouser' -u $USER_ID -G rails rails && \
-    chown -R rails:rails $APP_DIR
-
-# Add a script to be executed every time the container starts
-COPY entrypoint.sh /usr/bin/
-RUN chmod +x /usr/bin/entrypoint.sh
-ENTRYPOINT ["entrypoint.sh"]
-
-USER $USER_ID
-
-EXPOSE 3000
+RUN addgroup --gid 1000 rails && \
+    adduser -D -g 'Rails pseudouser' -u 1000 -G rails rails && \
+    chown -R rails:rails /rails
+USER 1000:1000
 
 # default command is Rails server
-CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
+EXPOSE 3000
+CMD ["./bin/rails", "server", "-b", "0.0.0.0"]

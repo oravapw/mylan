@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::Base
-
   def check_authorized
     redirect_to login_path unless helpers.logged_in?
   end
@@ -48,13 +47,12 @@ class ApplicationController < ActionController::Base
   end
 
   def email_enabled?
-    Rails.application.credentials.dig(:email, :enabled)
+    ENV["SMTP_ADDRESS"].present?
   end
 
   def send_registration_email(player)
-    if email_enabled? && player.email.present? && player.token.present?
-      PlayerMailer.with(player: player, url: edit_registration_url(player.token)).register.deliver_later
-    end
-  end
+    return unless email_enabled? && player.email.present? && player.token.present?
 
+    PlayerMailer.with(player: player, url: edit_registration_url(player.token)).register.deliver_later
+  end
 end

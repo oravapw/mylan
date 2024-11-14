@@ -1,10 +1,9 @@
 class RegistrationsController < ApplicationController
-
   def show
     slug = params[:id]
     @tournament = Tournament.where(prereg_slug: slug).first
     if @tournament.nil?
-      flash.alert = 'No such tournament, sorry.'
+      flash.alert = "No such tournament, sorry."
       return
     end
 
@@ -14,17 +13,19 @@ class RegistrationsController < ApplicationController
 
   def search
     @tournament = Tournament.find(params[:id])
-    flash.alert 'This tournament does not allow self-registration' unless @tournament.prereg_open?
+    flash.alert "This tournament does not allow self-registration" unless @tournament.prereg_open?
   end
 
   def edit
     return unless init_for_token(params[:id])
+
     @page_title = "#{@player.name} registration for \"#{@tournament.name}\""
     calculate_per_country
   end
 
   def update
     return unless init_for_token(params[:id])
+
     changes = []
     email_changed = false
 
@@ -54,6 +55,7 @@ class RegistrationsController < ApplicationController
 
   def destroy
     return unless init_for_token(params[:id])
+
     @player.destroy
     log_tournament_player_remove @player
   end
@@ -63,7 +65,7 @@ class RegistrationsController < ApplicationController
   def init_for_token(token)
     @player = TournamentPlayer.where(token: token).first
     if @player.nil?
-      flash.now[:alert] = 'Registration entry not found (may have been cancelled)'
+      flash.now[:alert] = "Registration entry not found (may have been cancelled)"
       false
     else
       @tournament = @player.tournament
@@ -74,16 +76,16 @@ class RegistrationsController < ApplicationController
   def calculate_per_country
     @per_country = []
 
-    if @tournament.tournament_players.present?
-      # load in country info for players
-      ids = @tournament.tournament_players.map { |tp| tp.player_id }
-      id_to_c = {}
-      Player.where(id: ids).pluck(:id, :country).each { |result| id_to_c[result[0]] = result[1] }
-      @tournament.tournament_players.each { |tp| tp.country = id_to_c[tp.player_id] }
+    return unless @tournament.tournament_players.present?
 
-      # calculate per-country totals into array of arrays, in descending count order
-      @per_country = @tournament.tournament_players.map { |tp| tp.country_name }
-                                .tally.sort_by { |_key, value| value }.reverse
-    end
+    # load in country info for players
+    ids = @tournament.tournament_players.map { |tp| tp.player_id }
+    id_to_c = {}
+    Player.where(id: ids).pluck(:id, :country).each { |result| id_to_c[result[0]] = result[1] }
+    @tournament.tournament_players.each { |tp| tp.country = id_to_c[tp.player_id] }
+
+    # calculate per-country totals into array of arrays, in descending count order
+    @per_country = @tournament.tournament_players.map { |tp| tp.country_name }
+                              .tally.sort_by { |_key, value| value }.reverse
   end
 end

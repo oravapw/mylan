@@ -1,5 +1,4 @@
 class AddTournamentPreregFields < ActiveRecord::Migration[7.0]
-
   def change
     add_column :tournaments, :prereg, :boolean, null: false, default: false
     add_column :tournaments, :prereg_slug, :string
@@ -15,5 +14,4 @@ class AddTournamentPreregFields < ActiveRecord::Migration[7.0]
     remove_column :tournaments, :prereg_end
     change_column :tournaments, :date, :date
   end
-  
 end

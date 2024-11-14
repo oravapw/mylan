@@ -1,11 +1,11 @@
-require 'csv'
+require "csv"
 
 class TournamentsController < ApplicationController
-  before_action :check_authorized, except: [:search_players]
-  before_action :load_tournament, only: [:show, :edit, :update, :destroy,
-                                         :show_players, :show_search, :search_players,
-                                         :archon_csv, :unconfirmed_sheet]
-  before_action :redirect_cancel, only: [:create, :update]
+  before_action :check_authorized, except: [ :search_players ]
+  before_action :load_tournament, only: %i[show edit update destroy
+                                           show_players show_search search_players
+                                           archon_csv unconfirmed_sheet]
+  before_action :redirect_cancel, only: %i[create update]
 
   def index
     load_tournaments
@@ -20,8 +20,7 @@ class TournamentsController < ApplicationController
     @tournament.proxies = true # default to allowing proxies
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @tournament = Tournament.new(tournament_params)
@@ -68,23 +67,22 @@ class TournamentsController < ApplicationController
     query = params[:query]
     @prereg = params[:prereg]
     @results = nil
-    if query.present?
-      @results = []
-      Player.where("name LIKE ?", "%#{query}%").or(Player.where("vekn LIKE ?", "%#{query}%")).order(:name).find_each do |p|
-        @results << SearchResult.new(name: p.name, vekn: p.vekn, email: p.email, player_id: p.id)
-      end
+    return unless query.present?
 
-      # mark players already entered in this tournament
-      added = {}
-      @tournament.tournament_players.each do |p|
-        added[p.player_id] = 1
-      end
+    @results = []
+    Player.where("name LIKE ?",
+                 "%#{query}%").or(Player.where("vekn LIKE ?", "%#{query}%")).order(:name).find_each do |p|
+      @results << SearchResult.new(name: p.name, vekn: p.vekn, email: p.email, player_id: p.id)
+    end
 
-      @results.each do |r|
-        if added.include?(r.player_id)
-          r.added = true
-        end
-      end
+    # mark players already entered in this tournament
+    added = {}
+    @tournament.tournament_players.each do |p|
+      added[p.player_id] = 1
+    end
+
+    @results.each do |r|
+      r.added = true if added.include?(r.player_id)
     end
   end
 
@@ -97,19 +95,19 @@ class TournamentsController < ApplicationController
             # need to split name into fist and last name, just do simple logic of assuming last word is last name
             parts = p.name.split
             first_name = if parts.count > 1
-                           p.name.split[0..-2].join(' ')
-                         else
+                           p.name.split[0..-2].join(" ")
+            else
                            p.name
-                         end
+            end
             last_name = if parts.count > 1
                           parts.last
-                        else
-                          ''
-                        end
-            csv << [index, first_name, last_name, '', p.vekn]
+            else
+                          ""
+            end
+            csv << [ index, first_name, last_name, "", p.vekn ]
           end
         end
-        tname = @tournament.name.gsub(/[^\da-z]/i, '-').downcase
+        tname = @tournament.name.gsub(/[^\da-z]/i, "-").downcase
         send_data csv_string, filename: "#{tname}-random.csv", type: "text/csv"
       end
     end
@@ -117,7 +115,7 @@ class TournamentsController < ApplicationController
 
   def unconfirmed_sheet
     @page_title_extra = "Confirmation sheet for \"#{@tournament.name}\""
-    render layout: 'print'
+    render layout: "print"
   end
 
   private
@@ -139,5 +137,4 @@ class TournamentsController < ApplicationController
   def redirect_cancel
     redirect_to tournaments_path if params[:cancel]
   end
-
 end

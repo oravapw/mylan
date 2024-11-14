@@ -1,0 +1,28 @@
+# login account
+
+LOGIN_USERNAME=mylan
+LOGIN_PASSWORD=mylan
+
+# database settings
+
+DB_HOST=db
+DB_USER=mylan
+DB_PASSWORD=mylan
+
+# time zone for web UI, see rake time:zones for list
+
+TIME_ZONE=Helsinki
+
+# email settings
+
+# SMTP_* maps to config.action_mailer.smtp_settings keys, see
+# https://guides.rubyonrails.org/configuring.html#configuring-action-mailer,
+# SMTP_ prefix removed, rest converted to lowercase)
+
+# Note: if SMTP_ADDRESS is not defined, email will be disabled
+
+SMTP_ADDRESS=
+EMAIL_FROM=noreply@example.com
+
+# set this to serve app from subdirectory
+# RAILS_RELATIVE_URL_ROOT=/mylan

@@ -1,7 +1,6 @@
 class TournamentPlayersController < ApplicationController
-
-  before_action :load_player, only: [:destroy, :toggle_confirm, :edit_decklist, :update_decklist, :resend_link]
-  before_action :load_tournament, only: [:new, :create]
+  before_action :load_player, only: %i[destroy toggle_confirm edit_decklist update_decklist resend_link]
+  before_action :load_tournament, only: %i[new create]
 
   def new
     @prereg = (params[:prereg] == "true")
@@ -19,8 +18,11 @@ class TournamentPlayersController < ApplicationController
     @prereg = !@player.confirmed?
 
     if @prereg && !@tournament.prereg_open?
-      @prereg_error = @tournament.prereg_closed? ?
-                        "Registration to this tournament has closed" : "Registration to this tournament is not possible"
+      @prereg_error = if @tournament.prereg_closed?
+                        "Registration to this tournament has closed"
+      else
+                        "Registration to this tournament is not possible"
+      end
       return
     end
 
@@ -43,9 +45,7 @@ class TournamentPlayersController < ApplicationController
       end
     end
 
-    if @player.save
-      log_tournament_player_add @player
-    end
+    log_tournament_player_add @player if @player.save
 
     send_registration_email(@player) if @prereg
   end
@@ -67,10 +67,10 @@ class TournamentPlayersController < ApplicationController
   end
 
   def edit_decklist
-    unless @player.tournament.decklists_visible?
-      flash.now[:alert] = "Decklists for this tournament are not visible yet!"
-      render partial: "tournaments/playerlist", locals: { tournament: @player.tournament }
-    end
+    return if @player.tournament.decklists_visible?
+
+    flash.now[:alert] = "Decklists for this tournament are not visible yet!"
+    render partial: "tournaments/playerlist", locals: { tournament: @player.tournament }
   end
 
   def update_decklist
@@ -95,5 +95,4 @@ class TournamentPlayersController < ApplicationController
   def tournament_player_params
     params.require(:tournament_player).permit(:name, :vekn, :player_id, :country, :email, :confirmed, :decklist)
   end
-
 end

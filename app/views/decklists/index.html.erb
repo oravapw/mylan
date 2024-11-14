@@ -23,16 +23,18 @@
             <% @tournaments.each do |t| %>
               <tr>
                 <td><%= link_to t.name, tournament_index_decklist_path(t.id) %></td>
-                <td><%= t.display_date(true) %></td>
+                <td><span class="is-size-7"><%= t.display_date(true) %></span></td>
                 <td class="has-text-right">
+                  <span class="is-size-7">
                   <%
                     players = @tournament_players[t.id]
                     decklists = t.tournament_players.size
                   -%>
-                  <%= decklists %> / <%= players %>
-                  <% if players > 0 %>
+                    <%= decklists %> / <%= players %>
+                    <% if players > 0 %>
                     (<%= (decklists / (players / 100.0)).round %>%)
                   <% end %>
+                  </span>
                 </td>
               </tr>
             <% end %>
