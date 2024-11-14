@@ -120,7 +120,7 @@ I use a simple Docker Compose setup myself, but there are lots of options.
 ### Using pre-built images
 
 The simplest option is to simply pull a pre-built image from
-[my DockerHub repository](https://hub.docker.com/repository/docker/petriwessman/mylan/general).
+[my DockerHub repository](https://hub.docker.com/r/petriwessman/mylan).
 
 ### Database setup
 
