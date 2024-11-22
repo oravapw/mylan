@@ -19,15 +19,15 @@ build: env
 
 # Run Rails migrations
 migrate:
-	docker compose exec web bundle exec rake db:migrate
+	docker compose exec web ./bin/rake db:migrate
 
 # Run Rails migration rollback
 rollback:
-	docker compose exec web bundle exec rake db:rollback
+	docker compose exec web ./bin/rake db:rollback
 
 # Rails console in web container
 console:
-	docker compose exec web bundle exec rails c
+	docker compose exec web ./bin/rails c
 
 # Shell in web container
 websh:
@@ -72,7 +72,10 @@ endif
 # tag new version, build image, push it to Docker Hub
 release: version image push
 
-env: .env.development
+env: .env.development .env.test
 
 .env.development:
 	cp env-template .env.development
+
+.env.test:
+	cp env-template .env.test

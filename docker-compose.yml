@@ -12,7 +12,6 @@ services:
 
   web:
     build: .
-    env_file: .env.development
     volumes:
       - .:/rails:cached
     ports:
