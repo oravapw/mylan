@@ -249,7 +249,7 @@ GEM
       rubocop-performance
       rubocop-rails
     ruby-progressbar (1.13.0)
-    rubyzip (2.3.2)
+    rubyzip (2.4.1)
     securerandom (0.3.2)
     solid_cable (3.0.2)
       actioncable (>= 7.2)
@@ -315,7 +315,7 @@ DEPENDENCIES
   puma (>= 5.0)
   rails (~> 8.0.0)
   rubocop-rails-omakase
-  rubyzip (~> 2.3.0)
+  rubyzip (~> 2.4.1)
   solid_cable
   solid_cache
   solid_queue
