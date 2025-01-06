@@ -63,5 +63,5 @@ end
 gem "country_select", "~> 10.0"
 gem "kaminari"
 gem "kramdown"
-gem "rubyzip", "~> 2.3.0"
+gem "rubyzip", "~> 2.4.1"
 gem "csv"
