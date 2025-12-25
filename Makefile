@@ -39,11 +39,11 @@ dbsh:
 
 # Mysql client connected to dev database
 db:
-	docker compose exec db mysql -umylan -pmylan mylan_dev
+	docker compose exec db mariadb -umylan -pmylan mylan_dev
 
 # Mysql client connected to root
 dbroot:
-	docker compose exec db mysql -uroot -proot
+	docker compose exec db mariadb -uroot -proot
 
 # Build production image (versioned and same as "latest")
 image:

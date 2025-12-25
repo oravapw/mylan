@@ -49,15 +49,12 @@ CREATE USER mylan@'%' IDENTIFIED BY 'mylan';
 GRANT ALL ON *.* TO mylan@'%';
 ```
 
-5. Run "make migrate". If everything is set up correctly, this should
-connect to the web container and run "rake db:migrate" there.
+5. Shut down the docker compose instance.
 
-6. Shut down the docker compose instance.
-
-7. Run "./bin/dev". This (re)starts docker compose along with
+6. Run "./bin/dev". This (re)starts docker compose along with
 on-the-fly compilation of CSS and Javascript when those change.
 
-8. Connect to localhost:3000, where you should see the app login
+7. Connect to localhost:3000, where you should see the app login
 screen. Type in login credentials (see below), and you should see the
 main overview tab.
 

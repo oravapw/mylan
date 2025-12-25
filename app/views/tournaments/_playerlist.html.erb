@@ -60,7 +60,7 @@
               <%= form_with(url: edit_decklist_tournament_player_path(p)) do |f| %>
                 <div class="control">
                   <% if p.decklist.present? %>
-                    <%= render 'decklist_check', decklist: p.decklist %>
+                    <%= render 'tournaments/decklist_check', decklist: p.decklist %>
                   <% end %>
                   <%= f.button type: "submit", class: "button is-small is-primary is-light" do %>
                     <span class="icon" style="color: black">
@@ -71,7 +71,7 @@
               <% end %>
             <% else %>
               <% if p.decklist.present? %>
-                <%= render 'decklist_check', decklist: p.decklist %>
+                <%= render 'tournaments/decklist_check', decklist: p.decklist %>
               <% else %>
                 -
               <% end %>

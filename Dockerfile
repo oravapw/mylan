@@ -5,7 +5,7 @@
 
 # stage 1: build gems
 
-ARG RUBY_VERSION=3.3.6
+ARG RUBY_VERSION=3.4.8
 
 FROM ruby:$RUBY_VERSION-alpine AS build-base
 
@@ -14,7 +14,7 @@ WORKDIR /rails
 RUN apk update && \
     apk upgrade && \
     apk add --update --no-cache \
-    git build-base mysql-dev tzdata jemalloc && \
+    git build-base mysql-dev tzdata jemalloc yaml-dev && \
     rm -rf /var/cache/apk/* 
 
 COPY Gemfile Gemfile.lock ./

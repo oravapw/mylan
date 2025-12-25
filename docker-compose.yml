@@ -3,12 +3,18 @@
 services:
 
   db:
-    image: mysql:8
+    image: mariadb:12
     restart: always
     volumes: 
-      - mysql_data:/var/lib/mysql
+      - mariadb_data:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MARIADB_ROOT_PASSWORD: root
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   web:
     build: .
@@ -17,7 +23,8 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
 volumes:
-  mysql_data:
+  mariadb_data:

@@ -10,54 +10,54 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_13_143507) do
-  create_table "changelogs", charset: "utf8mb3", force: :cascade do |t|
-    t.datetime "timestamp", null: false
+ActiveRecord::Schema[8.1].define(version: 2024_11_13_143507) do
+  create_table "changelogs", charset: "utf8mb3", collation: "utf8mb3_uca1400_ai_ci", force: :cascade do |t|
     t.string "change", null: false
     t.bigint "player_id"
+    t.datetime "timestamp", null: false
     t.bigint "tournament_id"
     t.index ["player_id"], name: "index_changelogs_on_player_id"
     t.index ["tournament_id"], name: "index_changelogs_on_tournament_id"
   end
 
-  create_table "players", charset: "utf8mb3", force: :cascade do |t|
-    t.string "name", limit: 40, null: false
-    t.string "vekn", limit: 7
+  create_table "players", charset: "utf8mb3", collation: "utf8mb3_uca1400_ai_ci", force: :cascade do |t|
     t.string "country", limit: 2
     t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.string "email"
+    t.string "name", limit: 40, null: false
+    t.datetime "updated_at", null: false
+    t.string "vekn", limit: 7
     t.index ["vekn"], name: "index_players_on_vekn", unique: true
   end
 
-  create_table "tournament_players", charset: "utf8mb3", force: :cascade do |t|
-    t.string "name", limit: 40, null: false
-    t.string "vekn", limit: 7
-    t.bigint "player_id", null: false
-    t.bigint "tournament_id", null: false
+  create_table "tournament_players", charset: "utf8mb3", collation: "utf8mb3_uca1400_ai_ci", force: :cascade do |t|
     t.boolean "confirmed", default: false, null: false
-    t.string "email"
     t.text "decklist"
+    t.string "email"
+    t.string "name", limit: 40, null: false
+    t.bigint "player_id", null: false
     t.string "token"
+    t.bigint "tournament_id", null: false
+    t.string "vekn", limit: 7
     t.index ["token"], name: "index_tournament_players_on_token", unique: true
     t.index ["tournament_id"], name: "index_tournament_players_on_tournament_id"
   end
 
-  create_table "tournaments", charset: "utf8mb3", force: :cascade do |t|
-    t.string "name", limit: 40, null: false
-    t.string "location", limit: 80
-    t.string "organizers", limit: 120
-    t.datetime "date"
-    t.boolean "decklists", default: false, null: false
-    t.text "notes"
+  create_table "tournaments", charset: "utf8mb3", collation: "utf8mb3_uca1400_ai_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "prereg", default: false, null: false
-    t.string "prereg_slug"
-    t.text "prereg_info"
-    t.datetime "prereg_end"
-    t.boolean "proxies", default: false, null: false
+    t.datetime "date"
     t.integer "decklist_delay", default: 0, null: false
+    t.boolean "decklists", default: false, null: false
+    t.string "location", limit: 80
+    t.string "name", limit: 40, null: false
+    t.text "notes"
+    t.string "organizers", limit: 120
+    t.boolean "prereg", default: false, null: false
+    t.datetime "prereg_end"
+    t.text "prereg_info"
+    t.string "prereg_slug"
+    t.boolean "proxies", default: false, null: false
+    t.datetime "updated_at", null: false
     t.index ["name"], name: "index_tournaments_on_name", unique: true
     t.index ["prereg_slug"], name: "index_tournaments_on_prereg_slug", unique: true
   end
