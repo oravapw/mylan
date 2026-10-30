@@ -7,3 +7,5 @@
 - tournament player view now shows decklist number-of-lines as a tooltip on the checkmark, and checkmark becomes an orange '?' if the decklist has 10 or less lines.
 - various small UI tweaks
 
+### 1.0.1
+- small fixes for production
