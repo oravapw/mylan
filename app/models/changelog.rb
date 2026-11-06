@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Changelog < ApplicationRecord
   validates :timestamp, presence: true
   validates :change, presence: true, length: { maximum: 255 }

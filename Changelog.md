@@ -9,3 +9,7 @@
 
 ### 1.0.1
 - small fixes for production
+
+### 1.0.2
+- update to Rails 8.1.4.1, Ruby 4.0.9
+- CI tweaks

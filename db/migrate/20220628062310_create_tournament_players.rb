@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class CreateTournamentPlayers < ActiveRecord::Migration[7.0]
   def change
     create_table :tournament_players do |t|

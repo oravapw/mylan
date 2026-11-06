@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # This migration comes from active_storage (originally 20191206030411)
 class CreateActiveStorageVariantRecords < ActiveRecord::Migration[6.0]
   def change
@@ -14,14 +15,14 @@ class CreateActiveStorageVariantRecords < ActiveRecord::Migration[6.0]
   end
 
   private
-    def primary_key_type
-      config = Rails.configuration.generators
-      config.options[config.orm][:primary_key_type] || :primary_key
-    end
+  def primary_key_type
+    config = Rails.configuration.generators
+    config.options[config.orm][:primary_key_type] || :primary_key
+  end
 
-    def blobs_primary_key_type
-      pkey_name = connection.primary_key(:active_storage_blobs)
-      pkey_column = connection.columns(:active_storage_blobs).find { |c| c.name == pkey_name }
-      pkey_column.bigint? ? :bigint : pkey_column.type
-    end
+  def blobs_primary_key_type
+    pkey_name = connection.primary_key(:active_storage_blobs)
+    pkey_column = connection.columns(:active_storage_blobs).find { |c| c.name == pkey_name }
+    pkey_column.bigint? ? :bigint : pkey_column.type
+  end
 end

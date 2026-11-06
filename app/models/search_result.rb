@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class SearchResult
   attr_accessor :name, :vekn, :email, :player_id, :added
 

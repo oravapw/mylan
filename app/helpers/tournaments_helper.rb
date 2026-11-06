@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module TournamentsHelper
   def decklist_delay_text(delay)
     if delay == 0

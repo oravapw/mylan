@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "zip"
 
 class DecklistsController < ApplicationController
@@ -15,7 +16,7 @@ class DecklistsController < ApplicationController
   end
 
   def tournament_index
-    @tournament = Tournament.find(params[:id])
+    @tournament = Tournament.find(params.expect(:id))
     if @tournament.present?
       if @tournament.decklists_visible?
         @players = @tournament.tournament_players.with_decklist.order(:name).all
@@ -30,18 +31,18 @@ class DecklistsController < ApplicationController
   end
 
   def show
-    @player = TournamentPlayer.find(params[:id])
+    @player = TournamentPlayer.find(params.expect(:id))
     @player = nil unless @player.tournament.decklists_visible?
   end
 
   def download
-    player = TournamentPlayer.find(params[:id])
+    player = TournamentPlayer.find(params.expect(:id))
     send_data player.decklist, filename: player.decklist_filename, type: "text/plain"
   end
 
   def download_combined
     delim = "\n\n" + ("- " * 40) + "\n\n"
-    tournament = Tournament.find(params[:id])
+    tournament = Tournament.find(params.expect(:id))
     decklists = tournament.tournament_players.with_decklist.order(:name)
                           .map { |p| p.decklist.strip }
                           .join(delim)
@@ -50,7 +51,7 @@ class DecklistsController < ApplicationController
   end
 
   def download_zip
-    tournament = Tournament.find(params[:id])
+    tournament = Tournament.find(params.expect(:id))
     players = tournament.tournament_players.with_decklist.order(:name)
     Zip.unicode_names = true
     buffer = Zip::OutputStream.write_buffer do |stream|

@@ -6,7 +6,7 @@ services:
     image: mariadb:12
     restart: always
     volumes: 
-      - mariadb_data:/var/lib/mysql
+      - data:/var/lib/mysql
     environment:
       MARIADB_ROOT_PASSWORD: root
     healthcheck:
@@ -22,9 +22,14 @@ services:
       - .:/rails:cached
     ports:
       - "3000:3000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/up"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
     depends_on:
       db:
         condition: service_healthy
 
 volumes:
-  mariadb_data:
+  data:

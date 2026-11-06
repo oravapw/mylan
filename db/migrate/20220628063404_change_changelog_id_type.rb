@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class ChangeChangelogIdType < ActiveRecord::Migration[7.0]
   def up
     change_column :changelogs, :row_id, :bigint

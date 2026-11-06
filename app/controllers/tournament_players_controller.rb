@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class TournamentPlayersController < ApplicationController
   before_action :load_player, only: %i[destroy toggle_confirm edit_decklist update_decklist resend_link]
   before_action :load_tournament, only: %i[new create]
@@ -21,7 +22,7 @@ class TournamentPlayersController < ApplicationController
       @prereg_error = if @tournament.prereg_closed?
                         "Registration to this tournament has closed"
       else
-                        "Registration to this tournament is not possible"
+        "Registration to this tournament is not possible"
       end
       return
     end
@@ -85,14 +86,14 @@ class TournamentPlayersController < ApplicationController
   private
 
   def load_player
-    @player = TournamentPlayer.find(params[:id])
+    @player = TournamentPlayer.find(params.expect(:id))
   end
 
   def load_tournament
-    @tournament = Tournament.find(params[:tournament_id])
+    @tournament = Tournament.find(params.expect(:tournament_id))
   end
 
   def tournament_player_params
-    params.require(:tournament_player).permit(:name, :vekn, :player_id, :country, :email, :confirmed, :decklist)
+    params.expect(tournament_player: [:name, :vekn, :player_id, :country, :email, :confirmed, :decklist])
   end
 end

@@ -1,7 +1,8 @@
+# frozen_string_literal: true
 require "csv"
 
 class TournamentsController < ApplicationController
-  before_action :check_authorized, except: [ :search_players ]
+  before_action :check_authorized, except: [:search_players]
   before_action :load_tournament, only: %i[show edit update destroy
                                            show_players show_search search_players
                                            archon_csv unconfirmed_sheet]
@@ -28,7 +29,7 @@ class TournamentsController < ApplicationController
       log_tournament_create @tournament
       redirect_to tournaments_path
     else
-      render :new, status: :unprocessable_entity
+      render "tournaments/new", status: :unprocessable_entity
     end
   end
 
@@ -41,7 +42,7 @@ class TournamentsController < ApplicationController
     if @tournament.save
       redirect_to @tournament
     else
-      render :edit, status: :unprocessable_entity
+      render "tournaments/edit", status: :unprocessable_entity
     end
   end
 
@@ -56,11 +57,11 @@ class TournamentsController < ApplicationController
   end
 
   def show_players
-    render partial: "playerlist", locals: { tournament: @tournament }
+    render partial: "tournaments/playerlist", locals: { tournament: @tournament }
   end
 
   def show_search
-    render partial: "playersearch", locals: { tournament: @tournament }
+    render partial: "tournaments/playersearch", locals: { tournament: @tournament }
   end
 
   def search_players
@@ -97,14 +98,14 @@ class TournamentsController < ApplicationController
             first_name = if parts.count > 1
                            p.name.split[0..-2].join(" ")
             else
-                           p.name
+              p.name
             end
             last_name = if parts.count > 1
                           parts.last
             else
-                          ""
+              ""
             end
-            csv << [ index, first_name, last_name, "", p.vekn ]
+            csv << [index, first_name, last_name, "", p.vekn]
           end
         end
         tname = @tournament.name.gsub(/[^\da-z]/i, "-").downcase
@@ -113,6 +114,7 @@ class TournamentsController < ApplicationController
     end
   end
 
+  # rubocop:disable GitHub/RailsControllerRenderLiteral
   def unconfirmed_sheet
     @page_title_extra = "Confirmation sheet for \"#{@tournament.name}\""
     render layout: "print"
@@ -121,7 +123,7 @@ class TournamentsController < ApplicationController
   private
 
   def load_tournament
-    @tournament = Tournament.find(params[:id])
+    @tournament = Tournament.find(params.expect(:id))
   end
 
   def load_tournaments
@@ -129,9 +131,9 @@ class TournamentsController < ApplicationController
   end
 
   def tournament_params
-    params.require(:tournament).permit(:name, :location, :organizers, :date, :decklists, :notes,
+    params.expect(tournament: [:name, :location, :organizers, :date, :decklists, :notes,
                                        :prereg, :prereg_slug, :prereg_info, :prereg_end, :proxies,
-                                       :decklist_delay)
+                                       :decklist_delay])
   end
 
   def redirect_cancel

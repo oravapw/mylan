@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class PlayersController < ApplicationController
   before_action :check_authorized
   before_action :store_page_and_query
@@ -8,7 +9,7 @@ class PlayersController < ApplicationController
     load_paged_players
     return unless turbo_frame_request?
 
-    render partial: "players", locals: { players: @players, query: @query, page: @page }
+    render partial: "players/players", locals: { players: @players, query: @query, page: @page }
   end
 
   def show
@@ -17,7 +18,7 @@ class PlayersController < ApplicationController
     @tournaments = Tournament.where(id: ids).order("date") if ids.present?
     return unless turbo_frame_request?
 
-    render partial: "player", locals: { player: @player, query: @query, page: @page,
+    render partial: "players/player", locals: { player: @player, query: @query, page: @page,
                                         title: helpers.page_title(@page_title_extra) }
   end
 
@@ -37,7 +38,7 @@ class PlayersController < ApplicationController
         format.turbo_stream { load_paged_players }
       end
     else
-      render :new, status: :unprocessable_entity
+      render "players/new", status: :unprocessable_entity
     end
   end
 
@@ -53,7 +54,7 @@ class PlayersController < ApplicationController
       end
       redirect_to players_path(page: params[:page], query: params[:query])
     else
-      render :edit, status: :unprocessable_entity
+      render "players/edit", status: :unprocessable_entity
     end
   end
 
@@ -70,11 +71,11 @@ class PlayersController < ApplicationController
   private
 
   def load_player
-    @player = Player.find(params[:id])
+    @player = Player.find(params.expect(:id))
   end
 
   def player_params
-    params.require(:player).permit(:name, :vekn, :country, :email)
+    params.expect(player: [:name, :vekn, :country, :email])
   end
 
   def redirect_cancel
@@ -93,7 +94,7 @@ class PlayersController < ApplicationController
                  Player.where("name LIKE ?", "%#{@query}%").or(Player.where("vekn LIKE ?", "%#{@query}%"))
                        .order(:name).page pg
     else
-                 Player.order(:name).page pg
+      Player.order(:name).page pg
     end
   end
 end
