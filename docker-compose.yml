@@ -1,4 +1,6 @@
 # development setup
+# includes standalone chrome container for running system tests
+# (via https://nicolasiensen.github.io/2022-03-11-running-rails-system-tests-with-docker)
 
 services:
 
@@ -24,12 +26,15 @@ services:
       - "3000:3000"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/up"]
-      interval: 30s
+      interval: 300s
       timeout: 10s
       retries: 3
     depends_on:
       db:
         condition: service_healthy
+
+  chrome-server:
+    image: selenium/standalone-chrome:156.0-20261101
 
 volumes:
   data:

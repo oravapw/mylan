@@ -22,6 +22,7 @@ COPY Gemfile Gemfile.lock ./
 RUN gem update --system && \
     gem install bundler && \
     bundle install
+
 # no need for yarn install, since we are mounting app from user dir anyway
 
 # stage 2: development environment

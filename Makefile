@@ -1,6 +1,6 @@
 # Helpers for Docker
 
-.PHONY: all build migrate rollback console websh dbsh db dbec dbroot env image push version release
+.PHONY: all build migrate rollback console websh dbsh db dbec dbroot env image push version release test
 
 # version tag for production image (do not set with :=, may change during run)
 VERSION = $(shell cat VERSION)
@@ -44,6 +44,10 @@ db:
 # Mysql client connected to root
 dbroot:
 	docker compose exec db mariadb -uroot -proot
+
+# System tests
+test:
+	docker compose exec web ./bin/rails test:system "test/system/*.rb"
 
 # Build production image (versioned and same as "latest")
 image:
