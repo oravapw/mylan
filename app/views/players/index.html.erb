@@ -3,7 +3,7 @@
     <div class="column is-one-third" data-controller="search-form">
       <%= render "list_box" %>
     </div>
-    <div class="column">
+    <div class="column" id="players">
       <%= render "players", players: @players, query: @query, page: @page %>
     </div>
   </div>
