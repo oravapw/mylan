@@ -1,14 +1,15 @@
 <%= turbo_frame_tag "players" do %>
-  <h1 class="subtitle is-4">New player</h1>
+  <div id="new-player">
+    <h1 class="subtitle is-4">New player</h1>
 
-  <div class="container">
-    <div class="columns">
+    <div class="container">
+      <div class="columns">
 
-      <div class="column is-narrow">
-        <%= render "form", player: @player, page: @page, query: @query %>
+        <div class="column is-narrow">
+          <%= render "form", player: @player, page: @page, query: @query %>
+        </div>
+
       </div>
-
     </div>
   </div>
-
 <% end %>

@@ -1,9 +1,9 @@
 <div class="container">
   <div class="columns">
-    <div class="column is-one-third" data-controller="search-form">
+    <div class="column is-one-third" id="left" data-controller="search-form">
       <%= render "list_box" %>
     </div>
-    <div class="column" id="players">
+    <div class="column" id="right">
       <%= render "players", players: @players, query: @query, page: @page %>
     </div>
   </div>
