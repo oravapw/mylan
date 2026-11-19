@@ -2,11 +2,9 @@
 require "test_helper"
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
-  driven_by :selenium, using: :headless_chrome, screen_size: [ 1400, 1400 ]
-  # driven_by :selenium, using: :headless_chrome, screen_size: [1400, 1400], options: {
-  #   browser: :remote,
-  #   url: "http://chrome-server:4444"
-  # }
+  driven_by :selenium, using: :headless_firefox, screen_size: [1400, 1400]
+
+  include FactoryBot::Syntax::Methods
 
   def login(password = "mylan")
     visit login_url

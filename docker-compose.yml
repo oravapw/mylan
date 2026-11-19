@@ -35,9 +35,5 @@ services:
       db:
         condition: service_healthy
 
-#  chrome-server:
-#    image: selenium/standalone-chrome:156.0-20261101
-#    shm_size: 2gb
-
 volumes:
   data:

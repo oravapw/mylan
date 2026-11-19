@@ -3,14 +3,10 @@ ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
 
-#Capybara.server_host = "0.0.0.0"
-#Capybara.app_host = "http://web" #"http://#{ENV.fetch("HOSTNAME")}" #:#{Capybara.server_port}"
-#Capybara.default_max_wait_time = 5
-
 module ActiveSupport
   class TestCase
     # Run tests in parallel with specified workers
-    # parallelize(workers: :number_of_processors)
+    parallelize(workers: :number_of_processors)
 
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
     # fixtures :all

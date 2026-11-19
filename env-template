@@ -3,7 +3,7 @@
 LOGIN_USERNAME=mylan
 LOGIN_PASSWORD=mylan
 
-# database settings
+# database settings (note: DB_HOST not used in tests)
 
 DB_HOST=db
 DB_USER=mylan

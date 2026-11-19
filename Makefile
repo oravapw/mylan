@@ -45,9 +45,9 @@ db:
 dbroot:
 	docker compose exec db mariadb -uroot -proot
 
-# System tests
+# System tests (using in-container database)
 test:
-	docker compose exec web ./bin/rails test:system "test/system/*.rb"
+	./bin/rails test:system "test/system/*_test.rb"
 
 # Build production image (versioned and same as "latest")
 image:

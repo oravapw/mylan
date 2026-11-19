@@ -2,94 +2,126 @@
 require "application_system_test_case"
 
 class PlayersTest < ApplicationSystemTestCase
-  name = "John Doe"
-  vekn = "1234567"
-  country = "Antarctica"
-  email = "john@example.com"
-
-  new_name = "John Wick"
-  new_vekn = "6666666"
-  new_country = "Russia"
-  new_email = "wick@assassin.com"
 
   test "add new player" do
-    login
-    assert_selector "h1", text: "Tournaments"
-    click_link "Players"
-    sleep 1
-    assert_no_selector "h1", text: "Tournaments"
-
-    assert_selector "h1", text: "Players"
+    login_to_players
     assert_selector "p", text: "No players found"
     click_button "Add new player"
-    sleep 1
-    assert_no_selector "p", text: "No players found"
-
     assert_selector "h1", text: "New player"
-    fill_in "Name", with: name
-    fill_in "Vekn", with: vekn
-    select country, from: "Country"
-    fill_in "Email", with: email
-    click_button "Save"
-    assert_no_selector "h1", text: "New player"
 
-    assert_player_list(name, vekn, country, email)
+    player = build :player
+    fill_in "Name", with: player.name
+    fill_in "Vekn", with: player.vekn
+    select player.country_name, from: "Country", match: :first
+    fill_in "Email", with: player.email
+    click_button "Save"
+
+    assert_player_list player
 
     # make sure turbo did not overwrite left-hand frame
     within "div#left" do
       assert_selector "h1", text: "Players"
     end
-
-    # click_link name
-    # assert_no_selector "div#players-list"
-    #
-    # assert_selector "div#player"
-    # within "div#player" do
-    #   assert_selector "h1", text: name
-    #   click_button "Edit"
-    # end
-    # assert_no_selector "div#player"
-    #
-    # assert_selector "div#player-edit"
-    # within "div#player-edit" do
-    #   assert_selector "h1", text: "Editing player #{name}"
-    #   fill_in "Name", with: new_name
-    #   fill_in "Vekn", with: new_vekn
-    #   select new_country, from: "Country"
-    #   fill_in "Email", with: new_email
-    #   click_button "Save"
-    # end
-    #
-    # assert_player_list(new_name, new_vekn, new_country, new_email)
-    #
-    # click_link new_name
-    # assert_no_selector "div#players-list"
-    #
-    # assert_selector "div#player"
-    # within "div#player" do
-    #   assert_selector "h1", text: new_name
-    #   click_button "Edit"
-    # end
-    #
-    # assert_no_selector "div#player"
-    # assert_selector "div#player-edit"
-    # within "div#player-edit" do
-    #   assert_selector "h1", text: "Editing player #{new_name}"
-    #   accept_confirm do
-    #     click_button "Delete"
-    #   end
-    # end
-    #
-    # assert_selector "p", text: "No players found"
   end
 
-  def assert_player_list(name, vekn, country, email)
+  test "update existing player" do
+    player = create :player
+
+    login_to_players
+    assert_player_list player
+
+    click_link player.name
+    assert_selector "div#player"
+    within "div#player" do
+      assert_selector "h1", text: player.name
+      click_button "Edit"
+    end
+
+    assert_selector "div#player-edit"
+    new_player = build :player
+    within "div#player-edit" do
+      assert_selector "h1", text: "Editing player #{player.name}"
+      fill_in "Name", with: new_player.name
+      fill_in "Vekn", with: new_player.vekn
+      select new_player.country_name, from: "Country", match: :first
+      fill_in "Email", with: new_player.email
+      click_button "Save"
+    end
+
+    assert_player_list new_player
+  end
+
+  test "delete existing player" do
+    player1 = create :player
+    player2 = create :player
+
+    login_to_players
+    assert_player_list player1
+    assert_player_list player2
+
+    click_link player2.name
+    within "div#player" do
+      click_button "Edit"
+    end
+
+    within "div#player-edit" do
+      accept_confirm do
+        click_button "Delete"
+      end
+    end
+
+    assert_player_list player1
+    assert_no_player_list player2
+  end
+
+  test "search players" do
+    player1 = create :player, name: "John Foo"
+    player2 = create :player, name: "Bob Foo"
+    player3 = create :player, name: "Ann Bar"
+
+    login_to_players
+    assert_player_list player1
+    assert_player_list player2
+    assert_player_list player3
+
+    within "div#left" do
+      fill_in "query", with: "foo"
+    end
+
+    assert_no_player_list player3
+    assert_player_list player1
+    assert_player_list player2
+
+    within "div#left" do
+      fill_in "query", with: "ann"
+    end
+
+    assert_player_list player3
+    assert_no_player_list player1
+    assert_no_player_list player2
+  end
+
+  def login_to_players
+    login
+    assert_selector "h1", text: "Tournaments"
+    click_link "Players"
+    assert_selector "h1", text: "Players"
+  end
+
+  def assert_player_list(player)
     assert_selector "div#players-list"
     within_table "players_table" do
-      assert_selector "td", text: name
-      assert_selector "td", text: vekn
-      assert_selector "td", text: country
-      assert_selector "td", text: email
+      assert_selector "td", text: player.name
+      assert_selector "td", text: player.vekn
+      assert_selector "td", text: player.country_name
+      assert_selector "td", text: player.email
+    end
+  end
+
+  def assert_no_player_list(player)
+    assert_selector "div#players-list"
+    within_table "players_table" do
+      assert_no_selector "td", text: player.name
     end
   end
 end
