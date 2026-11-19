@@ -10,16 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2024_11_13_143507) do
-  create_table "changelogs", charset: "utf8mb3", collation: "utf8mb3_uca1400_ai_ci", force: :cascade do |t|
-    t.datetime "timestamp", null: false
-    t.string "change", null: false
-    t.bigint "player_id"
-    t.bigint "tournament_id"
-    t.index ["player_id"], name: "index_changelogs_on_player_id"
-    t.index ["tournament_id"], name: "index_changelogs_on_tournament_id"
-  end
-
+ActiveRecord::Schema[8.1].define(version: 2026_11_19_162913) do
   create_table "players", charset: "utf8mb3", collation: "utf8mb3_uca1400_ai_ci", force: :cascade do |t|
     t.string "name", limit: 40, null: false
     t.string "vekn", limit: 7
@@ -61,7 +52,4 @@ ActiveRecord::Schema[8.1].define(version: 2024_11_13_143507) do
     t.index ["name"], name: "index_tournaments_on_name", unique: true
     t.index ["prereg_slug"], name: "index_tournaments_on_prereg_slug", unique: true
   end
-
-  add_foreign_key "changelogs", "players", on_delete: :nullify
-  add_foreign_key "changelogs", "tournaments", on_delete: :nullify
 end

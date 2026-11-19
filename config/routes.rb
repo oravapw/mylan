@@ -6,7 +6,6 @@ Rails.application.routes.draw do
   post "logout", to: "login#logout"
 
   resources :players
-  resources :changelogs, only: [:index]
 
   resources :tournaments do
     resources :tournament_players, only: %i[new create]

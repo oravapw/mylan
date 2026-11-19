@@ -110,7 +110,7 @@ class PlayersTest < ApplicationSystemTestCase
 
   def assert_player_list(player)
     assert_selector "div#players-list"
-    within_table "players_table" do
+    within_table "players-table" do
       assert_selector "td", text: player.name
       assert_selector "td", text: player.vekn
       assert_selector "td", text: player.country_name
@@ -120,7 +120,7 @@ class PlayersTest < ApplicationSystemTestCase
 
   def assert_no_player_list(player)
     assert_selector "div#players-list"
-    within_table "players_table" do
+    within_table "players-table" do
       assert_no_selector "td", text: player.name
     end
   end

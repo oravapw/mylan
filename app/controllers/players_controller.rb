@@ -32,7 +32,6 @@ class PlayersController < ApplicationController
     @player = Player.new(player_params)
     @player.normalize_fields
     if @player.save
-      log_player_create @player
       respond_to do |format|
         format.html { redirect_to players_path }
         format.turbo_stream { load_paged_players }
@@ -49,7 +48,6 @@ class PlayersController < ApplicationController
     changed = @player.identifier != oldident
     if @player.save
       if changed
-        log_player_update @player, oldident
         TournamentPlayer.update_player_data(@player.id, @player.name, @player.vekn, @player.email)
       end
       redirect_to players_path(page: params[:page], query: params[:query])
@@ -61,7 +59,6 @@ class PlayersController < ApplicationController
   def destroy
     @ident = @player.identifier
     @player.destroy
-    log_player_delete @player
     respond_to do |format|
       format.html { redirect_to players_path }
       format.turbo_stream { load_paged_players }

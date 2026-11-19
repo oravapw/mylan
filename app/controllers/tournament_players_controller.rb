@@ -38,7 +38,6 @@ class TournamentPlayersController < ApplicationController
       @baseplayer.email = @player.email
       if @baseplayer.save
         @player.player_id = @baseplayer.id
-        log_player_create @baseplayer
       else
         # do not show validation errors about player_id in this scenario, since form validation uses
         # TournamentPlayer object and not Player
@@ -46,15 +45,12 @@ class TournamentPlayersController < ApplicationController
       end
     end
 
-    log_tournament_player_add @player if @player.save
-
     send_registration_email(@player) if @prereg
   end
 
   def destroy
     @tournament = @player.tournament
     @player.destroy
-    log_tournament_player_remove @player
   end
 
   def resend_link

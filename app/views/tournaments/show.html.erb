@@ -1,6 +1,6 @@
 <div class="container">
   <div class="columns">
-    <div class="column is-one-third">
+    <div class="column is-one-third" id="tournament-info">
 
       <h1 class="title is-4"><%= @tournament.name %></h1>
       <% if @tournament.date.present? %>
@@ -23,32 +23,32 @@
       <table class="table is-narrow mt-4">
         <tr>
           <th>Location</th>
-          <td><%= blank2minus(@tournament.location) %></td>
+          <td id="location"><%= blank2minus(@tournament.location) %></td>
         </tr>
         <tr>
           <th><%= "Organizer".pluralize(@tournament.organizers&.count(',') + 1) %></th>
-          <td><%= blank2minus(@tournament.organizers) %></td>
+          <td id="organizer"><%= blank2minus(@tournament.organizers) %></td>
         </tr>
         <tr>
           <th>Deck lists required?</th>
-          <td><%= @tournament.decklists ? "Yes" : "No" %></td>
+          <td id="decklists"><%= @tournament.decklists ? "Yes" : "No" %></td>
         </tr>
         <tr>
           <th>Deck lists viewable</th>
-          <td><%= decklist_delay_text(@tournament.decklist_delay) %></td>
+          <td id="decklists-viewable"><%= decklist_delay_text(@tournament.decklist_delay) %></td>
         </tr>
         <tr>
           <th>Proxies allowed?</th>
-          <td><%= @tournament.proxies ? "Yes" : "No" %></td>
+          <td id="proxies-allowed"><%= @tournament.proxies ? "Yes" : "No" %></td>
         </tr>
         <tr>
           <th>Pre-registration?</th>
-          <td><%= @tournament.prereg ? "Yes" : "No" %></td>
+          <td id="prereg"><%= @tournament.prereg ? "Yes" : "No" %></td>
         </tr>
         <% if @tournament.prereg %>
           <tr>
             <th>Pre-registration ends</th>
-            <td><%= @tournament.display_prereg_end %></td>
+            <td id="prereg-end"><%= @tournament.display_prereg_end %></td>
           </tr>
         <% end %>
       </table>

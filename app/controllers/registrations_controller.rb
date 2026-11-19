@@ -58,7 +58,6 @@ class RegistrationsController < ApplicationController
     return unless init_for_token(params[:id])
 
     @player.destroy
-    log_tournament_player_remove @player
   end
 
   private

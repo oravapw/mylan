@@ -26,7 +26,6 @@ class TournamentsController < ApplicationController
   def create
     @tournament = Tournament.new(tournament_params)
     if @tournament.save
-      log_tournament_create @tournament
       redirect_to tournaments_path
     else
       render "tournaments/new", status: :unprocessable_entity
@@ -52,7 +51,6 @@ class TournamentsController < ApplicationController
       return
     end
     @tournament.destroy
-    log_tournament_delete @tournament
     redirect_to tournaments_path
   end
 
