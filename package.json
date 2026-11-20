@@ -14,7 +14,6 @@
     "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo-rails": "^8.0.23",
     "bulma": "^0.9.4",
-    "flatpickr": "^4.6.13",
     "sass": "^1.80.7",
     "stimulus": "^3.2.2",
     "stimulus-use": "^0.50.0"
