@@ -1,36 +1,19 @@
 <div id="tournaments-list">
-  <% if tournaments.empty? %>
+  <% if @nodate_tournaments.empty? && @future_tournaments.empty? && @today_tournaments.empty? && @past_tournaments.empty?%>
     <p class="subtitle is-5">
       No tournaments registered
     </p>
   <% else %>
-    <%
-      today = []
-      future = []
-      past = []
-      nodate = []
-      tournaments.each do |t|
-        if t.past?
-          past << t
-        elsif t.future?
-          future << t
-        elsif t.today?
-          today << t
-        else
-          nodate << t
-        end
-      end
-      future = future.sort_by(&:date) if future.present? # sort these in asc date order
-    %>
     <table class="table is-hoverable is-fullwidth mt-4" id="tournaments-table">
-      <%= render("grouped_tournaments", tournaments: today,
-                 group: "today", title: "Today", color: "danger-dark") if today.present? %>
-      <%= render("grouped_tournaments", tournaments: future,
-                 group: "upcoming", title: "Upcoming", color: "success") if future.present? %>
-      <%= render("grouped_tournaments", tournaments: nodate,
-                 group: "unknown", title: "Date unknown", color: "warning-dark") if nodate.present? %>
-      <%= render("grouped_tournaments", tournaments: past,
-                 group: "past", title: "Past", color: "link") if past.present? %>
+      <%= render("grouped_tournaments", tournaments: @today_tournaments,
+                 group: "today", title: "Today", color: "danger-dark") if @today_tournaments.present? %>
+      <%= render("grouped_tournaments", tournaments: @future_tournaments,
+                 group: "upcoming", title: "Upcoming", color: "success") if @future_tournaments.present? %>
+      <%= render("grouped_tournaments", tournaments: @nodate_tournaments,
+                 group: "unknown", title: "Date unknown", color: "warning-dark") if @nodate_tournaments.present? %>
+      <%= render("grouped_tournaments", tournaments: @past_tournaments,
+                 group: "past", title: "Past", color: "link") if @past_tournaments.present? %>
     </table>
+    <%= paginate @past_tournaments if @past_tournaments.present? %>
   <% end %>
 </div>

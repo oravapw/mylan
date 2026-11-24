@@ -125,7 +125,18 @@ class TournamentsController < ApplicationController
   end
 
   def load_tournaments
-    @tournaments = Tournament.order("date desc", :name)
+    page = params[:page]
+    if page.nil? || page.to_i == 1
+      @future_tournaments = Tournament.with_date.future.order("date", :name)
+      @today_tournaments = Tournament.with_date.today.order("date desc", :name)
+      @nodate_tournaments = Tournament.with_no_date.order(:name)
+    else
+      @future_tournaments = []
+      @today_tournaments = []
+      @nodate_tournaments = []
+    end
+
+    @past_tournaments = Tournament.with_date.past.order("date desc", :name).page(params[:page]).per(8)
   end
 
   def tournament_params

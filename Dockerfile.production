@@ -18,7 +18,7 @@ WORKDIR /rails
 RUN apk update && \
     apk upgrade && \
     apk add --update --no-cache \
-    mysql-dev tzdata jemalloc curl bash yaml-dev curl && \
+    mysql-dev tzdata jemalloc curl bash yaml-dev vips && \
     rm -rf /var/cache/apk/*
 
 # Set production environment

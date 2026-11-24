@@ -16,3 +16,6 @@
 - added test suite to verify user-facing functionality
 - removed changelog functionality
 - various small fixes and cleanups
+
+### 1.0.3
+- added paging to tournaments and decklists

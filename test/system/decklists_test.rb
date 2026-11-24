@@ -76,6 +76,35 @@ class DecklistsTest < ApplicationSystemTestCase
     assert_selector "pre", text: new_dl
   end
 
+  test "decklist visibility delay" do
+    # future tournament, should not be visible
+    t1 = create :tournament, date: Time.now.advance(minutes: 5), decklist_delay: 0
+    create_tournament_player(t1, create(:player), make_decklist(20))
+
+    # tournament started, delay 0, should be visible
+    t2 = create :tournament, date: Time.now.advance(minutes: -1), decklist_delay: 0
+    create_tournament_player(t2, create(:player), make_decklist(20))
+
+    # tournament started, delay 30, should be visible but not linked
+    t3 = create :tournament, date: Time.now.advance(minutes: -1), decklist_delay: 30
+    create_tournament_player(t3, create(:player), make_decklist(20))
+
+    # tournament started but delay time is over, should be visible
+    t4 = create :tournament, date: Time.now.advance(minutes: -35), decklist_delay: 30
+    create_tournament_player(t4, create(:player), make_decklist(20))
+
+    login_to_tournaments
+    click_link "Decklists"
+    # future tournament, not in list at all
+    assert_no_selector "em", text: t1.name
+    assert_no_selector "a", text: t1.name
+
+    # these should be visible
+    assert_selector "a", text: t2.name
+    assert_selector "em", text: t3.name
+    assert_selector "a", text: t4.name
+  end
+
   def make_decklist(size)
     list = []
     size.times do

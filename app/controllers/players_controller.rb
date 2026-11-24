@@ -82,16 +82,16 @@ class PlayersController < ApplicationController
   def store_page_and_query
     @query = params[:query]
     @page = params[:page]
-    logger.debug "setting page=#{@page}, query=#{@query}"
+    # logger.debug "setting page=#{@page}, query=#{@query}"
   end
 
   def load_paged_players
     pg = params[:page] || @page
     @players = if @query.present?
                  Player.where("name LIKE ?", "%#{@query}%").or(Player.where("vekn LIKE ?", "%#{@query}%"))
-                       .order(:name).page pg
+                       .order(:name).page(pg)
     else
-      Player.order(:name).page pg
+      Player.order(:name).page(pg)
     end
   end
 end

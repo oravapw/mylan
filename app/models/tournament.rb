@@ -11,6 +11,11 @@ class Tournament < ApplicationRecord
   before_validation :initialize_prereg
 
   scope :not_future, -> { where(date: ..Time.now) }
+  scope :with_date, -> { where("date IS NOT NULL") }
+  scope :with_no_date, -> { where("date IS NULL") }
+  scope :future, -> { where(date: Time.now.end_of_day..) }
+  scope :today, -> { where(date: Time.now.beginning_of_day..Time.now.end_of_day) }
+  scope :past, -> { where(date: ..Time.now.beginning_of_day) }
 
   def player_count
     tournament_players.size
@@ -77,7 +82,7 @@ class Tournament < ApplicationRecord
   end
 
   def decklists_visible?
-    date.present? && date.advance(minutes: decklist_delay) < Time.now
+    date.present? && date < Time.now.advance(minutes: -decklist_delay)
   end
 
   def started?

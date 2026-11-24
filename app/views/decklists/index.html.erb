@@ -22,7 +22,13 @@
             <tbody>
             <% @tournaments.each do |t| %>
               <tr>
-                <td><%= link_to t.name, tournament_index_decklist_path(t.id) %></td>
+                <td>
+                  <% if t.decklists_visible? -%>
+                    <%= link_to t.name, tournament_index_decklist_path(t.id) %>
+                  <% else -%>
+                    <em><%= t.name %></em>
+                  <% end -%>
+                </td>
                 <td><span class="is-size-7"><%= t.display_date(true) %></span></td>
                 <td class="has-text-right">
                   <span class="is-size-7">
@@ -40,6 +46,7 @@
             <% end %>
             </tbody>
           </table>
+          <%= paginate @tournaments %>
         <% end %>
       <% end %>
 
