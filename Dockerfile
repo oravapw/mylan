@@ -5,7 +5,7 @@
 
 # stage 1: build gems
 
-ARG RUBY_VERSION=3.4.8
+ARG RUBY_VERSION=4.0.10
 
 FROM ruby:$RUBY_VERSION-alpine AS build-base
 
@@ -22,6 +22,7 @@ COPY Gemfile Gemfile.lock ./
 RUN gem update --system && \
     gem install bundler && \
     bundle install
+
 # no need for yarn install, since we are mounting app from user dir anyway
 
 # stage 2: development environment
@@ -37,7 +38,7 @@ ENV LANG=C.UTF-8 \
 RUN apk update && \
     apk upgrade && \
     apk add --update --no-cache \
-    mysql-dev tzdata bash jemalloc && \
+    mysql-dev tzdata bash jemalloc curl && \
     rm -rf /var/cache/apk/* 
 
 # copy gems built by first stage
@@ -58,4 +59,4 @@ USER 1000:1000
 
 # default command is Rails server
 EXPOSE 3000
-CMD ["./bin/rails", "server", "-b", "0.0.0.0"]
+CMD ["./bin/rails", "server", "-b", "0.0.0.0" ]

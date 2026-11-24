@@ -30,7 +30,9 @@
                       <%= f.hidden_field :confirmed %>
                       <div class="field is-grouped">
                         <div class="control">
-                          <%= f.button type: "submit", class: "button is-primary has-text-black is-small py-0 ml-4",
+                          <%= f.button type: "submit",
+                                       id: "add-player-#{result.player_id}",
+                                       class: "button is-primary has-text-black is-small py-0 ml-4",
                                        data: { action: "click->form#submitAndRemove" } do %>
                             <% if @prereg %>
                               <span class="has-text-weight-bold">Register me</span>

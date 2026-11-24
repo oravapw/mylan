@@ -1,38 +1,40 @@
 <%= turbo_frame_tag "players" do %>
-  <% if players.empty? %>
-    <p class="subtitle is-5">
-      No players found
-      <% if query.present? %>
-        matching "<%= query %>"
-      <% end %>
-    </p>
-  <% else %>
-    <table class="table is-striped is-hoverable">
-      <thead>
-      <tr>
-        <th>Name</th>
-        <th>VEKN#</th>
-        <th>Country</th>
-        <th>Email</th>
-        <th>Registered</th>
-        <th>Updated</th>
-      </tr>
-      </thead>
-      <tbody>
-      <% players.each do |p| %>
+  <div id="players-list">
+    <% if players.empty? %>
+      <p class="subtitle is-5">
+        No players found
+        <% if query.present? %>
+          matching "<%= query %>"
+        <% end %>
+      </p>
+    <% else %>
+      <table class="table is-striped is-hoverable" id="players-table">
+        <thead>
         <tr>
-          <td><%= link_to p.name, player_path(p, page: page, query: query) %></td>
-          <td><%= p.vekn %></td>
-          <td><%= p.country_name %></td>
-          <td><%= p.email %></td>
-          <td><span class="is-size-7"><%= p.created_at&.strftime("%d.%m.%Y %H:%M:%S") %></span></td>
-          <td>
-            <span class="is-size-7"><%= p.updated_at != p.created_at ? p.updated_at&.strftime("%d.%m.%Y %H:%M:%S") : '' %></span>
-          </td>
+          <th>Name</th>
+          <th>VEKN#</th>
+          <th>Country</th>
+          <th>Email</th>
+          <th>Registered</th>
+          <th>Updated</th>
         </tr>
-      <% end %>
-      </tbody>
-    </table>
-    <%= paginate players %>
-  <% end %>
+        </thead>
+        <tbody>
+        <% players.each do |p| %>
+          <tr>
+            <td><%= link_to p.name, player_path(p, page: page, query: query) %></td>
+            <td><%= p.vekn %></td>
+            <td><%= p.country_name %></td>
+            <td><%= p.email %></td>
+            <td><span class="is-size-7"><%= p.created_at&.strftime("%d.%m.%Y %H:%M:%S") %></span></td>
+            <td>
+              <span class="is-size-7"><%= p.updated_at != p.created_at ? p.updated_at&.strftime("%d.%m.%Y %H:%M:%S") : '' %></span>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+      <%= paginate players %>
+    <% end %>
+  </div>
 <% end %>

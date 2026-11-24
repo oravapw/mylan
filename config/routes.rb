@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 Rails.application.routes.draw do
   get "login", to: "login#index"
@@ -5,7 +6,6 @@ Rails.application.routes.draw do
   post "logout", to: "login#logout"
 
   resources :players
-  resources :changelogs, only: [ :index ]
 
   resources :tournaments do
     resources :tournament_players, only: %i[new create]
@@ -18,7 +18,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :tournament_players, only: [ :destroy ] do
+  resources :tournament_players, only: [:destroy] do
     member do
       patch :toggle_confirm
       post :edit_decklist
@@ -41,6 +41,10 @@ Rails.application.routes.draw do
       post :download_zip
     end
   end
+
+  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
+  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  get "up" => "rails/health#show", :as => :rails_health_check
 
   root "tournaments#index"
 end

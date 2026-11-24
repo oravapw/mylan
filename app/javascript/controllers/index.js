@@ -13,9 +13,6 @@ application.register("delete-confirm", DeleteConfirmController)
 import DisableController from "./disable_controller"
 application.register("disable", DisableController)
 
-import FlatpickrController from "./flatpickr_controller"
-application.register("flatpickr", FlatpickrController)
-
 import FormController from "./form_controller"
 application.register("form", FormController)
 

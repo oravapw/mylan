@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class TournamentPlayersController < ApplicationController
   before_action :load_player, only: %i[destroy toggle_confirm edit_decklist update_decklist resend_link]
   before_action :load_tournament, only: %i[new create]
@@ -18,11 +19,8 @@ class TournamentPlayersController < ApplicationController
     @prereg = !@player.confirmed?
 
     if @prereg && !@tournament.prereg_open?
-      @prereg_error = if @tournament.prereg_closed?
-                        "Registration to this tournament has closed"
-      else
+      @prereg_error = @tournament.prereg_closed? ? "Registration to this tournament has closed" :
                         "Registration to this tournament is not possible"
-      end
       return
     end
 
@@ -37,7 +35,6 @@ class TournamentPlayersController < ApplicationController
       @baseplayer.email = @player.email
       if @baseplayer.save
         @player.player_id = @baseplayer.id
-        log_player_create @baseplayer
       else
         # do not show validation errors about player_id in this scenario, since form validation uses
         # TournamentPlayer object and not Player
@@ -45,15 +42,14 @@ class TournamentPlayersController < ApplicationController
       end
     end
 
-    log_tournament_player_add @player if @player.save
-
-    send_registration_email(@player) if @prereg
+    if @player.save && @prereg
+      send_registration_email(@player)
+    end
   end
 
   def destroy
     @tournament = @player.tournament
     @player.destroy
-    log_tournament_player_remove @player
   end
 
   def resend_link
@@ -85,14 +81,14 @@ class TournamentPlayersController < ApplicationController
   private
 
   def load_player
-    @player = TournamentPlayer.find(params[:id])
+    @player = TournamentPlayer.find(params.expect(:id))
   end
 
   def load_tournament
-    @tournament = Tournament.find(params[:tournament_id])
+    @tournament = Tournament.find(params.expect(:tournament_id))
   end
 
   def tournament_player_params
-    params.require(:tournament_player).permit(:name, :vekn, :player_id, :country, :email, :confirmed, :decklist)
+    params.expect(tournament_player: [:name, :vekn, :player_id, :country, :email, :confirmed, :decklist])
   end
 end

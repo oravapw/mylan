@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module TournamentsHelper
   def decklist_delay_text(delay)
     if delay == 0
@@ -12,15 +13,28 @@ module TournamentsHelper
     end
   end
 
+  def decklist_valid?(decklist)
+    decklist.present? && decklist.lines.count > 10
+  end
+
+  def decklist_id(decklist, id)
+    type = if decklist.present?
+             decklist_valid?(decklist) ? "ok" : "bad"
+           else
+             "none"
+           end
+    "dl-#{id}-#{type}"
+  end
+
   def decklist_lines(decklist)
     decklist.present? ? "#{decklist.lines.count} lines" : "empty"
   end
 
   def decklist_check_color(decklist)
-    decklist.present? && decklist.lines.count > 10 ? "green" : "orange"
+    decklist_valid?(decklist) ? "green" : "orange"
   end
 
   def decklist_check_symbol(decklist)
-    decklist.present? && decklist.lines.count > 10 ? "check" : "question"
+    decklist_valid?(decklist) ? "check" : "question"
   end
 end

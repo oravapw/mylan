@@ -1,18 +1,18 @@
 <% if tournaments.present? %>
   <tr>
-    <th colspan="6"><span class="is-size-4 has-text-<%= color %>"><%= title %></span></th>
+    <th colspan="6" class="<%= group %>-title"><span class="is-size-4 has-text-<%= color %>"><%= title %></span></th>
   </tr>
   <tr>
     <th>Date</th>
     <th>Name</th>
     <th>Location</th>
     <th>Organizers</th>
-    <th>Players</th>
+    <th class="has-text-right">Players</th>
   </tr>
   <% tournaments.each do |t| %>
     <tr>
       <td style="white-space: nowrap"><%= t.display_date %></td>
-      <td><%= link_to t.name, t %></td>
+      <td class="<%= group %>"><%= link_to t.name, t %></td>
       <td><span class="is-size-7"><%= t.location %></span></td>
       <td><span class="is-size-7"><%= t.organizers %></span></td>
       <td class="has-text-right"><%= t.player_count %></td>

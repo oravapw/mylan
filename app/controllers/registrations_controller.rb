@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class RegistrationsController < ApplicationController
   def show
     slug = params[:id]
@@ -12,7 +13,7 @@ class RegistrationsController < ApplicationController
   end
 
   def search
-    @tournament = Tournament.find(params[:id])
+    @tournament = Tournament.find(params.expect(:id))
     flash.alert "This tournament does not allow self-registration" unless @tournament.prereg_open?
   end
 
@@ -57,7 +58,6 @@ class RegistrationsController < ApplicationController
     return unless init_for_token(params[:id])
 
     @player.destroy
-    log_tournament_player_remove @player
   end
 
   private

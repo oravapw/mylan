@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class PlayerMailer < ApplicationMailer
   default from: ENV["EMAIL_FROM"] if ENV["EMAIL_FROM"].present?
 

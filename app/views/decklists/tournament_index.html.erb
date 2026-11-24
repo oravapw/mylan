@@ -29,8 +29,9 @@
       <%
         decklist = p.decklist_name
         name = decklist.nil? ? p.name : "#{p.name} (\"#{decklist}\")"
+        id = "dl-#{p.player_id}"
       -%>
-      <li><%= link_to name, decklist_path(p.id), data: { turbo_frame: "decklist" }  %></li>
+      <li><%= link_to name, decklist_path(p.id), id: id, data: { turbo_frame: "decklist" }  %></li>
     <% end %>
   </ol>
 <% end %>

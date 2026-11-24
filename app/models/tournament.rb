@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Tournament < ApplicationRecord
   has_many :tournament_players
 
@@ -16,7 +17,7 @@ class Tournament < ApplicationRecord
   end
 
   def decklist_count
-    tournament_players.select { |p| p.decklist.present? }.size
+    tournament_players.count { |p| p.decklist.present? }
   end
 
   def missing_decklist_count
@@ -83,8 +84,12 @@ class Tournament < ApplicationRecord
     date.present? && date < Time.now
   end
 
+  def self.generate_slug_for(from)
+    from.strip.gsub(/\W/, "_").downcase
+  end
+
   def generate_slug
-    name.strip.gsub(/\W/, "_").downcase
+    Tournament.generate_slug_for(name)
   end
 
   def notes_as_html
@@ -103,6 +108,7 @@ class Tournament < ApplicationRecord
 
   private
 
+  # rubocop:disable Rails/OutputSafety
   def kramdoc2html(doc)
     html, = MyHtmlConverter.convert(doc.root, {})
     html.html_safe

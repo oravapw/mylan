@@ -59,10 +59,10 @@
             <% if tournament.decklists_visible? %>
               <%= form_with(url: edit_decklist_tournament_player_path(p)) do |f| %>
                 <div class="control">
-                  <% if p.decklist.present? %>
-                    <%= render 'tournaments/decklist_check', decklist: p.decklist %>
-                  <% end %>
-                  <%= f.button type: "submit", class: "button is-small is-primary is-light" do %>
+                  <%= render 'tournaments/decklist_check', decklist: p.decklist, pid: p.player_id %>
+                  <%= f.button type: "submit",
+                               id: "dledit-#{p.player_id}",
+                               class: "button is-small is-primary is-light" do %>
                     <span class="icon" style="color: black">
                       <i class="fas fa-solid fa-file-pen"></i>
                     </span>
@@ -70,11 +70,7 @@
                 </div>
               <% end %>
             <% else %>
-              <% if p.decklist.present? %>
-                <%= render 'tournaments/decklist_check', decklist: p.decklist %>
-              <% else %>
-                -
-              <% end %>
+              <%= render 'tournaments/decklist_check', decklist: p.decklist, pid: p.player_id %>
             <% end %>
           </td>
           <% if tournament.prereg %>
@@ -101,6 +97,7 @@
               <%= form_with(url: tournament_player_path(p), method: :delete) do |f| %>
                 <div class="control">
                   <%= f.button type: "submit", class: "button is-warning has-text-black is-small py-0",
+                               id: "remove-player-#{p.player_id}",
                                "data-controller": "delete-confirm",
                                "data-action": "click->delete-confirm#do",
                                "data-delete-confirm-action-value": "remove #{p.name} from the tournament" do %>

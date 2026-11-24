@@ -28,7 +28,7 @@ and email to orava@iki.fi also works.
 Here I'm assuming you're on MacOS or Linux, I have no idea how any of this would work on Windows.
 
 You'll need to have Docker installed, a local copy of Ruby matching the 
-current code version (3.3.6 as of this writing), npm/yarn, and various Unix-style dev tools
+current code version (4.0.9 as of this writing), npm/yarn, and various Unix-style dev tools
 (make, etc).
 
 1. "bundle install; yarn install"
@@ -135,29 +135,51 @@ remain empty for now.
 ### Docker Compose
 
 As an example, I use something like this to run the app in production. 
-The app talks to a MySQL instance running on localhost, but another
-option would be to also run MySQL as a Docker image.
 
 ```
 services:
 
   mylan:
-    image: petriwessman/mylan:1.0.0
+    image: petriwessman/mylan:(version)
     environment:
-      DB_HOST: docker.localhost
+      DB_HOST: mariadb
       DB_USER: (username)
       DB_PASSWORD: (password)
       LOGIN_USERNAME: (username)
       LOGIN_PASSWORD: (password)
       TIME_ZONE: Helsinki
       SMTP_ADDRESS: (my email server)
-      EMAIL_FROM: noreply@orava.org
+      EMAIL_FROM: (my "from" address)
       SECRET_KEY_BASE: (my secret key)
       RAILS_RELATIVE_URL_ROOT: /mylan
     ports:
       - "3000:3000"
-    extra_hosts:
-      - "docker.localhost:172.17.0.1"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/up"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    depends_on:
+      mariadb:
+        condition: service_healthy
+
+  mariadb:
+    image: mariadb:12
+    restart: always
+    volumes:
+      - data:/var/lib/mysql
+    environment:
+      MARIADB_ROOT_PASSWORD: (password)
+      MARIADB_AUTO_UPGRADE: 1
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  data:
 ```
 
 This is for mounting the app at `my.server.net/mylan`, and needs the front-end 

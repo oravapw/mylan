@@ -9,3 +9,10 @@
 
 ### 1.0.1
 - small fixes for production
+
+### 1.0.2
+- update to Rails 8.1.4.1, Ruby 4.0.10
+- CI tweaks
+- added test suite to verify user-facing functionality
+- removed changelog functionality
+- various small fixes and cleanups
