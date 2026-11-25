@@ -1,4 +1,5 @@
 <%= turbo_frame_tag "searchresults" do %>
+  <div id="crud_notify"></div>
   <%= form_with(model: @player, url: tournament_tournament_players_path(tournament_id: @tournament.id)) do |f| %>
 
     <%= hidden_field_tag "tournament_id", @tournament.id %>

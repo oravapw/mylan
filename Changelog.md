@@ -19,3 +19,6 @@
 
 ### 1.0.3
 - added paging to tournaments and decklists
+
+### 1.0.4
+- some checks to prohibit player entries with duplicate VEKN/email info

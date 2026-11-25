@@ -56,7 +56,6 @@ class RegistrationsController < ApplicationController
 
   def destroy
     return unless init_for_token(params[:id])
-
     @player.destroy
   end
 

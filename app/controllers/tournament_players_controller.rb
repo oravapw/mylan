@@ -9,6 +9,7 @@ class TournamentPlayersController < ApplicationController
   end
 
   # this is a bit weird, since we handle multiple scenarios here and the result processing is with turbo streams
+  # (this + associated views are somewhat spaghetti code and should really be rewritten...)
   def create
     @cancel = params[:cancel]
     return if @cancel
@@ -33,13 +34,11 @@ class TournamentPlayersController < ApplicationController
       @baseplayer.vekn = @player.vekn
       @baseplayer.country = @player.country
       @baseplayer.email = @player.email
-      if @baseplayer.save
-        @player.player_id = @baseplayer.id
-      else
-        # do not show validation errors about player_id in this scenario, since form validation uses
-        # TournamentPlayer object and not Player
-        @player.skip_playerid_check = true
+      unless @baseplayer.save
+        @prereg_error = @baseplayer.errors.full_messages.join ", "
+        return
       end
+      @player.player_id = @baseplayer.id
     end
 
     if @player.save && @prereg

@@ -7,11 +7,11 @@ class TournamentPlayer < ApplicationRecord
   belongs_to :tournament
   belongs_to :player, optional: true
 
-  attr_accessor :country, :skip_playerid_check
+  attr_accessor :country
 
   validates :name, presence: true, length: { maximum: 40 }
   validates :vekn, allow_blank: true, length: { is: 7 }, numericality: { only_integer: true }
-  validates :player_id, presence: true, numericality: { only_integer: true }, unless: -> { skip_playerid_check }
+  validates :player_id, presence: true, numericality: { only_integer: true }
 
   scope :with_decklist, -> { where.not(decklist: nil) }
 

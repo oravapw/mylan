@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class Tournament < ApplicationRecord
-  has_many :tournament_players
+  has_many :tournament_players, -> { order(:id) }
 
   validates :name, presence: true, length: { maximum: 40 }, uniqueness: true
   validates :location, length: { maximum: 80 }

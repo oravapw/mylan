@@ -1,10 +1,11 @@
+# frozen_string_literal: true
 class AddIndexesAndReferences < ActiveRecord::Migration[8.1]
   def up
     remove_index :tournament_players, :tournament_id
     add_index :tournament_players, [:tournament_id, :player_id], unique: true
-    
+
     # clean up possible old crud
-    Player.where(email: '').update_all(email: nil)
+    Player.where(email: "").update_all(email: nil)
 
     # if this throws an error on migration, you'll need to weed out duplicates
     # in DB by hand
