@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_19_162913) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_25_072324) do
   create_table "players", charset: "utf8mb3", collation: "utf8mb3_uca1400_ai_ci", force: :cascade do |t|
     t.string "name", limit: 40, null: false
     t.string "vekn", limit: 7
@@ -18,6 +18,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_19_162913) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "email"
+    t.index ["email"], name: "index_players_on_email", unique: true
     t.index ["vekn"], name: "index_players_on_vekn", unique: true
   end
 
@@ -30,8 +31,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_19_162913) do
     t.string "email"
     t.text "decklist"
     t.string "token"
+    t.index ["player_id"], name: "fk_rails_c9135d9048"
     t.index ["token"], name: "index_tournament_players_on_token", unique: true
-    t.index ["tournament_id"], name: "index_tournament_players_on_tournament_id"
+    t.index ["tournament_id", "player_id"], name: "index_tournament_players_on_tournament_id_and_player_id", unique: true
   end
 
   create_table "tournaments", charset: "utf8mb3", collation: "utf8mb3_uca1400_ai_ci", force: :cascade do |t|
@@ -52,4 +54,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_19_162913) do
     t.index ["name"], name: "index_tournaments_on_name", unique: true
     t.index ["prereg_slug"], name: "index_tournaments_on_prereg_slug", unique: true
   end
+
+  add_foreign_key "tournament_players", "players"
+  add_foreign_key "tournament_players", "tournaments"
 end

@@ -4,6 +4,7 @@ class Player < ApplicationRecord
 
   validates :name, presence: true, length: { maximum: 40 }
   validates :vekn, allow_nil: true, length: { is: 7 }, numericality: { only_integer: true }, uniqueness: true
+  validates :email, allow_nil: true, uniqueness: true
   validates :country, allow_nil: true, length: { is: 2 }
 
   def country_name
