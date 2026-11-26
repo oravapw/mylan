@@ -22,3 +22,6 @@
 
 ### 1.0.4
 - some checks to prohibit player entries with duplicate VEKN/email info
+
+### 1.0.5
+- added JSON export/import utility for database data

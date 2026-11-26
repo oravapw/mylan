@@ -1,6 +1,6 @@
 # Helpers for Docker
 
-.PHONY: all build migrate rollback console websh dbsh db dbec dbroot env image push version release test unittest systemtest dbdump
+.PHONY: all build migrate rollback console websh dbsh db dbec dbroot env image push version release test unittest systemtest jsonexport
 
 # version tag for production image (do not set with :=, may change during run)
 VERSION = $(shell cat VERSION)
@@ -45,9 +45,9 @@ db:
 dbroot:
 	docker compose exec db mariadb -uroot -proot
 
-# Dump mysql data in psql format
-dbdump:
-	docker compose exec db mariadb-dump -umylan -pmylan --no-create-db --no-create-info --compatible=postgresql --default-character-set=utf8mb4 mylan_dev
+# Export database as JSON
+jsonexport:
+	@docker compose exec web ./bin/rails runner lib/json_export.rb
 
 # Run tests (using in-container database)
 test: unittest systemtest
