@@ -47,7 +47,7 @@ dbroot:
 
 # Export database as JSON
 jsonexport:
-	@docker compose exec web ./bin/rails runner lib/json_export.rb
+	@docker compose exec web ./bin/rails runner script/json_export.rb
 
 # Run tests (using in-container database)
 test: unittest systemtest
