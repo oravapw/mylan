@@ -27,4 +27,4 @@
 - added JSON export/import utility for database data
 
 ### 1.0.6
-- optionally use Solid Queue for background email sends (if `SOLID_QUEUE_IN_PUMA` is set)
+- use Solid Queue for background email sends in production

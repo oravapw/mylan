@@ -101,7 +101,10 @@ The variables supported are:
 - `EMAIL_FROM` - email address to show as sender of messages (optional)
 - `RAILS_RELATIVE_URL_ROOT` - subpath app will be mounted under (required unless mounting at host root)
 - `SECRET_KEY_BASE` - Rails secret key, generate with `rails secret` (required for production images)
-- `SOLID_QUEUE_IN_PUMA` - set this (to something) to have Puma also start up Solid Queue (persisted alternative to default in-memory queue)
+- `SOLID_QUEUE_IN_PUMA` - set this (to something) to have Puma also
+  start up Solid Queue, needed for background email sends in
+  production. If you don't set this, you'll have to start up Solid
+  Queue some other way.
 
 In addition to the above, all configuration keys supported
 by `config.action_mailer.smtp_settings` (see
