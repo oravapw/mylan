@@ -27,8 +27,8 @@ and email to orava@iki.fi also works.
 
 Here I'm assuming you're on MacOS or Linux, I have no idea how any of this would work on Windows.
 
-You'll need to have Docker installed, a local copy of Ruby matching the 
-current code version (4.0.9 as of this writing), npm/yarn, and various Unix-style dev tools
+You'll need to have Docker installed and running, a local copy of Ruby matching the 
+current code version (4.0.10 as of this writing), npm/yarn, and various Unix-style dev tools
 (make, etc).
 
 1. "bundle install; yarn install"
@@ -101,6 +101,7 @@ The variables supported are:
 - `EMAIL_FROM` - email address to show as sender of messages (optional)
 - `RAILS_RELATIVE_URL_ROOT` - subpath app will be mounted under (required unless mounting at host root)
 - `SECRET_KEY_BASE` - Rails secret key, generate with `rails secret` (required for production images)
+- `SOLID_QUEUE_IN_PUMA` - set this (to something) to have Puma also start up Solid Queue (persisted alternative to default in-memory queue)
 
 In addition to the above, all configuration keys supported
 by `config.action_mailer.smtp_settings` (see
@@ -128,9 +129,7 @@ In production mode, Mylan requires the following databases to exist:
 - `mylan_queue`
 - `mylan_cable`
 
-The last 3 are for Rails 8+ db-backed facilities which Mylan does not currently 
-use but are there for future-proofing. The databases need to exist, but they will
-remain empty for now.
+The last 3 are for Rails 8+ db-backed facilities. Only `mylan_queue` is used at the moment, and that only if `SOLID_QUEUE_IN_PUMA`is set, but all databases need to exist.
 
 ### Docker Compose
 
@@ -152,10 +151,11 @@ services:
       EMAIL_FROM: (my "from" address)
       SECRET_KEY_BASE: (my secret key)
       RAILS_RELATIVE_URL_ROOT: /mylan
+      SOLID_QUEUE_IN_PUMA: yes
     ports:
       - "3000:3000"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/up"]
+      test: ["CMD", "curl", "-f", "http://localhost:3000/mylan/up"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -168,11 +168,12 @@ services:
     restart: always
     volumes:
       - data:/var/lib/mysql
+    ports:
+      - "3306:3306"
     environment:
       MARIADB_ROOT_PASSWORD: (password)
-      MARIADB_AUTO_UPGRADE: 1
     healthcheck:
-      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+     test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       start_period: 10s
       interval: 10s
       timeout: 5s

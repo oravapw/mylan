@@ -1,6 +1,7 @@
 # Helpers for Docker
 
-.PHONY: all build migrate rollback console websh dbsh db dbec dbroot env image push version release test unittest systemtest jsonexport
+.PHONY: all build migrate rollback console websh dbsh db dbec dbroot \
+env image push version release test unittest systemtest jsonexport testrelease
 
 # version tag for production image (do not set with :=, may change during run)
 VERSION = $(shell cat VERSION)
@@ -84,6 +85,10 @@ endif
 
 # tag new version, build image, push it to Docker Hub
 release: version image push
+
+testrelease:
+	docker build . -t ${DOCKERHUB}/${IMAGE}:test -f Dockerfile.production
+	docker push ${DOCKERHUB}/${IMAGE}:test
 
 env: .env.development .env.test
 
