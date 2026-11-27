@@ -162,7 +162,10 @@ services:
       LOGIN_USERNAME: (username)
       LOGIN_PASSWORD: (password)
       TIME_ZONE: Helsinki
-      SMTP_ADDRESS: (my email server)
+      SMTP_ADDRESS: (SMTP provider outgoing server)
+      SMTP_PORT: (SMTP port number)
+      SMTP_USER_NAME: (SMTP provider user name)
+      SMTP_PASSWORD: (SMTP provider password)
       EMAIL_FROM: (my "from" address)
       SECRET_KEY_BASE: (my secret key)
       RAILS_RELATIVE_URL_ROOT: /mylan
