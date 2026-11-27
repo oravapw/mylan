@@ -175,7 +175,7 @@ services:
       timeout: 10s
       retries: 3
     depends_on:
-      mariadb:
+      pg:
         condition: service_healthy
 
   pg:
