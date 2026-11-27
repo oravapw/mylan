@@ -15,6 +15,6 @@ class ApplicationController < ActionController::Base
   end
 
   def like(field, pattern)
-    ["#{field.to_s} ILIKE ?", "%#{pattern}%"]
+    ["#{field} ILIKE ?", "%#{pattern}%"]
   end
 end
