@@ -31,14 +31,14 @@ You'll need to have Docker installed and running, a local copy of Ruby matching 
 current code version (4.0.10 as of this writing), npm/yarn, and various Unix-style dev tools
 (make, etc).
 
-1. "bundle install; yarn install"
+1. Run `bundle install; yarn install`
 
-2. Run "make build", this will build & load the development Docker images.
+2. Run `make build`, this will build & load the development Docker images.
 
-3. Run "docker compose up", this should start up the web and db
+3. Run `docker compose up`, this should start up the web and db
 containers. Web will fail because databases are missing, ignore that.
 
-4. Once Docker Compose has started up everything, run "make dbroot"
+4. Once Docker Compose has started up everything, run `make dbroot`
 and then run the following SQL. This creates the development and test 
 databases with user/password mylan/mylan.
 
@@ -51,7 +51,7 @@ GRANT ALL PRIVILEGES ON DATABASE mylan_test, mylan_dev TO mylan;
 
 5. Shut down the docker compose instance.
 
-6. Run "./bin/dev". This (re)starts docker compose along with
+6. Run `./bin/dev`. This (re)starts docker compose along with
 on-the-fly compilation of CSS and Javascript when those change.
 
 7. Connect to localhost:3000, where you should see the app login
@@ -61,7 +61,7 @@ via `.env.development`), and you should see the main overview tab.
 After this, start coding. The app is live-mounted into the Docker container,
 so any file changes will be reflected in the running app immediately.
 If you make any changes that affect the Docker build (changes to `Gemfile`, for example),
-you'll need to generate a new image with `make`.
+you'll need to generate a new image with `make` and restart the container.
 
 ## Database
 
