@@ -38,13 +38,13 @@ websh:
 dbsh:
 	docker compose exec db /bin/bash
 
-# Mysql client connected to dev database
+# psql client connected to dev database
 db:
-	docker compose exec db mariadb -umylan -pmylan mylan_dev
+	docker compose exec db psql postgresql://mylan:mylan@localhost/mylan_dev
 
 # Mysql client connected to root
 dbroot:
-	docker compose exec db mariadb -uroot -proot
+	docker compose exec db psql postgresql://postgres:postgres@localhost/postgres
 
 # Export database as JSON
 jsonexport:

@@ -14,7 +14,7 @@ WORKDIR /rails
 RUN apk update && \
     apk upgrade && \
     apk add --update --no-cache \
-    git build-base mysql-dev tzdata jemalloc yaml-dev && \
+    git build-base postgresql18-dev tzdata jemalloc yaml-dev && \
     rm -rf /var/cache/apk/* 
 
 COPY Gemfile Gemfile.lock ./
@@ -38,7 +38,7 @@ ENV LANG=C.UTF-8 \
 RUN apk update && \
     apk upgrade && \
     apk add --update --no-cache \
-    mysql-dev tzdata bash jemalloc curl && \
+    postgresql18-client  tzdata bash jemalloc curl && \
     rm -rf /var/cache/apk/* 
 
 # copy gems built by first stage

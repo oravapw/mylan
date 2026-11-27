@@ -13,4 +13,8 @@ class ApplicationController < ActionController::Base
 
     PlayerMailer.with(player: player, url: edit_registration_url(player.token)).register.deliver_later
   end
+
+  def like(field, pattern)
+    ["#{field.to_s} ILIKE ?", "%#{pattern}%"]
+  end
 end

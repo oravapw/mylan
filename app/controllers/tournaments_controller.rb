@@ -69,8 +69,7 @@ class TournamentsController < ApplicationController
     return unless query.present?
 
     @results = []
-    Player.where("name LIKE ?",
-                 "%#{query}%").or(Player.where("vekn LIKE ?", "%#{query}%")).order(:name).find_each do |p|
+    Player.where(like(:name, query)).or(Player.where(like(:vekn, query))).order(:name).find_each do |p|
       @results << SearchResult.new(name: p.name, vekn: p.vekn, email: p.email, player_id: p.id)
     end
 

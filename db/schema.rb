@@ -11,7 +11,10 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[8.1].define(version: 2026_11_25_072324) do
-  create_table "players", charset: "utf8mb3", collation: "utf8mb3_uca1400_ai_ci", force: :cascade do |t|
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_catalog.plpgsql"
+
+  create_table "players", force: :cascade do |t|
     t.string "name", limit: 40, null: false
     t.string "vekn", limit: 7
     t.string "country", limit: 2
@@ -22,7 +25,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_25_072324) do
     t.index ["vekn"], name: "index_players_on_vekn", unique: true
   end
 
-  create_table "tournament_players", charset: "utf8mb3", collation: "utf8mb3_uca1400_ai_ci", force: :cascade do |t|
+  create_table "tournament_players", force: :cascade do |t|
     t.string "name", limit: 40, null: false
     t.string "vekn", limit: 7
     t.bigint "player_id", null: false
@@ -36,7 +39,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_25_072324) do
     t.index ["tournament_id", "player_id"], name: "index_tournament_players_on_tournament_id_and_player_id", unique: true
   end
 
-  create_table "tournaments", charset: "utf8mb3", collation: "utf8mb3_uca1400_ai_ci", force: :cascade do |t|
+  create_table "tournaments", force: :cascade do |t|
     t.string "name", limit: 40, null: false
     t.string "location", limit: 80
     t.string "organizers", limit: 120

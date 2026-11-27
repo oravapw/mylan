@@ -3,20 +3,20 @@
 services:
 
   db:
-    image: mariadb:12
+    image: postgres:18-alpine
     restart: always
     volumes: 
-      - data:/var/lib/mysql
+      - pgdata:/var/lib/postgresql/data
     ports:
-      - "3306:3306"
+      - "5432:5432"
     environment:
-      MARIADB_ROOT_PASSWORD: root
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /var/lib/postgresql/data/18/pgdata
     healthcheck:
-      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
-      start_period: 10s
+      test: ["CMD", "pg_isready", "-U", "postgres"]
       interval: 10s
       timeout: 5s
-      retries: 3
+      retries: 5
 
   web:
     build: .
@@ -34,4 +34,4 @@ services:
         condition: service_healthy
 
 volumes:
-  data:
+  pgdata:

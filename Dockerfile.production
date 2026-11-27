@@ -18,7 +18,7 @@ WORKDIR /rails
 RUN apk update && \
     apk upgrade && \
     apk add --update --no-cache \
-    mysql-dev tzdata jemalloc curl bash yaml-dev vips && \
+    postgresql18-client tzdata jemalloc curl bash yaml-dev vips && \
     rm -rf /var/cache/apk/*
 
 # Set production environment
@@ -36,7 +36,7 @@ FROM base AS build
 RUN apk update && \
     apk upgrade && \
     apk add --update --no-cache \
-    build-base git npm && \
+    build-base postgresql18-dev git npm && \
     rm -rf /var/cache/apk/*
 
 # Install JavaScript dependencies

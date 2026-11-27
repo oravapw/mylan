@@ -5,15 +5,15 @@ both beforehand and on site, and generating randomized input for Archon when all
 players are registered. Actual tournament score tracking is done via
 Archon as normal, this app is intended to cover everything before that.
 
-This was originally a specialized one-off app for managing EC2020
+This was originally a specialized one-off app for managing the Finnish EC2020
 registration and tournaments, but has later been expanded into a more general-use
 tournament organizer tool. The app currently only has one (shared) user account, and
 is intended for a small local group of tournament organizers. For example,
 here in Finland I run an instance on my server and all local Princes
 have access to it.
 
-The app is written with Ruby on Rails, and requires a MySQL database. 
-Local development is via Docker Compose which runs Rails and MySQL in
+The app is written with Ruby on Rails, and requires a PostgreSQL database. 
+Local development is via Docker Compose which runs Rails and PostgreSQL in
 containers, production deploy is via a configurable Docker image 
 which can be deployed in various ways (see below).
 
@@ -43,10 +43,10 @@ and then run the following SQL (this sets up according to development
 credentials as shown in step 1).
 
 ```
-CREATE DATABASE mylan_dev;
-CREATE DATABASE mylan_test;
-CREATE USER mylan@'%' IDENTIFIED BY 'mylan';
-GRANT ALL ON *.* TO mylan@'%';
+CREATE ROLE mylan PASSWORD 'mylan' NOSUPERUSER CREATEDB INHERIT LOGIN;
+CREATE DATABASE mylan_dev OWNER mylan;
+CREATE DATABASE mylan_test OWNER mylan;
+GRANT ALL PRIVILEGES ON DATABASE mylan_test, mylan_dev TO mylan;
 ```
 
 5. Shut down the docker compose instance.
@@ -63,22 +63,33 @@ so any file changes will be reflected in the running app immediately.
 If you make any changes that affect the Docker build (changes to `Gemfile`, for example),
 you'll need to generate a new image with `make`.
 
-### Note on databases
+## Database
 
-Mylan uses MySQL partly for historical reasons -- the original app needed to also access
-another database which was already on MySQL. That said, MySQL is good enough for this, 
-and there are no current plans to swich database engines.
+From version 1.1.0 onwards, Mylan uses PostgreSQL (older versions use MySQL). Changing the
+code to use something else is fairly straightforward:
 
-However, if you want to run it on something else (PostgreSQL, for example) 
-and are willing to tinker a bit, it should be fairly straightforward. 
-All database access in the app is via ActiveRecord and there is no
-hard-coded SQL. You'll need to change the following:
-
-- replace the `mysql2` gem in `Gemfile` with the appropriate driver
+- replace the `pg` gem in `Gemfile` with the appropriate driver
 - modify `config/database.yml`
+- change the `like` method in `app/controllers/application_controller.rb` to generate a case-insensitive LIKE statement suitable for the database.
 - (optional) modify the db-oriented helper targets in the `Makefile`
 
-This has not been tested, so there may be "gotchas" lurking in there.
+If there is need for it, I can maintain a separate "mysql" branch, but I'll only do that if someone actually needs it. Let me know.
+
+### Database migration
+
+If you have been running older (MySQL) Mylan and want to move the data to PostgreSQL, here's how you do that fairly easily:
+
+1. With version 1.0.5 or 1.0.6 running, run this command in a separate terminal. This assumes mylan runs as "mylan" in the container, modify if not. This exports the current (MySQL) database in JSON format into the local file `export.json`. 
+
+> `docker compose exec mylan ./bin/rails runner script/json_export.rb >export.json`
+
+2. Shut down the older Mylan (and MySQL), start up PostgreSQL and initialize the databases (`mylan`, `mylan_cache`, `mylan_queue`, `mylan_cable`), and then also start up the latest version of Mylan. Make sure Mylan starts up normally and creates the (empty) database tables `tournaments`, `players`, and `tournament_players`.
+
+3. Copy the data export JSON to the Mylan container.
+ > `docker compose cp export.json mylan:.`
+ 
+4. Import the JSON into the PostgreSQL database. Mylan should be operational with the old data intact after this.
+> `docker compose exec mylan ./bin/rails runner script/json_import.rb export.json`
 
 ## Configuration
 
@@ -132,7 +143,7 @@ In production mode, Mylan requires the following databases to exist:
 - `mylan_queue`
 - `mylan_cable`
 
-The last 3 are for Rails 8+ db-backed facilities. Only `mylan_queue` is used at the moment, and that only if `SOLID_QUEUE_IN_PUMA`is set, but all databases need to exist.
+The last 3 are for Rails 8+ db-backed facilities. Only `mylan_queue` is used at the moment (for email sending via Solid Queue), but all databases need to exist.
 
 ### Docker Compose
 
@@ -143,8 +154,9 @@ services:
 
   mylan:
     image: petriwessman/mylan:(version)
+    restart: unless-stopped
     environment:
-      DB_HOST: mariadb
+      DB_HOST: pg
       DB_USER: (username)
       DB_PASSWORD: (password)
       LOGIN_USERNAME: (username)
@@ -166,24 +178,21 @@ services:
       mariadb:
         condition: service_healthy
 
-  mariadb:
-    image: mariadb:12
-    restart: always
+  pg:
+    image: postgres:18-alpine
+    restart: unless-stopped
     volumes:
-      - data:/var/lib/mysql
-    ports:
-      - "3306:3306"
+      - pgdata:/var/lib/postgresql/data
     environment:
-      MARIADB_ROOT_PASSWORD: (password)
+      POSTGRES_PASSWORD: (master password)
+      PGDATA: /var/lib/postgresql/data/18/pgdata
     healthcheck:
-     test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
-      start_period: 10s
+      test: ["CMD", "pg_isready", "-U", "postgres"]
       interval: 10s
-      timeout: 5s
-      retries: 3
+      timeout: 5
 
 volumes:
-  data:
+  pgdata:
 ```
 
 This is for mounting the app at `my.server.net/mylan`, and needs the front-end 
@@ -194,19 +203,9 @@ the container).
 If mounting at server root, you would just remove `RAILS_RELATIVE_URL_ROOT` 
 from the config and proxy everything to `http://localhost:3000`.
 
-### Building your own production images
-
-The `Makefile` has some helpers.
-
-`make image` builds a production image tagged with the version found
-in file VERSION plus "latest".
-
-`DOCKERHUB=your-dockerhub-account make push` pushes the above two images
-to your Docker Hub repo.
-
 ## Future plans / TODO
 
-There are no guarantees that any of these will actually happen :)
+There are no guarantees that any of these will actually happen.
 
 - Support for actual user accounts (and possibly user groups), instead of just one shared "admin" account. This would be quite a bit of work.
 - Update CSS to Bulma 1.x. A drop-in replacement attempt broke everything, so this probably needs a bit of tinkering.
