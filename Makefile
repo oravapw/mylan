@@ -79,7 +79,7 @@ else ifeq ($(strip ${V}), ${VERSION})
 else
 	echo ${V} >VERSION
 	git commit -a -m "version ${V}"
-	git tag "${V}"
+	git tag -a "${V}"
 	@echo version set to ${V}
 endif
 
