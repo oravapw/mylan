@@ -39,8 +39,8 @@ current code version (4.0.10 as of this writing), npm/yarn, and various Unix-sty
 containers. Web will fail because databases are missing, ignore that.
 
 4. Once Docker Compose has started up everything, run "make dbroot"
-and then run the following SQL (this sets up according to development
-credentials as shown in step 1).
+and then run the following SQL. This creates the development and test 
+databases with user/password mylan/mylan.
 
 ```
 CREATE ROLE mylan PASSWORD 'mylan' NOSUPERUSER CREATEDB INHERIT LOGIN;
@@ -55,8 +55,8 @@ GRANT ALL PRIVILEGES ON DATABASE mylan_test, mylan_dev TO mylan;
 on-the-fly compilation of CSS and Javascript when those change.
 
 7. Connect to localhost:3000, where you should see the app login
-screen. Type in login credentials (see below), and you should see the
-main overview tab.
+screen. Type in development login credentials (mylan/mylan by default
+via `.env.development`), and you should see the main overview tab.
 
 After this, start coding. The app is live-mounted into the Docker container,
 so any file changes will be reflected in the running app immediately.
