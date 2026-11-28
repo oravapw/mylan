@@ -1,7 +1,7 @@
 # Helpers for Docker
 
 .PHONY: all build migrate rollback console websh dbsh db dbec dbroot \
-env image push version release test unittest systemtest jsonexport testrelease
+image push version release test unittest systemtest jsonexport testrelease
 
 # version tag for production image (do not set with :=, may change during run)
 VERSION = $(shell cat VERSION)
@@ -15,7 +15,7 @@ DOCKERHUB ?= petriwessman
 all: build
 
 # build image(s)
-build: env
+build:
 	docker compose build
 
 # Run Rails migrations
@@ -89,11 +89,3 @@ release: version image push
 testrelease:
 	docker build . -t ${DOCKERHUB}/${IMAGE}:test -f Dockerfile.production
 	docker push ${DOCKERHUB}/${IMAGE}:test
-
-env: .env.development .env.test
-
-.env.development:
-	cp env-template .env.development
-
-.env.test:
-	cp env-template .env.test
