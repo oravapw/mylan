@@ -303,9 +303,9 @@ esbuild@^0.27.2:
     "@esbuild/win32-x64" "0.27.7"
 
 hotkeys-js@>=3:
-  version "4.1.3"
-  resolved "https://registry.yarnpkg.com/hotkeys-js/-/hotkeys-js-4.1.3.tgz#a2b0f3847500c29b3a6062074d7622806e70ee61"
-  integrity sha512-QMJ0hjQtQteer0S8MBu36ZFz/SsjiK2kWifCcacNW9TrXd9aBZhaJm9/GHjSBH6R5P6NfX8MHs3Jei9YJh8xOw==
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/hotkeys-js/-/hotkeys-js-4.1.4.tgz#05eea8ad1a75f88ad513afe80c67f23ec8742edc"
+  integrity sha512-RwTcrHKL2fwFtzZ/3+IPDLFnbWLAmZgmPOcfpxde5eyhlGjFViiB2jm1iOSMo9FLjvX8ussMTTODc8/Ays6hIw==
 
 immutable@^5.1.5:
   version "5.2.1"

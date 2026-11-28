@@ -32,7 +32,8 @@ FROM ruby:$RUBY_VERSION-alpine
 WORKDIR /rails
 
 ENV LANG=C.UTF-8 \
-    LC_ALL=C.UTF-8
+    LC_ALL=C.UTF-8 \
+    LD_PRELOAD="/usr/lib/libjemalloc.so.2"
 
 # just include the stuff we want at runtime
 RUN apk update && \
